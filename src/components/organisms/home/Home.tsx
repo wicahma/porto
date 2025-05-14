@@ -9,7 +9,7 @@ const HomePage = () => {
         <Container
             left={<LeftCard />}
             right={<RightCard />}
-            classNameRight="w-full relative flex"
+            classNameRight="w-full relative flex overflow-hidden"
         />
     );
 };
