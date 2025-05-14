@@ -8,7 +8,8 @@ const Providers: React.FC<{ readonly children: React.ReactNode }> = ({
 }) => {
     return (
         <LazyMotion features={domAnimation} strict>
-            <GlobCursor>{children}</GlobCursor>
+            <GlobCursor />
+            {children}
         </LazyMotion>
     );
 };

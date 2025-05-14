@@ -88,7 +88,7 @@ const MeCard = () => {
             }}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-            className="hover:bg-neutral-800 hover:overflow-hidden border transition-colors border-transparent hover:border cursor-pointer hover:border-neutral-700 px-3.5 rounded-2xl pb-4 pt-3"
+            className="hvt hover:bg-neutral-800 hover:overflow-hidden border transition-colors border-transparent hover:border cursor-pointer hover:border-neutral-700 px-3.5 rounded-2xl pb-4 pt-3"
         >
             <m.div
                 className={cn(
@@ -112,12 +112,12 @@ const MeCard = () => {
                     delay={1}
                     className="font-semibold"
                     direction="to-bottom"
+                    tag="h1"
                     text="Teguh Dwi Cahya Kusuma"
                 />
-                <h1 className="font-semibold">{} </h1>
             </div>
             <div className="mt-2">
-                <h2 className="hvt text-7xl font-bold">
+                <h2 className="text-7xl font-bold">
                     <FadePull delay={0.5}>
                         <span>Software{"\n"}</span>
                         <span className="relative block">
