@@ -10,6 +10,7 @@ export const WordsPull: React.FC<IWordsUpProps> = ({
     direction = "to-top",
     delay = 0,
     delayWords = 0.05,
+    textClassName = "pr-2",
     tag = "h1",
 }) => {
     const Tag = tag;
@@ -67,7 +68,7 @@ export const WordsPull: React.FC<IWordsUpProps> = ({
                     initial="initial"
                     animate={isInView ? "animate" : ""}
                     custom={i}
-                    className={cn("text-center pr-2")}
+                    className={cn("text-center", textClassName)}
                 >
                     {current == "" ? <span>&nbsp;</span> : current}
                 </m.span>

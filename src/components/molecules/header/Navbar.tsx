@@ -1,19 +1,17 @@
 "use client";
 import DiamaDev from "@/assets/svg/diama-dev";
-import LampOff from "@/assets/svg/lamp-off";
-import LampOn from "@/assets/svg/lamp-on";
 import { Bulb } from "@/components/atoms/Bulb";
 import { FadePull } from "@/components/atoms/FadePull";
-import { LettersPull } from "@/components/atoms/text/LettersPull";
 import { nav_link } from "@/constants/navbar";
 import { cn } from "@/utils/helper/cn";
-import Link from "next/link";
+import { Link, useTransitionRouter } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
 
 const Navbar = () => {
     const cnLink = "text-neutral-300 hover:text-neutral-100 transition-colors";
     const pathname = usePathname();
+    const router = useTransitionRouter();
     const [darkmode, setDarkmode] = useState(true);
 
     const handlePageChange: React.MouseEventHandler<HTMLLIElement> = (e) => {
@@ -43,6 +41,7 @@ const Navbar = () => {
                         {nav_link.map((d) => (
                             <li key={d.title} onClick={handlePageChange}>
                                 <Link
+                                    onTransitionRun={pageAnimation}
                                     className={cn(
                                         cnLink,
                                         pathname.startsWith(d.href) &&
@@ -61,6 +60,31 @@ const Navbar = () => {
                 <Bulb />
             </div>
         </FadePull>
+    );
+};
+
+const pageAnimation = () => {
+    document.documentElement.animate(
+        [
+            { opacity: 1, scale: 1, transform: "translateY(0)" },
+            { opacity: 0, scale: 0.9, transform: "translateY(-100px)" },
+        ],
+        {
+            duration: 1000,
+            easing: "cubic-bezier(0.76, 0, 0.24, 1)",
+            fill: "forwards",
+            pseudoElement: "::view-transition-old(root)",
+        }
+    );
+
+    document.documentElement.animate(
+        [{ transform: "translateY(100%)" }, { transform: "translateY(0)" }],
+        {
+            duration: 1000,
+            easing: "cubic-bezier(0.76, 0, 0.24, 1)",
+            fill: "forwards",
+            pseudoElement: "::view-transition-new(root)",
+        }
     );
 };
 

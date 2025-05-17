@@ -1,8 +1,8 @@
 "use client";
 
-import Container from "../Container";
-import LeftCard from "./LeftCard";
-import RightCard from "./RightCard";
+import Container from "./Container";
+import LeftCard from "../molecules/home/LeftCard";
+import RightCard from "../molecules/home/RightCard";
 
 const HomePage = () => {
     return (

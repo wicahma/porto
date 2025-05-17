@@ -15,6 +15,7 @@ export interface IWordsUpProps {
     delay?: number;
     delayWords?: number;
     tag?: keyof JSX.IntrinsicElements;
+    textClassName?: string;
 }
 
 export interface IRotateWordsProps {

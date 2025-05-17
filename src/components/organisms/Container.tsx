@@ -5,11 +5,12 @@ import React, { FC } from "react";
 const Container: FC<IContainerProps> = ({
     left,
     right,
+    className,
     classNameLeft,
     classNameRight,
 }) => {
     return (
-        <div className="flex gap-3 container">
+        <div className={cn("flex gap-3 container", className)}>
             <div className={cn("max-w-[570px] w-full shrink", classNameLeft)}>
                 {left}
             </div>

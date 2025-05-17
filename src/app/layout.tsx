@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/organisms/Providers";
+import { ViewTransitions } from "next-view-transitions";
 
 const openSans = Open_Sans({
     variable: "--font-open-sans",
@@ -20,10 +21,12 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
-            <body className={`${openSans.variable} antialiased`}>
-                <Providers>{children}</Providers>
-            </body>
-        </html>
+        <ViewTransitions>
+            <html lang="en">
+                <body className={`${openSans.variable} antialiased`}>
+                    <Providers>{children}</Providers>
+                </body>
+            </html>
+        </ViewTransitions>
     );
 }

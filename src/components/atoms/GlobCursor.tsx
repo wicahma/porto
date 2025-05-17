@@ -16,7 +16,9 @@ export const GlobCursor: React.FC = () => {
         damping: 50,
         mass: 2,
     };
-    const [isHover, setIsHover] = useState(false);
+    const [hoverable, setHoverable] = useState(false);
+    const [unhoverable, setUnhover] = useState(false);
+    const [cursor, setCursor] = useState("");
 
     const x = useMotionValue(0);
     const y = useMotionValue(0);
@@ -36,13 +38,26 @@ export const GlobCursor: React.FC = () => {
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
-            const hoverTarget = target.closest(".hvt") as HTMLElement;
+            const unhoverTarget = target.closest(".unhoverable") as HTMLElement;
+            if (unhoverTarget) {
+                setHoverable(false);
+                setUnhover(true);
+                width.set(0);
+                height.set(0);
+                bf.set(0);
+                return;
+            }
+
+            const hoverTarget = target.closest(".hoverable") as HTMLElement;
+
+            const tCursor = window.getComputedStyle(target)["cursor"];
+            setUnhover(false);
+            setCursor(tCursor);
 
             x.set(e.clientX);
             y.set(e.clientY);
 
             if (hoverTarget) {
-                console.log("masuk hover");
                 const padding = 10;
                 const rect = hoverTarget.getBoundingClientRect();
                 borderRadius.set(5);
@@ -61,11 +76,19 @@ export const GlobCursor: React.FC = () => {
                 y.set(rect.top + rect.height / 2);
                 bf.set(15);
 
-                setIsHover(true);
+                setHoverable(true);
             } else {
+                if (tCursor === "pointer") {
+                    const cs = 60;
+
+                    width.set(cs);
+                    height.set(cs);
+                    borderRadius.set(100);
+                    return;
+                }
                 const circSize = 30;
-                console.log("keluar hover");
-                setIsHover(false);
+
+                setHoverable(false);
                 width.set(circSize);
                 height.set(circSize);
                 borderRadius.set(100);
@@ -73,10 +96,36 @@ export const GlobCursor: React.FC = () => {
             }
         };
 
+        const handleMouseLeave = () => {
+            console.log("mouse leave");
+            const circSize = 0;
+
+            setHoverable(false);
+            width.set(circSize);
+            height.set(circSize);
+            borderRadius.set(0);
+            bf.set(0);
+        };
+
+        const handleMouseEnter = () => {
+            console.log("mouse enter");
+            const circSize = 30;
+
+            setHoverable(false);
+            width.set(circSize);
+            height.set(circSize);
+            borderRadius.set(100);
+            bf.set(0);
+        };
+
         window.addEventListener("mousemove", handleMouseMove);
+        window.addEventListener("mouseenter", handleMouseEnter);
+        window.addEventListener("mouseleave", handleMouseLeave);
 
         return () => {
             window.removeEventListener("mousemove", handleMouseMove);
+            window.removeEventListener("mouseenter", handleMouseEnter);
+            window.removeEventListener("mouseleave", handleMouseLeave);
             x.destroy();
             y.destroy();
             width.destroy();
@@ -107,9 +156,12 @@ export const GlobCursor: React.FC = () => {
             <m.div
                 className={cn(
                     "fixed z-[9999] pointer-events-none -translate-x-1/2 -translate-y-1/2",
-                    isHover
+                    hoverable
                         ? "border-[2px] border-neutral-500/50"
-                        : "bg-white/10"
+                        : "bg-white/20 backdrop-blur-xs",
+                    cursor === "pointer" && !unhoverable
+                        ? "border-[1px] border-neutral-50 bg-white/10 backdrop-blur-none"
+                        : null
                 )}
                 style={{
                     x: smoothX,
