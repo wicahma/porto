@@ -123,7 +123,14 @@ export const FisheyeList: React.FC<IFisheyeListProps> = ({
     }, []);
 
     return (
-        <div className="unhoverable relative w-full !select-none">
+        <m.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+                delay: 0.5,
+            }}
+            className="unhoverable relative w-full !select-none"
+        >
             {debug && (
                 <div className="flex justify-end bg-neutral-600 gap-1 rounded px-1 py-[2px] text-[10px] items-center absolute top-5 right-5 z-50 pointer-events-none">
                     <p>Debug mode</p>
@@ -218,6 +225,6 @@ export const FisheyeList: React.FC<IFisheyeListProps> = ({
                     ))}
                 </div>
             </div>
-        </div>
+        </m.div>
     );
 };
