@@ -7,3 +7,11 @@ export interface IFadeProps {
     className?: string;
     staggerChildren?: number;
 }
+
+export interface IStaggerProps {
+    direction?: direction;
+    children: React.ReactNode;
+    delay?: number;
+    className?: string;
+    staggerChildren?: number;
+}

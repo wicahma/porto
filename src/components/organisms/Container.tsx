@@ -10,7 +10,12 @@ const Container: FC<IContainerProps> = ({
     classNameRight,
 }) => {
     return (
-        <div className={cn("flex gap-3 container", className)}>
+        <div
+            className={cn(
+                "flex gap-3 container flex-nowrap shrink-0",
+                className
+            )}
+        >
             <div className={cn("max-w-[570px] w-full shrink", classNameLeft)}>
                 {left}
             </div>

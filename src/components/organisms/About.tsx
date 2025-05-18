@@ -8,7 +8,8 @@ const AboutPage = () => {
     return (
         <Container
             className="h-[calc(100vh-5rem)] overflow-x-visible"
-            classNameLeft=" flex flex-col"
+            classNameLeft="flex flex-col"
+            classNameRight="min-w-0 pb-5 grow"
             left={<LeftCard />}
             right={<RightCard />}
         />
