@@ -1,17 +1,19 @@
 "use client";
-import { IFadeProps } from "@/interface/atoms/animation";
-import { m, useInView, Variants } from "motion/react";
+import { IStaggerProps } from "@/interface/atoms/animation";
+import { HTMLMotionProps, m, useInView, Variants } from "motion/react";
 import * as React from "react";
 
-export const FadePull: React.FC<IFadeProps> = ({
+export const StaggerPull: React.FC<IStaggerProps> = ({
     direction = "to-top",
     children,
-    delay = 0,
     className = "",
     staggerChildren = 0.1,
 }) => {
     const show: Variants = {
-        show: { opacity: 1, y: 0, transition: { type: "spring", delay } },
+        show: {
+            opacity: 1,
+            y: 0,
+        },
     };
     const hidden: Variants = { hidden: { opacity: 0, y: 18 } };
 
@@ -24,7 +26,6 @@ export const FadePull: React.FC<IFadeProps> = ({
             show.show = {
                 y: 0,
                 opacity: 1,
-                transition: { type: "spring", delay },
             };
             break;
         case "to-left":
@@ -32,7 +33,6 @@ export const FadePull: React.FC<IFadeProps> = ({
             show.show = {
                 x: 0,
                 opacity: 1,
-                transition: { type: "spring", delay },
             };
             break;
         case "to-right":
@@ -40,7 +40,6 @@ export const FadePull: React.FC<IFadeProps> = ({
             show.show = {
                 x: 0,
                 opacity: 1,
-                transition: { type: "spring", delay },
             };
             break;
         case "to-center":
@@ -48,7 +47,6 @@ export const FadePull: React.FC<IFadeProps> = ({
             show.show = {
                 z: 0,
                 opacity: 1,
-                transition: { type: "spring", delay },
             };
             break;
         default:
@@ -74,18 +72,14 @@ export const FadePull: React.FC<IFadeProps> = ({
                 const tag = (child as React.ReactElement)
                     .props as React.AllHTMLAttributes<typeof child>;
 
-                return React.isValidElement(child) ? (
+                return (
                     <m.div
+                        {...(tag as HTMLMotionProps<"div">)}
                         variants={{
                             ...show,
                             ...hidden,
                         }}
-                        className={tag.className}
-                    >
-                        {tag.children}
-                    </m.div>
-                ) : (
-                    child
+                    />
                 );
             })}
         </m.div>

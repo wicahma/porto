@@ -48,6 +48,14 @@ export const LettersPull: React.FC<ILettersUpProps> = ({
                 transition: { delay: i * 0.05 + delay },
             });
             break;
+        case "to-center":
+            initial.initial = { z: -18, opacity: 0 };
+            animate.animate = (i: number) => ({
+                z: 0,
+                opacity: 1,
+                transition: { delay: i * 0.05 + delay },
+            });
+            break;
         default:
             break;
     }

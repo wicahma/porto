@@ -50,6 +50,14 @@ export const WordsPull: React.FC<IWordsUpProps> = ({
                 transition: { delay: i * delayWords + delay },
             });
             break;
+        case "to-center":
+            initial.initial = { z: -20, opacity: 0 };
+            animate.animate = (i: number) => ({
+                z: 0,
+                opacity: 1,
+                transition: { delay: i * delayWords + delay },
+            });
+            break;
         default:
             break;
     }

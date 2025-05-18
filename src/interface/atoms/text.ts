@@ -23,4 +23,9 @@ export interface IRotateWordsProps {
     words: string[];
 }
 
-export type direction = "to-left" | "to-top" | "to-right" | "to-bottom";
+export type direction =
+    | "to-left"
+    | "to-top"
+    | "to-right"
+    | "to-bottom"
+    | "to-center";
