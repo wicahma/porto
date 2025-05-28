@@ -171,9 +171,9 @@ export const FisheyeList: React.FC<IFisheyeListProps> = ({
                 ref={containerRef}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
-                className="w-full text-white h-[calc(100vh-38px-216px-24px-5rem)] no-scrollbar overflow-y-scroll overflow-x-clip"
+                className="w-full text-white h-[calc(100vh-38px-216px-24px-5rem-2.5rem-2.75rem)] no-scrollbar overflow-y-scroll overflow-x-clip"
             >
-                <div className="flex flex-col w-full items-start py-6 gap-4">
+                <div className="flex flex-col w-full items-start py-6 gap-6">
                     {items.map((item, i) => (
                         <div
                             key={i}
@@ -194,7 +194,7 @@ export const FisheyeList: React.FC<IFisheyeListProps> = ({
                             style={{
                                 transform:
                                     selectedInd === i
-                                        ? "scale(1.3) rotate(-2deg)"
+                                        ? "scale(1.5) rotate(-3deg) translateY(-10px)"
                                         : undefined,
                             }}
                         >

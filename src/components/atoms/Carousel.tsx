@@ -1,5 +1,7 @@
+"use client";
 import { ICarouselProps } from "@/interface/atoms/carousel";
 import { cn } from "@/utils/helper/cn";
+import NextImage from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
 const Carousel: React.FC<ICarouselProps> = ({
@@ -8,11 +10,13 @@ const Carousel: React.FC<ICarouselProps> = ({
     direction = "right",
     contentSpace = "8px",
     contentWidth = "200px",
-    speed = "2000ms",
+    speed = 0.5,
     debug = false,
 }) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const trackRef = useRef<HTMLDivElement | null>(null);
+    const [carouselDuration, setCarouselDuration] =
+        useState<`${number}ms`>("2000ms");
 
     const [renderedImages, setRenderedImages] = useState<string[]>([]);
 
@@ -33,22 +37,24 @@ const Carousel: React.FC<ICarouselProps> = ({
         tempImage.src = images[0];
         document.body.appendChild(tempTrack);
         const tempTrackRect = tempTrack.getBoundingClientRect();
+
         tempImage.onload = () => {
-            console.log("tempTrackRect", tempTrackRect);
-            const allImageWidth =
+            const repeatedImages: string[] = [];
+            const totalWidth =
                 (tempTrackRect.width + Math.abs(tempTrackRect.right) * 2) *
                 images.length;
-            console.log("all image width", allImageWidth);
-            const repeatCount = Math.ceil((containerWidth * 2) / allImageWidth);
+            const repeatCount = Math.max(
+                Math.ceil((containerWidth * 2) / totalWidth),
+                2
+            );
 
-            console.log("repeatCount", repeatCount);
-            const repeatedImages: string[] = [];
-            for (let i = 0; i < repeatCount; i++) {
+            for (let i = 0; i < repeatCount; i++)
                 repeatedImages.push(...images);
-            }
 
+            const speedByItems = totalWidth / speed;
+
+            setCarouselDuration(`${speedByItems}ms`);
             setRenderedImages(repeatedImages);
-            document.body.removeChild(tempTrack);
         };
 
         return () => {
@@ -69,7 +75,7 @@ const Carousel: React.FC<ICarouselProps> = ({
                 "--carousel-content-space-x": contentSpace,
                 "--carousel-slide":
                     direction === "right" ? "slide-right" : "slide-left",
-                "--carousel-speed": speed,
+                "--carousel-speed": carouselDuration,
                 "--content-total": images.length,
             }}
             ref={containerRef}
@@ -82,10 +88,13 @@ const Carousel: React.FC<ICarouselProps> = ({
             <div ref={trackRef} className="carousel-track">
                 {renderedImages.map((img, i) => (
                     <div key={i} className="carousel-content">
-                        <img
+                        <NextImage
+                            loading="eager"
+                            width={768}
+                            height={480}
                             src={img}
                             alt={`carousel-${i}`}
-                            className="w-full"
+                            className="w-full shadow-sm bg-neutral-50"
                         />
                     </div>
                 ))}

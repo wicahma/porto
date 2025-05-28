@@ -5,13 +5,15 @@ import React from "react";
 
 const layout: React.FC<ILayoutProps> = ({ children }) => {
     return (
-        <>
+        <main>
             <NextTopLoader height={1} color="#414141" />
-            <div className="container min-h-screen flex flex-row mx-auto pt-[5rem]">
-                <Navbar />
-                {children}
+            <div className="w-screen overflow-hidden h-screen min-h-screen pt-[5rem]">
+                <div className="container mx-auto h-full flex flex-row">
+                    <Navbar />
+                    {children}
+                </div>
             </div>
-        </>
+        </main>
     );
 };
 

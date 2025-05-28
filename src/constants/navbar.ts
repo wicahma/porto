@@ -4,10 +4,6 @@ export const nav_link = [
         href: "/",
     },
     {
-        title: "About",
-        href: "/about",
-    },
-    {
         title: "Experience",
         href: "/experience",
     },

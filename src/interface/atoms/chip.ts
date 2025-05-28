@@ -1,6 +1,6 @@
 import { ForwardRefComponent, HTMLMotionProps, Variants } from "motion/react";
 import { ReactNode } from "react";
-import { TCustom } from "../app/about";
+import { TCustom } from "../app/experience";
 import { Transition } from "motion";
 
 export interface IChipProps

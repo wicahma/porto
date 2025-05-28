@@ -40,7 +40,6 @@ body {
 }
 
 .carousel-container {
-    overflow: hidden;
     min-width: 0;
 }
 
@@ -51,11 +50,11 @@ body {
 }
 
 .carousel-content {
-    @apply h-auto aspect-auto shrink-0 w-[var(--carousel-content-width)];
+    @apply h-auto aspect-auto shrink-0 rounded-lg overflow-clip w-[var(--carousel-content-width)];
     margin-left: var(--carousel-content-space-x);
     margin-right: var(--carousel-content-space-x);
 }
-/* 200px */
+
 @keyframes slide-left {
     0% {
         transform: translateX(0);
