@@ -1,14 +1,18 @@
-export const nav_link = [
-    {
-        title: "Home",
-        href: "/",
-    },
-    {
-        title: "Experience",
-        href: "/experience",
-    },
-    {
-        title: "Blog",
-        href: "/blog",
-    },
+export const navLink = [
+  {
+    title: "Home",
+    href: "/",
+  },
+  {
+    title: "Experience",
+    href: "/experience",
+  },
+  {
+    title: "Projects",
+    href: "/projects",
+  },
+  {
+    title: "Blog",
+    href: "/blog",
+  },
 ];

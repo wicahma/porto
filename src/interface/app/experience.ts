@@ -1,15 +1,21 @@
-export type TChip = {
-    id: number;
-    label: string;
-    active: boolean;
-};
+export interface IExperience {
+  id: string;
+  startYear: number;
+  endYear: number | "Present";
+  company: string;
+  role: string;
+  description: string;
+  type: "Full-time" | "Part-time" | "Freelance" | "Contract" | "Internship";
+  skills: string[];
+  color: string;
+  logo?: string;
+  achievements?: string[];
+  projects?: {
+    name: string;
+    description: string;
+  }[];
+}
 
-export type TExperience = {
-    id: number;
-    isNew: boolean;
-    text: string;
-};
-
-export type TCustom = {
-    i: number;
-};
+export interface IExperienceDetailProps {
+  experienceId: string;
+}
