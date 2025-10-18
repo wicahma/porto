@@ -37,7 +37,7 @@ export const homeDescorations: IHomeDecoration[] = (
     { Comp: TwoWave, x: [-200, -250, -200], y: [150] },
     { Comp: ThreeWave, x: [200, 250, 200], y: [100] },
   ] as IHomeDecoration[]
-).map((item, i) => {
+).map((item) => {
   return {
     duration: Math.floor(Math.random() * 10) + 1,
     ...item,

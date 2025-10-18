@@ -1,12 +1,12 @@
 "use client";
 import DiamaDev from "@/assets/svg/diama-dev";
 import { Bulb } from "@/components/atoms/Bulb";
-import { FadePull } from "@/components/atoms/FadePull";
 import { useCircularRevealNavigation } from "@/components/atoms/CircularRevealTransition";
+import { FadePull } from "@/components/atoms/FadePull";
 import { navLink } from "@/constants/navbar";
 import { cn } from "@/utils/helper/cn";
 import { usePathname } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 
 const Navbar = () => {
   const cnLink = "text-neutral-300 hover:text-neutral-100 transition-colors";
@@ -75,7 +75,7 @@ const Navbar = () => {
   );
 };
 
-const pageAnimation = (from: string, to: string) => {
+export const pageAnimation = (from: string, to: string) => {
   const fromIdx =
     from !== "/"
       ? navLink.findIndex((d) => from.startsWith(d.href) && d.href !== "/")

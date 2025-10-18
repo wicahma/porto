@@ -11,6 +11,7 @@ import { WordsPull } from "@/components/atoms/text/WordsPull";
 import { FadePull } from "@/components/atoms/FadePull";
 import Link from "next/link";
 import { useColorWipeNavigation } from "@/components/atoms/ColorWipeTransition";
+import MultiCarousel from "../molecules/MultiCarousel";
 
 interface ExperienceDetailProps {
   experience: IExperience;
@@ -80,15 +81,18 @@ const ExperienceDetail: FC<ExperienceDetailProps> = ({ experience }) => {
               <span>{experience.type}</span>
             </div>
           </m.div>
+          <div className="w-full hover:h-[300px] duration-500 h-0 transition-all py-4 overflow-y-clip rounded-xl">
+            <MultiCarousel className="relative -rotate-12 -translate-y-40" />
+          </div>
         </div>
       </div>
-      <m.div
+      {/* <m.div
         className="h-0.5 w-full mb-10"
         style={{ backgroundColor: experience.color + "40" }}
         initial={{ width: 0 }}
         animate={{ width: "100%" }}
         transition={{ duration: 0.8, delay: 0.4 }}
-      />
+      /> */}
       <FadePull direction="to-bottom" delay={0.5}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="md:col-span-2">

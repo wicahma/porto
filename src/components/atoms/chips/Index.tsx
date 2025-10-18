@@ -70,7 +70,6 @@ const Chip: React.FC<IChipProps> = ({
         checked={active}
         onClick={handleOnClick}
         onChange={(e) => setActive(e.target.checked)}
-        children={undefined}
       />
       <div
         className={cn(

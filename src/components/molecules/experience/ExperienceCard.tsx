@@ -1,13 +1,10 @@
 "use client";
 
 import { IExperience } from "@/interface/app/experience";
-import { FC, useState } from "react";
-import { m } from "motion/react";
-import {
-  experienceItemVariants,
-  skillVariants,
-} from "@/utils/motion/experience-animations";
+import { FC, useRef } from "react";
+import { m, useInView } from "motion/react";
 import { useColorWipeNavigation } from "@/components/atoms/ColorWipeTransition";
+import { cn } from "@/utils/helper/cn";
 
 interface ExperienceCardProps {
   experience: IExperience;
@@ -15,13 +12,10 @@ interface ExperienceCardProps {
   isLast?: boolean;
 }
 
-const ExperienceCard: FC<ExperienceCardProps> = ({
-  experience,
-  index,
-  isLast = false,
-}) => {
-  const [isHovered, setIsHovered] = useState(false);
+const ExperienceCard: FC<ExperienceCardProps> = ({ experience, index }) => {
   const { navigateWithTransition } = useColorWipeNavigation();
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   const handleClick = () => {
     navigateWithTransition(`/experience/${experience.id}`, {
@@ -31,115 +25,164 @@ const ExperienceCard: FC<ExperienceCardProps> = ({
   };
 
   return (
-    <div className="relative">
-      {!isLast && (
-        <m.div
-          className="absolute left-[19px] top-[80px] bottom-0 w-0.5 bg-neutral-800"
-          variants={experienceItemVariants}
-          custom={index + 0.5}
-          initial="hidden"
-          animate="visible"
-        />
-      )}
+    <m.div
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      transition={{
+        duration: 0.6,
+        delay: index * 0.15,
+        ease: [0.21, 0.47, 0.32, 0.98],
+      }}
+      className="relative group cursor-pointer py-10"
+      onClick={handleClick}
+    >
       <m.div
-        className="flex gap-6 cursor-pointer mb-14 hoverable"
-        variants={experienceItemVariants}
-        custom={index}
-        initial="hidden"
-        animate="visible"
-        whileHover="hover"
-        whileTap="tap"
-        onClick={handleClick}
-        onHoverStart={() => setIsHovered(true)}
-        onHoverEnd={() => setIsHovered(false)}
+        className="absolute top-0 left-0 h-[1px] w-full overflow-hidden"
+        initial={{ scaleX: 0 }}
+        animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
+        transition={{ duration: 0.8, delay: index * 0.15 + 0.2 }}
       >
-        <div className="relative">
+        <div
+          className="h-full w-full"
+          style={{
+            background: `linear-gradient(to right, transparent, #404040, transparent)`,
+          }}
+        />
+      </m.div>
+
+      <div className="relative flex gap-6 items-start">
+        <m.div
+          className="relative flex-shrink-0"
+          initial={{ scale: 0 }}
+          animate={isInView ? { scale: 1 } : { scale: 0 }}
+          transition={{ delay: index * 0.15 + 0.3, type: "spring" }}
+        >
           <m.div
-            className="w-10 h-10 rounded-full flex items-center justify-center z-10 relative"
+            className="w-12 h-12 rounded-full flex items-center justify-center z-10 relative shadow-lg"
             style={{ backgroundColor: experience.color }}
-            animate={{
-              boxShadow: isHovered
-                ? `0 0 0 4px rgba(26, 26, 26, 0.8), 0 0 0 8px ${experience.color}40`
-                : `0 0 0 0px rgba(26, 26, 26, 0.8), 0 0 0 0px ${experience.color}00`,
+            whileHover={{
+              scale: 1.1,
+              boxShadow: `0 0 0 6px ${experience.color}20`,
             }}
             transition={{ duration: 0.3 }}
           >
-            <span className="text-white font-bold">
+            <span className="text-white font-bold text-sm">
               {experience.startYear.toString().substring(2)}
             </span>
           </m.div>
-        </div>
 
-        <div className="flex-1">
-          <div className="flex justify-between items-center mb-2">
-            <h3 className="font-bold text-xl">{experience.role}</h3>
-            <div
-              className="text-sm px-2 py-0.5 rounded"
+          <m.div
+            className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100"
+            style={{ backgroundColor: experience.color }}
+            animate={{
+              scale: [1, 1.3, 1],
+              opacity: [0.3, 0, 0.3],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+        </m.div>
+
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-3 mb-3 flex-wrap">
+            <m.span
+              initial={{ opacity: 0, x: -20 }}
+              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+              transition={{ delay: index * 0.15 + 0.3 }}
+              className="text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider"
               style={{
-                backgroundColor: experience.color + "20",
+                backgroundColor: `${experience.color}15`,
                 color: experience.color,
               }}
             >
               {experience.type}
-            </div>
+            </m.span>
+            <m.div
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+              transition={{ delay: index * 0.15 + 0.4 }}
+              className="flex items-center gap-2 text-sm text-neutral-600"
+            >
+              <span>
+                {experience.startYear} - {experience.endYear}
+              </span>
+            </m.div>
           </div>
 
-          <div className="text-neutral-400 mb-2">
-            {experience.company} • {experience.startYear} - {experience.endYear}
-          </div>
+          <h3
+            className={cn(
+              "text-2xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight flex flex-wrap gap-x-3 group-hover:text-neutral-50 text-neutral-300"
+            )}
+          >
+            {experience.role.split(" ").map((word: string, wordIdx: number) => (
+              <m.span
+                key={wordIdx}
+                initial={{ opacity: 0, y: 10 }}
+                animate={
+                  isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }
+                }
+                transition={{
+                  delay: index * 0.15 + 0.4 + wordIdx * 0.05,
+                  duration: 0.4,
+                }}
+                className="transition-colors duration-300"
+              >
+                {word}
+              </m.span>
+            ))}
+          </h3>
 
-          <p className="text-neutral-300 mb-4">{experience.description}</p>
+          <m.p
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ delay: index * 0.15 + 0.5 }}
+            className="text-neutral-400 mb-3 group-hover:text-neutral-300 transition-colors duration-300"
+          >
+            {experience.company}
+          </m.p>
 
-          <div className="flex flex-wrap gap-2">
+          <m.p
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ delay: index * 0.15 + 0.6 }}
+            className="text-neutral-500 mb-4 leading-relaxed group-hover:text-neutral-400 transition-colors duration-300"
+          >
+            {experience.description}
+          </m.p>
+
+          <m.div
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ delay: index * 0.15 + 0.7 }}
+            className="flex flex-wrap gap-2"
+          >
             {experience.skills.map((skill, i) => (
               <m.span
                 key={`${experience.id}-skill-${i}`}
-                className="text-xs px-2 py-1 rounded-full bg-white/5 text-neutral-400 backdrop-blur-sm"
-                variants={skillVariants}
-                custom={i}
-                initial="hidden"
-                animate="visible"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={
+                  isInView
+                    ? { opacity: 1, scale: 1 }
+                    : { opacity: 0, scale: 0.8 }
+                }
+                transition={{ delay: index * 0.15 + 0.7 + i * 0.03 }}
+                whileHover={{
+                  scale: 1.1,
+                  backgroundColor: `${experience.color}20`,
+                }}
+                className="text-xs px-3 py-1.5 text-neutral-500 hover:text-neutral-300 transition-all duration-200 cursor-pointer"
               >
                 {skill}
               </m.span>
             ))}
-          </div>
+          </m.div>
         </div>
-
-        <m.div
-          className="text-neutral-500 self-start"
-          animate={{ x: isHovered ? 5 : 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          <div className="w-6 h-6">
-            <svg
-              viewBox="0 0 16 16"
-              xmlnsXlink="http://www.w3.org/1999/xlink"
-              xmlns="http://www.w3.org/2000/svg"
-              id="svg2"
-              version="1.1"
-            >
-              <g id="layer1" transform="rotate(45 1254.793 524.438)">
-                <path
-                  style={{
-                    fill: "#373737",
-                    fillOpacity: 1,
-                    fillRule: "evenodd",
-                    stroke: "none",
-                    strokeWidth: "1px",
-                    strokeLinecap: "butt",
-                    strokeLinejoin: "miter",
-                    strokeOpacity: 1,
-                  }}
-                  d="m15.776 1040.172-1.412 1.412L8 1035.22l-6.364 6.364-1.414-1.414L8 1032.392z"
-                  id="path4179"
-                />
-              </g>
-            </svg>
-          </div>
-        </m.div>
-      </m.div>
-    </div>
+      </div>
+    </m.div>
   );
 };
 

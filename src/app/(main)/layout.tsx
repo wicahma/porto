@@ -24,7 +24,7 @@ const Layout: React.FC<ILayoutProps> = ({ children }) => {
       <ColorWipeTransition onFinish={handleColorWipeFinish} />
       <CircularRevealTransition onFinish={handleRevealFinish} />
       <NextTopLoader height={1} color="#414141" />
-      <div className="overflow-hidden min-h-screen pt-[5rem]">
+      <div className="min-h-screen pt-[5rem]">
         <div className="container mx-auto h-full flex flex-row">
           <Navbar />
           {children}

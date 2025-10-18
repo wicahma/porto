@@ -18,7 +18,7 @@ export const GlobCursor: React.FC = () => {
   };
   const [hoverable, setHoverable] = useState(false);
   const [unhoverable, setUnhover] = useState(false);
-  const [cursor, setCursor] = useState("");
+  // const [cursor, setCursor] = useState("");
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -52,7 +52,7 @@ export const GlobCursor: React.FC = () => {
 
       const tCursor = window.getComputedStyle(target)["cursor"];
       setUnhover(false);
-      setCursor(tCursor);
+      // setCursor(tCursor);
 
       x.set(e.clientX);
       y.set(e.clientY);

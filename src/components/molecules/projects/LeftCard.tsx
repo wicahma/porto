@@ -22,7 +22,7 @@ const LeftCard = () => {
 
   return (
     <>
-      <div className="pt-7 pb-10">
+      <div className="pt-7">
         <WordsPull
           delayWords={0.15}
           direction="to-bottom"
@@ -44,7 +44,7 @@ const LeftCard = () => {
           <div className="flex gap-2 mt-6 flex-wrap select-none">
             {chips.map((chip, i) => (
               <Chip
-                key={chip.id}
+                key={`${chip.id}-${i}`}
                 motioncomp={{
                   layout: true,
                   custom: { i },
@@ -62,8 +62,9 @@ const LeftCard = () => {
                 }}
                 active={chip.active}
                 setActive={() => toggleChip(chip.id)}
-                children={<p>{chip.label}</p>}
-              />
+              >
+                <p>{chip.label}</p>
+              </Chip>
             ))}
           </div>
         </AnimatePresence>

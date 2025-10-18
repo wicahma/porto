@@ -1,14 +1,14 @@
 "use client";
 
-import { experiences } from "@/constants/dummies/experience-page";
 import { WordsPull } from "@/components/atoms/text/WordsPull";
-import { m } from "motion/react";
 import ExperienceCard from "@/components/molecules/experience/ExperienceCard";
+import { experiences } from "@/constants/dummies/experience-page";
+import { m } from "motion/react";
 
 const ExperiencePage = () => {
   return (
-    <div className=" max-w-4xl mx-auto pt-10 pb-20">
-      <div className="mb-10">
+    <div className="max-w-4xl mx-auto pt-10 pb-20 relative">
+      <div className="mb-10 relative z-20">
         <WordsPull
           delayWords={0.15}
           direction="to-bottom"

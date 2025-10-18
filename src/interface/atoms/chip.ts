@@ -1,7 +1,7 @@
-import { ForwardRefComponent, HTMLMotionProps, Variants } from "motion/react";
+import { Transition } from "motion";
+import { HTMLMotionProps, Variants } from "motion/react";
 import { ReactNode } from "react";
 import { TCustom } from "../app/projects";
-import { Transition } from "motion";
 
 export interface IChipProps
   extends React.InputHTMLAttributes<HTMLInputElement> {

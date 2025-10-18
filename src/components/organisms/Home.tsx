@@ -10,6 +10,7 @@ const HomePage = () => {
       left={<LeftCard />}
       right={<RightCard />}
       classNameRight="w-full relative flex overflow-hidden"
+      classNameLeft="flex flex-col"
       className="h-[calc(100vh-5rem)] overflow-x-visible"
     />
   );
