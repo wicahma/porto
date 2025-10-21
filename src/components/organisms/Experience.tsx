@@ -7,7 +7,7 @@ import { m } from "motion/react";
 
 const ExperiencePage = () => {
   return (
-    <div className="max-w-4xl mx-auto pt-10 pb-20 relative">
+    <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="mb-10 relative z-20">
         <WordsPull
           delayWords={0.15}

@@ -22,7 +22,6 @@ const ExperienceDetail: FC<ExperienceDetailProps> = ({ experience }) => {
 
   return (
     <div className="container max-w-4xl mx-auto pt-10 pb-20 px-4">
-      {" "}
       <div className="mb-6">
         <Link
           href="/experience"

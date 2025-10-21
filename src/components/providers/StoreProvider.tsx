@@ -1,12 +1,70 @@
 "use client";
 
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect } from "react";
+import { NeatConfig, NeatGradient } from "@firecms/neat";
 
-/**
- * This component acts as a wrapper for store initialization.
- * With Next.js App Router, it helps avoid hydration mismatches
- * by ensuring stores are properly initialized on both server and client.
- */
+const config: NeatConfig = {
+  colors: [
+    {
+      color: "#202D35",
+      enabled: true,
+    },
+    {
+      color: "#333737",
+      enabled: true,
+    },
+    {
+      color: "#4E585E",
+      enabled: true,
+    },
+    {
+      color: "#ff5a5f",
+      enabled: false,
+    },
+    {
+      color: "#121212",
+      enabled: true,
+    },
+  ],
+  speed: 4,
+  horizontalPressure: 4,
+  verticalPressure: 3,
+  waveFrequencyX: 0,
+  waveFrequencyY: 0,
+  waveAmplitude: 0,
+  shadows: 7,
+  highlights: 4,
+  colorBrightness: 0.9,
+  colorSaturation: 6,
+  wireframe: false,
+  colorBlending: 5,
+  backgroundColor: "#101010",
+  backgroundAlpha: 1,
+  grainScale: 3,
+  grainSparsity: 0,
+  grainIntensity: 0.15,
+  grainSpeed: 6.2,
+  resolution: 0.4,
+  yOffset: 764,
+};
+
 export function StoreProvider({ children }: { readonly children: ReactNode }) {
-  return <>{children}</>;
+  useEffect(() => {
+    let neat: NeatGradient | null;
+    if (document) {
+      const canvas = document.getElementById("gradient") as HTMLCanvasElement;
+      neat = new NeatGradient({ ref: canvas, ...config });
+    }
+
+    return () => neat?.destroy();
+  }, []);
+  return (
+    <>
+      {children}
+      <canvas
+        id="gradient"
+        className="fixed w-screen h-screen top-0 left-0 -z-50"
+      />
+    </>
+  );
 }
