@@ -22,13 +22,14 @@ export default function Globe() {
   const currentPhiRef = useRef(0);
   const currentThetaRef = useRef(0);
   const phiRef = useRef(0);
+  const currentScaleRef = useRef(1);
+  const targetScaleRef = useRef(1);
 
   useEffect(() => {
     let width = 0;
-    const [initialPhi, initialTheta] = locationToAngles(
-      userLocation.lat,
-      userLocation.lng
-    );
+    // Start at a different location (e.g., Africa) so fly-to animation is visible
+    const initialPhi = 0;
+    const initialTheta = Math.PI / 2;
     currentPhiRef.current = initialPhi;
     currentThetaRef.current = initialTheta;
     phiRef.current = initialPhi;
@@ -50,12 +51,12 @@ export default function Globe() {
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
       if (canvas) {
-        const scale = canvas.style.transform.match(/scale\(([\d.]+)\)/);
-        const currentScale = scale ? parseFloat(scale[1]) : 1;
         const newScale = Math.max(
           0.8,
-          Math.min(3, currentScale - e.deltaY * 0.002)
+          Math.min(3, currentScaleRef.current - e.deltaY * 0.002)
         );
+        currentScaleRef.current = newScale;
+        targetScaleRef.current = newScale;
         canvas.style.transform = `scale(${newScale})`;
       }
     };
@@ -99,6 +100,10 @@ export default function Globe() {
               isFocusing.current = false;
               phiRef.current = currentPhiRef.current;
             }
+
+            // Smoothly animate scale when focusing
+            currentScaleRef.current =
+              currentScaleRef.current * 0.92 + targetScaleRef.current * 0.08;
           } else if (autoRotate) {
             // Auto-rotate when not focusing
             phiRef.current += 0.005;
@@ -120,6 +125,11 @@ export default function Globe() {
             color: [1, 0.56, 0.75], // #FF8FC0 in RGB
           },
         ];
+
+        // Apply scale animation
+        if (canvas) {
+          canvas.style.transform = `scale(${currentScaleRef.current})`;
+        }
       },
     });
 
@@ -141,6 +151,7 @@ export default function Globe() {
     setAutoRotate(false);
     focusRef.current = locationToAngles(userLocation.lat, userLocation.lng);
     isFocusing.current = true;
+    targetScaleRef.current = 2.5; // Zoom in to the location
   };
 
   return (
