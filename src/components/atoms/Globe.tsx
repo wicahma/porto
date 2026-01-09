@@ -27,7 +27,7 @@ export default function Globe() {
 
   useEffect(() => {
     let width = 0;
-    // Start at a different location (e.g., Africa) so fly-to animation is visible
+
     const initialPhi = 0;
     const initialTheta = Math.PI / 2;
     currentPhiRef.current = initialPhi;
@@ -47,7 +47,6 @@ export default function Globe() {
 
     const canvas = canvasRef.current;
 
-    // Add wheel event listener with passive: false to allow preventDefault
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
       if (canvas) {
@@ -77,7 +76,6 @@ export default function Globe() {
       glowColor: [1, 1, 1],
       markers: [{ location: [userLocation.lat, userLocation.lng], size: 0.1 }],
       onRender: (state) => {
-        // Handle focus/re-center animation
         if (!pointerInteracting.current) {
           if (isFocusing.current) {
             const [focusPhi, focusTheta] = focusRef.current;
@@ -86,26 +84,22 @@ export default function Globe() {
             const distNegative =
               (currentPhiRef.current - focusPhi + doublePi) % doublePi;
 
-            // Control the speed - smoothly rotate to target
             if (distPositive < distNegative) {
-              currentPhiRef.current += distPositive * 0.08;
+              currentPhiRef.current += distPositive * 0.03;
             } else {
-              currentPhiRef.current -= distNegative * 0.08;
+              currentPhiRef.current -= distNegative * 0.03;
             }
             currentThetaRef.current =
-              currentThetaRef.current * 0.92 + focusTheta * 0.08;
+              currentThetaRef.current * 0.97 + focusTheta * 0.03;
 
-            // Stop focusing when close enough to target
             if (Math.abs(focusPhi - currentPhiRef.current) < 0.01) {
               isFocusing.current = false;
               phiRef.current = currentPhiRef.current;
             }
 
-            // Smoothly animate scale when focusing
             currentScaleRef.current =
-              currentScaleRef.current * 0.92 + targetScaleRef.current * 0.08;
+              currentScaleRef.current * 0.97 + targetScaleRef.current * 0.03;
           } else if (autoRotate) {
-            // Auto-rotate when not focusing
             phiRef.current += 0.005;
             currentPhiRef.current = phiRef.current;
           }
@@ -122,11 +116,10 @@ export default function Globe() {
           {
             location: [userLocation.lat, userLocation.lng],
             size: 0.1,
-            color: [1, 0.56, 0.75], // #FF8FC0 in RGB
+            color: [1, 0.56, 0.75],
           },
         ];
 
-        // Apply scale animation
         if (canvas) {
           canvas.style.transform = `scale(${currentScaleRef.current})`;
         }
@@ -151,7 +144,7 @@ export default function Globe() {
     setAutoRotate(false);
     focusRef.current = locationToAngles(userLocation.lat, userLocation.lng);
     isFocusing.current = true;
-    targetScaleRef.current = 2.5; // Zoom in to the location
+    targetScaleRef.current = 2.5;
   };
 
   return (
@@ -177,7 +170,7 @@ export default function Globe() {
         }}
         onPointerUp={() => {
           pointerInteracting.current = null;
-          // Commit the drag movement
+
           currentPhiRef.current += pointerInteractionMovement.current.x;
           currentThetaRef.current += pointerInteractionMovement.current.y;
           phiRef.current = currentPhiRef.current;
@@ -188,7 +181,6 @@ export default function Globe() {
         }}
         onPointerOut={() => {
           pointerInteracting.current = null;
-          // Commit the drag movement
           currentPhiRef.current += pointerInteractionMovement.current.x;
           currentThetaRef.current += pointerInteractionMovement.current.y;
           phiRef.current = currentPhiRef.current;
