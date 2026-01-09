@@ -6,19 +6,19 @@ import { NeatConfig, NeatGradient } from "@firecms/neat";
 const config: NeatConfig = {
   colors: [
     {
-      color: "#202D35",
+      color: "#001624",
       enabled: true,
     },
     {
-      color: "#333737",
+      color: "#012929",
       enabled: true,
     },
     {
-      color: "#4E585E",
+      color: "#01131f",
       enabled: true,
     },
     {
-      color: "#ff5a5f",
+      color: "#2e0101",
       enabled: false,
     },
     {
@@ -51,20 +51,21 @@ const config: NeatConfig = {
 export function StoreProvider({ children }: { readonly children: ReactNode }) {
   useEffect(() => {
     let neat: NeatGradient | null;
-    if (document) {
-      const canvas = document.getElementById("gradient") as HTMLCanvasElement;
-      neat = new NeatGradient({ ref: canvas, ...config });
-    }
+    // if (document) {
+    //   const canvas = document.getElementById("gradient") as HTMLCanvasElement;
+    //   neat = new NeatGradient({ ref: canvas, ...config });
+    // }
 
-    return () => neat?.destroy();
+    // return () => neat?.destroy();
   }, []);
+
   return (
     <>
       {children}
-      <canvas
+      {/* <canvas
         id="gradient"
         className="fixed w-screen h-screen top-0 left-0 -z-50"
-      />
+      /> */}
     </>
   );
 }
