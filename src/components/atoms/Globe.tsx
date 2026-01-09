@@ -19,16 +19,19 @@ export default function Globe() {
 
   const focusRef = useRef(locationToAngles(userLocation.lat, userLocation.lng));
   const isFocusing = useRef(false);
+  const currentPhiRef = useRef(0);
+  const currentThetaRef = useRef(0);
+  const phiRef = useRef(0);
 
   useEffect(() => {
-    let phi = 0;
     let width = 0;
     const [initialPhi, initialTheta] = locationToAngles(
       userLocation.lat,
       userLocation.lng
     );
-    let currentPhi = initialPhi;
-    let currentTheta = initialTheta;
+    currentPhiRef.current = initialPhi;
+    currentThetaRef.current = initialTheta;
+    phiRef.current = initialPhi;
     const doublePi = Math.PI * 2;
 
     const onResize = () => {
@@ -77,31 +80,36 @@ export default function Globe() {
         if (!pointerInteracting.current) {
           if (isFocusing.current) {
             const [focusPhi, focusTheta] = focusRef.current;
-            const distPositive = (focusPhi - currentPhi + doublePi) % doublePi;
-            const distNegative = (currentPhi - focusPhi + doublePi) % doublePi;
+            const distPositive =
+              (focusPhi - currentPhiRef.current + doublePi) % doublePi;
+            const distNegative =
+              (currentPhiRef.current - focusPhi + doublePi) % doublePi;
 
             // Control the speed - smoothly rotate to target
             if (distPositive < distNegative) {
-              currentPhi += distPositive * 0.08;
+              currentPhiRef.current += distPositive * 0.08;
             } else {
-              currentPhi -= distNegative * 0.08;
+              currentPhiRef.current -= distNegative * 0.08;
             }
-            currentTheta = currentTheta * 0.92 + focusTheta * 0.08;
+            currentThetaRef.current =
+              currentThetaRef.current * 0.92 + focusTheta * 0.08;
 
             // Stop focusing when close enough to target
-            if (Math.abs(focusPhi - currentPhi) < 0.01) {
+            if (Math.abs(focusPhi - currentPhiRef.current) < 0.01) {
               isFocusing.current = false;
-              phi = currentPhi;
+              phiRef.current = currentPhiRef.current;
             }
           } else if (autoRotate) {
             // Auto-rotate when not focusing
-            phi += 0.005;
-            currentPhi = phi;
+            phiRef.current += 0.005;
+            currentPhiRef.current = phiRef.current;
           }
         }
 
-        state.phi = currentPhi + pointerInteractionMovement.current.x;
-        state.theta = currentTheta + pointerInteractionMovement.current.y;
+        state.phi =
+          currentPhiRef.current + pointerInteractionMovement.current.x;
+        state.theta =
+          currentThetaRef.current + pointerInteractionMovement.current.y;
         state.width = width * 2;
         state.height = width * 2;
 
@@ -158,12 +166,22 @@ export default function Globe() {
         }}
         onPointerUp={() => {
           pointerInteracting.current = null;
+          // Commit the drag movement
+          currentPhiRef.current += pointerInteractionMovement.current.x;
+          currentThetaRef.current += pointerInteractionMovement.current.y;
+          phiRef.current = currentPhiRef.current;
+          pointerInteractionMovement.current = { x: 0, y: 0 };
           if (canvasRef.current) {
             canvasRef.current.style.cursor = "grab";
           }
         }}
         onPointerOut={() => {
           pointerInteracting.current = null;
+          // Commit the drag movement
+          currentPhiRef.current += pointerInteractionMovement.current.x;
+          currentThetaRef.current += pointerInteractionMovement.current.y;
+          phiRef.current = currentPhiRef.current;
+          pointerInteractionMovement.current = { x: 0, y: 0 };
           if (canvasRef.current) {
             canvasRef.current.style.cursor = "grab";
           }
