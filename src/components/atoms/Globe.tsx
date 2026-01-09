@@ -5,8 +5,8 @@ import { RotateCcw } from "lucide-react";
 
 export default function Globe() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const pointerInteracting = useRef<number | null>(null);
-  const pointerInteractionMovement = useRef(0);
+  const pointerInteracting = useRef<{ x: number; y: number } | null>(null);
+  const pointerInteractionMovement = useRef({ x: 0, y: 0 });
   const [autoRotate, setAutoRotate] = useState(true);
   const userLocation = { lat: -7.7956, lng: 110.3695 };
 
@@ -100,8 +100,8 @@ export default function Globe() {
           }
         }
 
-        state.phi = currentPhi + pointerInteractionMovement.current;
-        state.theta = currentTheta;
+        state.phi = currentPhi + pointerInteractionMovement.current.x;
+        state.theta = currentTheta + pointerInteractionMovement.current.y;
         state.width = width * 2;
         state.height = width * 2;
 
@@ -129,7 +129,7 @@ export default function Globe() {
   }, [autoRotate]);
 
   const handleRecenter = () => {
-    pointerInteractionMovement.current = 0;
+    pointerInteractionMovement.current = { x: 0, y: 0 };
     setAutoRotate(false);
     focusRef.current = locationToAngles(userLocation.lat, userLocation.lng);
     isFocusing.current = true;
@@ -147,8 +147,10 @@ export default function Globe() {
       <canvas
         ref={canvasRef}
         onPointerDown={(e) => {
-          pointerInteracting.current =
-            e.clientX - pointerInteractionMovement.current;
+          pointerInteracting.current = {
+            x: e.clientX - pointerInteractionMovement.current.x,
+            y: e.clientY - pointerInteractionMovement.current.y,
+          };
           setAutoRotate(true);
           if (canvasRef.current) {
             canvasRef.current.style.cursor = "grabbing";
@@ -168,8 +170,12 @@ export default function Globe() {
         }}
         onMouseMove={(e) => {
           if (pointerInteracting.current !== null) {
-            const delta = e.clientX - pointerInteracting.current;
-            pointerInteractionMovement.current = delta / 100;
+            const deltaX = e.clientX - pointerInteracting.current.x;
+            const deltaY = e.clientY - pointerInteracting.current.y;
+            pointerInteractionMovement.current = {
+              x: deltaX / 100,
+              y: deltaY / 100,
+            };
           }
         }}
         style={{
