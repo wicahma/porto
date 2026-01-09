@@ -6,50 +6,62 @@ interface TooltipProps {
   children: React.ReactNode;
   content: React.ReactNode;
   position?: "top" | "bottom" | "left" | "right";
+  onClick?: boolean;
 }
 
 export default function Tooltip({
   children,
   content,
   position = "bottom",
+  onClick = false,
 }: Readonly<TooltipProps>) {
   const [isVisible, setIsVisible] = useState(false);
 
   const handleMouseEnter = () => {
-    setIsVisible(true);
+    if (!onClick) {
+      setIsVisible(true);
+    }
   };
 
   const handleMouseLeave = () => {
-    setIsVisible(false);
+    if (!onClick) {
+      setIsVisible(false);
+    }
+  };
+
+  const handleClick = () => {
+    if (onClick) {
+      setIsVisible(!isVisible);
+    }
   };
 
   const getPositionClasses = () => {
     switch (position) {
       case "top":
-        return "bottom-full mb-2 left-1/2 -translate-x-1/2";
+        return "bottom-full left-1/2 -translate-x-1/2 pb-2";
       case "bottom":
-        return "top-full mt-2 right-0";
+        return "top-full right-0 pt-2";
       case "left":
-        return "right-full mr-2 top-1/2 -translate-y-1/2";
+        return "right-full top-1/2 -translate-y-1/2 pr-2";
       case "right":
-        return "left-full ml-2 top-1/2 -translate-y-1/2";
+        return "left-full top-1/2 -translate-y-1/2 pl-2";
       default:
-        return "top-full mt-2 right-0";
+        return "top-full right-0 pt-2";
     }
   };
 
   const getArrowClasses = () => {
     switch (position) {
       case "top":
-        return "top-full left-1/2 -translate-x-1/2 -mt-2 rotate-45";
+        return "top-full left-1/2 -translate-x-1/2 -mt-[9px] rotate-45";
       case "bottom":
-        return "-top-2 right-8 rotate-45";
+        return "-top-[0px] right-8 rotate-45";
       case "left":
-        return "left-full top-1/2 -translate-y-1/2 -ml-2 rotate-45";
+        return "left-full top-1/2 -translate-y-1/2 -ml-[9px] rotate-45";
       case "right":
-        return "right-full top-1/2 -translate-y-1/2 -mr-2 rotate-45";
+        return "right-full top-1/2 -translate-y-1/2 -mr-[9px] rotate-45";
       default:
-        return "-top-2 right-8 rotate-45";
+        return "-top-[9px] right-8 rotate-45";
     }
   };
 
@@ -59,6 +71,7 @@ export default function Tooltip({
       role="tooltip"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
     >
       {children}
 
@@ -79,7 +92,7 @@ export default function Tooltip({
 
             <div
               role="tooltip"
-              className="hoverable relative overflow-hidden bg-neutral-900 border border-neutral-800 rounded-lg shadow-2xl"
+              className="hoverable relative overflow-hidden bg-neutral-900 border border-neutral-800 rounded-2xl shadow-2xl"
             >
               {content}
             </div>
