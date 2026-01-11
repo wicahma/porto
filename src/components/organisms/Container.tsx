@@ -14,17 +14,17 @@ const Container: FC<IContainerProps> = ({
   return (
     <div
       className={cn(
-        "flex gap-10 container flex-nowrap shrink-0 mx-auto",
+        "flex gap-20 container flex-nowrap shrink-0 mx-auto",
         className
       )}
     >
-      <div className={cn("w-full shrink", classNameLeft)}>
+      <div className={cn("w-full grow", classNameLeft)}>
         <Breadcrumb />
-        {left}
+        <div>{left}</div>
       </div>
-      <div className="w-full">
+      <div className={cn("w-full grow", classNameRight)}>
         <Infographic />
-        <div className={classNameRight}>{right}</div>
+        <div>{right}</div>
       </div>
     </div>
   );

@@ -121,3 +121,18 @@ body {
         linear-gradient(to right, transparent var(--gradient-mask-percent-inside), var(--gradient-mask-color-outside) var(--gradient-mask-percent-outside));
     background-color: var(--background);
 }
+
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: 1.5px solid transparent;
+    background-clip: content-box;
+    background-color: #1d1d1d;
+}

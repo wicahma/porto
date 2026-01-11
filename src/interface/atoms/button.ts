@@ -1,6 +1,7 @@
+import { HTMLMotionProps } from "motion/react";
 import { ReactNode } from "react";
 
-export interface IButtonBigProps {
-    children?: ReactNode;
-    className?: string;
+export interface IButtonBigProps extends HTMLMotionProps<"button"> {
+  children?: ReactNode;
+  className?: string;
 }

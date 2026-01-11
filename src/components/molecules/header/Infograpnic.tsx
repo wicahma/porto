@@ -5,9 +5,10 @@ import Globe from "@/components/atoms/Globe";
 import Tooltip from "@/components/atoms/Tooltip";
 
 export default function Infographic() {
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const [currentTime, setCurrentTime] = useState<Date | undefined>(undefined);
 
   useEffect(() => {
+    if (window === undefined) return;
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
@@ -16,26 +17,32 @@ export default function Infographic() {
   }, []);
 
   const formatTime = () => {
-    return currentTime.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: true,
-      timeZone: "Asia/Jakarta",
-    });
+    return (
+      currentTime?.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true,
+        timeZone: "Asia/Jakarta",
+      }) || "00:00:00 AM"
+    );
   };
 
   const getDayName = () => {
-    return currentTime.toLocaleDateString("en-US", {
-      weekday: "long",
-      timeZone: "Asia/Jakarta",
-    });
+    return (
+      currentTime?.toLocaleDateString("en-US", {
+        weekday: "long",
+        timeZone: "Asia/Jakarta",
+      }) || "Is this windows?"
+    );
   };
 
   return (
-    <div className="flex justify-between w-full">
+    <div className="flex justify-between items-center w-full">
       <div>
-        <h3 className="text-xl font-semibold text-[#02C380]">{getDayName()}</h3>
+        <h3 className="text-nowrap truncate max-w-[200px] text-xl font-semibold text-[#02C380]">
+          {getDayName()}
+        </h3>
         <p className="text-sm font-semibold">{formatTime()} GMT+7</p>
       </div>
       <Tooltip
