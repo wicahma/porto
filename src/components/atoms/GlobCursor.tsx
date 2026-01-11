@@ -152,7 +152,7 @@ export const GlobCursor: React.FC = () => {
   return (
     <LazyMotion features={domMax} strict>
       {/* Global cursor hide style */}
-      {(hoverable || cursor === "pointer") && (
+      {hoverable && (
         <style jsx global>{`
           * {
             cursor: none !important;
