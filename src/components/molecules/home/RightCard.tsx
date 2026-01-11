@@ -7,10 +7,16 @@ import { m } from "motion/react";
 import StackedCarousel from "@/components/atoms/StackedCarousel";
 import ExperienceCarouselCard from "@/components/atoms/ExperienceCarouselCard";
 import { experienceCarouselData } from "@/constants/dummies/experience-carousel";
+import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 
 const RightCard = () => {
+  const scrollRef = useSmoothScroll({ speed: 1, smoothness: 0.1 });
+
   return (
-    <m.div className="w-full pt-10 space-y-10 overflow-y-scroll overflow-x-clip h-[calc(100vh-10rem)] pb-20">
+    <m.div
+      ref={scrollRef}
+      className="w-full pt-10 space-y-10 overflow-y-scroll overflow-x-clip h-[calc(100vh-10rem)] pb-20"
+    >
       <div className="flex items-center gap-3 w-full justify-between flex-nowrap">
         <span className="text-nowrap text-[#ABABAB]">About me</span>
         <Br className="mt-1" />
