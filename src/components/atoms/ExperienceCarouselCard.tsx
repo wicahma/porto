@@ -171,7 +171,7 @@ const ExperienceCarouselCard = ({ data, isCenter }: ExperienceCardProps) => {
                   <div className="flex flex-wrap gap-1.5">
                     {data.technologies.map((tech, index) => (
                       <m.span
-                        key={index}
+                        key={`${tech[0]}-${index}`}
                         className="px-2 py-0.5 bg-white/5 border border-white/10 rounded-full text-xs text-white inline-block"
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}

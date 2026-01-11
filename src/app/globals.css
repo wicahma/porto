@@ -122,6 +122,27 @@ body {
     background-color: var(--background);
 }
 
+.mask-color-left {
+    -webkit-mask: linear-gradient(to right, transparent 1%,  var(--gradient-mask-color-outside) 10%);
+    mask: linear-gradient(to right, transparent 1%, var(--gradient-mask-color-outside) 10%);
+    background-color: var(--background);
+}
+.mask-color-right {
+    -webkit-mask: linear-gradient(to left, transparent 1%,  var(--gradient-mask-color-outside) 10%);
+    mask: linear-gradient(to left, transparent 1%, var(--gradient-mask-color-outside) 10%);
+    background-color: var(--background);
+}
+.mask-color-top {
+    -webkit-mask: linear-gradient(to bottom, transparent 1%,  var(--gradient-mask-color-outside) 10%);
+    mask: linear-gradient(to bottom, transparent 1%, var(--gradient-mask-color-outside) 10%);
+    background-color: var(--background);
+}
+.mask-color-bottom {
+    -webkit-mask: linear-gradient(to top, transparent 1%,  var(--gradient-mask-color-outside) 10%);
+    mask: linear-gradient(to top, transparent 1%, var(--gradient-mask-color-outside) 10%);
+    background-color: var(--background);
+}
+
 ::-webkit-scrollbar {
     width: 7px;
 }

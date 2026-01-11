@@ -1,6 +1,4 @@
-export default function BreadcrumbArrow({
-  isActive,
-}: Readonly<{ isActive: boolean }>) {
+const CircleArrow = () => {
   return (
     <svg
       width="24"
@@ -9,16 +7,13 @@ export default function BreadcrumbArrow({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <circle
-        cx="12"
-        cy="11.5"
-        r="11.5"
-        fill={isActive ? "#02C380" : "#131313"}
-      />
+      <circle cx="12" cy="11.5" r="11.5" fill="#131313" />
       <path
         d="M17.7071 12.2071C18.0976 11.8166 18.0976 11.1834 17.7071 10.7929L11.3431 4.42893C10.9526 4.03841 10.3195 4.03841 9.92893 4.42893C9.53841 4.81946 9.53841 5.45262 9.92893 5.84315L15.5858 11.5L9.92893 17.1569C9.53841 17.5474 9.53841 18.1805 9.92893 18.5711C10.3195 18.9616 10.9526 18.9616 11.3431 18.5711L17.7071 12.2071ZM0 11.5V12.5H17V11.5V10.5H0V11.5Z"
-        fill={isActive ? "#131313" : "#004E33"}
+        fill="#FF8FC0"
       />
     </svg>
   );
-}
+};
+
+export default CircleArrow;

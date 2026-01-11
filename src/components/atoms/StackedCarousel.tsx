@@ -108,7 +108,7 @@ const StackedCarousel = <T,>({
         aria-roledescription="carousel"
         aria-label="Stacked Carousel"
       >
-        <div className="absolute pointer-events-none top-1/2 -translate-y-1/2 left-0 z-[100] w-full flex justify-between">
+        <div className="absolute pointer-events-none h-full top-1/2 -translate-y-1/2 left-0 z-[100] w-full flex justify-between">
           <button
             onClick={() => navigate("prev")}
             className="group rounded-full transition-colors pointer-events-auto cursor-pointer"
@@ -171,9 +171,9 @@ const StackedCarousel = <T,>({
         <div className="flex gap-2">
           {items.map((_, index) => (
             <button
-              key={index}
+              key={`${_}${index}`}
               onClick={() => setActiveIndex(index)}
-              className={`h-2 rounded-full transition-all ${
+              className={`cursor-pointer h-2 rounded-full transition-all ${
                 index === activeIndex
                   ? "w-8 bg-white"
                   : "w-2 bg-[#ABABAB]/30 hover:bg-[#ABABAB]/50"
