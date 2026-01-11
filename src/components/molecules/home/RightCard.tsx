@@ -32,7 +32,7 @@ const RightCard = () => {
           <StarGede className="aspect-square w-10 h-fit" />
           <h3 className="text-3xl font-semibold">The Person Behind the Work</h3>
         </div>
-        <p className="leading-8 text-[#ABABAB] text-xl tracking-wider">
+        <p className="leading-8 text-[#ABABAB] text-lg tracking-wider">
           Driven by a passion for creating seamless digital experiences, I
           specialize in turning complex problems into elegant, user-centric
           solutions. I believe that great design/code isn't just about how it
@@ -72,7 +72,7 @@ const RightCard = () => {
           )}
           autoPlayDuration={2000}
           blurIntensity={4}
-          overlapSpace={80}
+          overlapSpace={70}
           cardWidth={200}
           cardHeight={200}
           className="mt-10"

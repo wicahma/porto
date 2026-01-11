@@ -43,7 +43,7 @@ const ExperienceCarouselCard = ({ data, isCenter }: ExperienceCardProps) => {
   const CollapsedCard = () => (
     <m.div
       ref={cardRef}
-      className="bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#ABABAB]/20 rounded-2xl shadow-2xl overflow-hidden"
+      className="bg-[#131313] border border-[#1a1a1a] rounded-2xl shadow-2xl overflow-hidden"
       onMouseEnter={() => canHover && setIsHovered(true)}
       animate={{}}
       transition={{
@@ -73,7 +73,7 @@ const ExperienceCarouselCard = ({ data, isCenter }: ExperienceCardProps) => {
       <AnimatePresence>
         {isExpanded && (
           <m.div
-            className="fixed cursor-pointer bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#ABABAB]/20 rounded-2xl shadow-2xl overflow-hidden"
+            className="fixed cursor-pointer bg-[#131313] border border-[#1a1a1a] rounded-2xl shadow-2xl overflow-hidden"
             initial={{
               top: cardPosition.top,
               left: cardPosition.left,
