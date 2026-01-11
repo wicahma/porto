@@ -48,6 +48,8 @@ const RightCard = () => {
         <FolderIcon />
       </div>
 
+      <Br />
+
       <div className="space-y-10">
         <div className="flex items-center justify-center gap-5">
           <Sun />

@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { m, AnimatePresence } from "motion/react";
-import ArrowRight from "@/assets/svg/arrow-right";
 import {
-  StackedCarouselProps,
   CarouselCardStyle,
+  StackedCarouselProps,
 } from "@/interface/atoms/stackedCarousel";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { AnimatePresence, m } from "motion/react";
+import { useCallback, useEffect, useState } from "react";
 
 const StackedCarousel = <T,>({
   items,
@@ -18,15 +18,13 @@ const StackedCarousel = <T,>({
   cardHeight = 500,
   className = "",
 }: StackedCarouselProps<T>) => {
-  const [activeIndex, setActiveIndex] = useState(2); // Start with center card (index 2 of 5 visible)
+  const [activeIndex, setActiveIndex] = useState(2);
   const [isPaused, setIsPaused] = useState(false);
 
-  // Calculate card style based on position relative to center
   const getCardStyle = useCallback(
     (relativePosition: number): CarouselCardStyle => {
       const absPosition = Math.abs(relativePosition);
 
-      // Center card (position 0)
       if (absPosition === 0) {
         return {
           scale: 1,
@@ -37,7 +35,6 @@ const StackedCarousel = <T,>({
         };
       }
 
-      // Adjacent cards (position ±1)
       if (absPosition === 1) {
         return {
           scale: 0.85,
@@ -48,7 +45,6 @@ const StackedCarousel = <T,>({
         };
       }
 
-      // Outer cards (position ±2)
       return {
         scale: 0.7,
         blur: blurIntensity,
@@ -60,7 +56,6 @@ const StackedCarousel = <T,>({
     [blurIntensity, overlapSpace]
   );
 
-  // Navigate to next/previous card
   const navigate = useCallback(
     (direction: "next" | "prev") => {
       setActiveIndex((current) => {
@@ -74,7 +69,6 @@ const StackedCarousel = <T,>({
     [items.length]
   );
 
-  // Auto-play functionality
   useEffect(() => {
     if (autoPlayDuration > 0 && !isPaused && items.length > 0) {
       const interval = setInterval(() => {
@@ -85,7 +79,6 @@ const StackedCarousel = <T,>({
     }
   }, [autoPlayDuration, isPaused, navigate, items.length]);
 
-  // Get visible items (5 cards centered around active)
   const getVisibleItems = useCallback(() => {
     const visible = [];
     const totalItems = items.length;
@@ -115,6 +108,22 @@ const StackedCarousel = <T,>({
         aria-roledescription="carousel"
         aria-label="Stacked Carousel"
       >
+        <div className="absolute pointer-events-none top-1/2 -translate-y-1/2 left-0 z-[100] w-full flex justify-between">
+          <button
+            onClick={() => navigate("prev")}
+            className="group rounded-full transition-colors pointer-events-auto cursor-pointer"
+            aria-label="Previous"
+          >
+            <ChevronLeft className="w-6 h-6 transition-transform group-hover:scale-110" />
+          </button>
+          <button
+            onClick={() => navigate("next")}
+            className="group rounded-full transition-colors pointer-events-auto cursor-pointer"
+            aria-label="Next"
+          >
+            <ChevronRight className="w-6 h-6 transition-transform group-hover:scale-110" />
+          </button>
+        </div>
         <AnimatePresence initial={false}>
           {visibleItems.map(({ item, originalIndex, relativePosition }) => {
             const style = getCardStyle(relativePosition);
@@ -122,7 +131,7 @@ const StackedCarousel = <T,>({
             return (
               <m.div
                 key={originalIndex}
-                className="absolute cursor-pointer"
+                className="absolute"
                 style={{
                   zIndex: style.zIndex,
                   width: `${cardWidth}px`,
@@ -157,15 +166,7 @@ const StackedCarousel = <T,>({
       </section>
 
       {/* Navigation Arrows */}
-      <div className="flex items-center justify-center gap-8 mt-8">
-        <button
-          onClick={() => navigate("prev")}
-          className="group p-3 rounded-full border border-[#ABABAB]/30 hover:border-white/50 transition-colors"
-          aria-label="Previous"
-        >
-          <ArrowRight className="w-6 h-6 rotate-180 transition-transform group-hover:scale-110" />
-        </button>
-
+      <div className="flex items-center justify-center gap-8 mt-4">
         {/* Indicators */}
         <div className="flex gap-2">
           {items.map((_, index) => (
@@ -181,14 +182,6 @@ const StackedCarousel = <T,>({
             />
           ))}
         </div>
-
-        <button
-          onClick={() => navigate("next")}
-          className="group p-3 rounded-full border border-[#ABABAB]/30 hover:border-white/50 transition-colors"
-          aria-label="Next"
-        >
-          <ArrowRight className="w-6 h-6 transition-transform group-hover:scale-110" />
-        </button>
       </div>
     </div>
   );
