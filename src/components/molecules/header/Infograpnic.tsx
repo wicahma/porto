@@ -38,7 +38,7 @@ export default function Infographic() {
   };
 
   return (
-    <div className="flex justify-between items-center w-full">
+    <div className="flex justify-between items-center w-1/2">
       <div>
         <h3 className="text-nowrap truncate max-w-[200px] text-xl font-semibold text-[#02C380]">
           {getDayName()}

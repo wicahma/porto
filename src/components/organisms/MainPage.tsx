@@ -4,8 +4,8 @@ import Container from "./Container";
 import LeftCard from "../molecules/home/LeftCard";
 import RightCard from "../molecules/home/RightCard";
 
-const HomePage = () => {
+const MainPage = () => {
   return <Container left={<LeftCard />} right={<RightCard />} />;
 };
 
-export default HomePage;
+export default MainPage;

@@ -1,4 +1,4 @@
-import HomePage from "@/components/organisms/Home";
+import HomePage from "@/components/organisms/MainPage";
 import React from "react";
 
 const Home = () => {
