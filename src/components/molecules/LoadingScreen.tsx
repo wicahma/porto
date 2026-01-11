@@ -10,9 +10,19 @@ export default function LoadingScreen() {
     <AnimatePresence>
       {isLoading && (
         <m.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          initial={{
+            clipPath: "circle(150% at 50% 50%)",
+          }}
+          animate={{
+            clipPath: "circle(150% at 50% 50%)",
+          }}
+          exit={{
+            clipPath: "circle(0px at 50% 50%)",
+          }}
+          transition={{
+            duration: 2,
+            ease: [0.19, 1, 0.22, 1], // Fast start, ultra smooth end (easeOutExpo)
+          }}
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/5 backdrop-blur-xl"
         >
           <div className="text-center space-y-6 px-4 max-w-xl w-full">
