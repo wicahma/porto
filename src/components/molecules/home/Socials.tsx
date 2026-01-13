@@ -1,5 +1,6 @@
+"use client";
 import { StaggerPull } from "@/components/atoms/StaggerPull";
-import { isMdUp } from "@/utils/helper/responsive";
+import { cn } from "@/utils/helper/cn";
 import { Github, Instagram, Linkedin } from "lucide-react";
 import { m, useInView } from "motion/react";
 import React from "react";
@@ -39,18 +40,28 @@ export default function Socials() {
       className="flex md:gap-3 gap-5"
     >
       <SocialCard
-        icon={<Github className="text-[#FFC501]" size={isMdUp() ? 35 : 25} />}
+        icon={
+          <Github
+            className={cn("text-[#FFC501] aspect-auto md:w-[35px] w-[25px]")}
+          />
+        }
         color="#FFC501"
         delay={0}
       />
       <SocialCard
-        icon={<Linkedin className="text-[#0F589B]" size={isMdUp() ? 35 : 25} />}
+        icon={
+          <Linkedin
+            className={cn("text-[#0F589B] aspect-auto md:w-[35px] w-[25px]")}
+          />
+        }
         color="#0F589B"
         delay={0.3}
       />
       <SocialCard
         icon={
-          <Instagram className="text-[#FF5A5A]" size={isMdUp() ? 35 : 25} />
+          <Instagram
+            className={cn("text-[#FF5A5A] aspect-auto md:w-[35px] w-[25px]")}
+          />
         }
         color="#FF5A5A"
         delay={0.6}
