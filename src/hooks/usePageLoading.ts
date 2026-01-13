@@ -1,6 +1,7 @@
 "use client";
 
 import { useLoadingStore } from "@/store/loadingStore";
+import { isMdUp } from "@/utils/helper/responsive";
 import { useEffect } from "react";
 
 export function usePageLoading() {
@@ -17,7 +18,7 @@ export function usePageLoading() {
     resetProgress();
     startLoading();
 
-    const randomDelay = Math.random() * 1500;
+    const randomDelay = isMdUp() ? Math.random() * 1500 : Math.random() * 3000;
     const startTime = Date.now();
 
     const progressInterval = setInterval(() => {
