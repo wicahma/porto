@@ -6,7 +6,7 @@ export default function Br(props: HTMLMotionProps<"div">) {
     <m.div
       {...props}
       className={cn(
-        "h-1 grow bg-neutral-800 w-full rounded-2xl",
+        "h-0.5 grow bg-neutral-800 w-full rounded-2xl",
         props.className
       )}
     />

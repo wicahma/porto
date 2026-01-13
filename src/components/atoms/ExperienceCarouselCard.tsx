@@ -3,6 +3,7 @@
 import { ExperienceCard } from "@/constants/dummies/experience-carousel";
 import { m, AnimatePresence } from "motion/react";
 import { useState, useRef, useEffect } from "react";
+import { useScrollStore } from "@/store/scrollStore";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 
@@ -16,7 +17,8 @@ const ExperienceCarouselCard = ({ data, isCenter }: ExperienceCardProps) => {
   const [cardPosition, setCardPosition] = useState({ top: 0, left: 0 });
   const [canHover, setCanHover] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
-  const isExpanded = isCenter && isHovered && canHover;
+  const isScrolling = useScrollStore((state) => state.isScrolling);
+  const isExpanded = isCenter && isHovered && canHover && !isScrolling;
 
   useEffect(() => {
     if (isCenter) {

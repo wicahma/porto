@@ -5,8 +5,7 @@ import { FC } from "react";
 import Breadcrumb from "../molecules/header/Breadcrumb";
 import Infographic from "../molecules/header/Infograpnic";
 import { useNavigationStore } from "@/store/navigationStore";
-import RenderIf from "@/utils/helper/render-if";
-import { m } from "motion/react";
+import { m, AnimatePresence } from "motion/react";
 import { useLoadingStore } from "@/store/loadingStore";
 
 const Container: FC<IContainerProps> = ({
@@ -42,21 +41,67 @@ const Container: FC<IContainerProps> = ({
       </div>
       <div
         className={cn(
-          "flex gap-20 container flex-nowrap shrink-0 mx-auto w-full",
+          "flex gap-20 container flex-nowrap shrink-0 mx-auto w-full relative",
           className
         )}
       >
-        <RenderIf condition={!detailPage}>
-          <div className={cn("w-1/2", classNameLeft)}>
-            <div>{left}</div>
-          </div>
-        </RenderIf>
-        <div className={cn("w-1/2", classNameRight)}>
-          <div>{right}</div>
-        </div>
-        <RenderIf condition={!!detailPage}>
-          <div className={cn("w-1/2", classNameDetail)}>{detail}</div>
-        </RenderIf>
+        {/* Left Panel - Shrinks when detail page is shown */}
+        <AnimatePresence mode="wait">
+          {!detailPage && (
+            <m.div
+              key="left-panel"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 1 }}
+              transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+              className={cn("w-1/2 pr-10", classNameLeft)}
+            >
+              {left}
+            </m.div>
+          )}
+        </AnimatePresence>
+
+        {/* Right Panel - Adjusts width based on detail page state */}
+        <m.div
+          animate={{
+            right: detailPage ? "50%" : "0%",
+            paddingRight: detailPage ? "2.5rem" : "0rem",
+            paddingLeft: detailPage ? "0rem" : "2.5rem",
+          }}
+          transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+          className={cn("overflow-hidden w-1/2 absolute", classNameRight)}
+        >
+          {right}
+        </m.div>
+
+        {/* Detail Panel - Slides in from right */}
+        <AnimatePresence mode="wait">
+          {detailPage && (
+            <m.div
+              key="detail-panel"
+              initial={{
+                opacity: 0,
+                right: "-20%",
+                scale: 0.75,
+                zIndex: -100,
+              }}
+              animate={{ opacity: 1, right: "0%", zIndex: 0, scale: 1 }}
+              exit={{
+                opacity: 0,
+                right: "-20%",
+                scale: 0.75,
+                zIndex: -100,
+              }}
+              transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+              className={cn(
+                "overflow-hidden absolute w-1/2 pl-10",
+                classNameDetail
+              )}
+            >
+              {detail}
+            </m.div>
+          )}
+        </AnimatePresence>
       </div>
     </m.div>
   );
