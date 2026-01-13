@@ -104,7 +104,6 @@ const ExperienceCarouselCard = ({ data, isCenter }: ExperienceCardProps) => {
             onMouseLeave={() => setIsHovered(false)}
           >
             <div className="flex h-full">
-              {/* Image Section */}
               <m.div
                 className="relative flex-shrink-0 overflow-hidden"
                 initial={{ width: "0px", opacity: 0 }}
@@ -126,7 +125,6 @@ const ExperienceCarouselCard = ({ data, isCenter }: ExperienceCardProps) => {
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#0a0a0a]/50" />
               </m.div>
 
-              {/* Content Section */}
               <div className="flex-1 py-6 px-3 flex flex-col justify-center gap-3">
                 <m.div
                   className="text-center"

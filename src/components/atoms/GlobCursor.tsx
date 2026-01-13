@@ -151,7 +151,6 @@ export const GlobCursor: React.FC = () => {
 
   return (
     <LazyMotion features={domMax} strict>
-      {/* Global cursor hide style */}
       {hoverable && (
         <style jsx global>{`
           * {
@@ -187,7 +186,6 @@ export const GlobCursor: React.FC = () => {
         }}
       />
 
-      {/* Cursor dot - shown when cursor is hidden */}
       {(hoverable || cursor === "pointer") && (
         <m.div
           className="fixed z-[10000] pointer-events-none -translate-x-1/2 -translate-y-1/2 bg-white rounded-full"

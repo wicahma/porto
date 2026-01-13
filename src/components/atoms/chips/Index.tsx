@@ -39,15 +39,12 @@ const Chip: React.FC<IChipProps> = ({
     }
   };
 
-  // Sync radius with active state to handle reordering
   useEffect(() => {
     if (active) {
-      // When active, expand radius to full width (centered)
       left.set(0);
       top.set(0);
-      radius.set(200); // Large enough to cover the chip
+      radius.set(200);
     } else {
-      // When inactive, shrink radius to 0
       radius.set(0);
     }
   }, [active, left, top, radius]);

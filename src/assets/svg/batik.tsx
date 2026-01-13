@@ -1,12 +1,6 @@
 const Batik = () => {
   return (
-    <svg
-      //   width="611"
-      //   height="101"
-      viewBox="0 0 611 101"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg viewBox="0 0 611 101" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g clipPath="url(#clip0_1811_942)">
         <mask id="path-1-inside-1_1811_942" fill="white">
           <path d="M0 0H611V101H0V0Z" />

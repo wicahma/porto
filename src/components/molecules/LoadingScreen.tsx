@@ -21,12 +21,11 @@ export default function LoadingScreen() {
           }}
           transition={{
             duration: 2,
-            ease: [0.19, 1, 0.22, 1], // Fast start, ultra smooth end (easeOutExpo)
+            ease: [0.19, 1, 0.22, 1],
           }}
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/5 backdrop-blur-xl"
         >
           <div className="text-center space-y-6 px-4 max-w-xl w-full">
-            {/* Progress Bar */}
             <div className="space-y-3">
               <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
                 <m.div
@@ -37,7 +36,6 @@ export default function LoadingScreen() {
                 />
               </div>
 
-              {/* Percentage */}
               <div className="flex justify-between items-center text-sm">
                 <span className="text-gray-400">Loading...</span>
                 <span className="text-white font-mono font-bold text-lg">
@@ -46,7 +44,6 @@ export default function LoadingScreen() {
               </div>
             </div>
 
-            {/* Loading Message */}
             <m.p
               key={message}
               initial={{ opacity: 0, y: 10 }}

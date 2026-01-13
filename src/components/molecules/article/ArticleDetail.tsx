@@ -27,7 +27,6 @@ const ArticleDetail = () => {
             transition={{ delay: index * 0.1, duration: 0.4 }}
             className="mt-4 hover:bg-neutral-900/20 transition-all cursor-pointer"
           >
-            {/* Category Badge and Meta Info */}
             <div className="flex items-center gap-3 mb-6">
               <span className="px-4 py-1.5 bg-pink-500/80 text-white rounded-full text-xs font-semibold uppercase">
                 {article.category}
@@ -39,14 +38,12 @@ const ArticleDetail = () => {
               </span>
             </div>
 
-            {/* Description */}
             <p className="text-neutral-400 leading-relaxed mb-6">
               {article.title} Lorem ipsum dolor sit amet, consectetur adipiscing
               elit, sed do eiusmod tempor incididunt ut labore et dolore magna
               aliqua. Ut enim ad minim veniam, quis nostrud e...
             </p>
 
-            {/* Tech Tags */}
             <div className="flex flex-wrap gap-3 mb-4">
               <span className="text-sm text-neutral-500 hover:text-neutral-300 transition-colors cursor-pointer">
                 NextJs

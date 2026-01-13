@@ -83,7 +83,6 @@ const pageAnimation = (from: string, to: string) => {
 
   if (!coreAnimation) return;
 
-  // Animate new page sliding in from the side
   coreAnimation.animate(
     [
       {

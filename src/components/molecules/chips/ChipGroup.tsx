@@ -25,19 +25,16 @@ const ChipGroup: React.FC<ChipGroupProps> = ({
     let updated: TChip[];
 
     if (multiSelect) {
-      // Multi-select: toggle the clicked chip
       updated = chips.map((chip) =>
         chip.id === id ? { ...chip, active: !chip.active } : chip
       );
     } else {
-      // Single-select: only one chip can be active
       updated = chips.map((chip) => ({
         ...chip,
         active: chip.id === id,
       }));
     }
 
-    // Sort with active chips first
     const sorted = [...updated].sort((a, b) => {
       if (a.active === b.active) return 0;
       return a.active ? -1 : 1;

@@ -99,7 +99,6 @@ const StackedCarousel = <T,>({
 
   return (
     <div className={`relative w-full ${className}`}>
-      {/* Carousel Container */}
       <section
         className="relative flex items-center justify-center"
         style={{ height: `${cardHeight}px` }}
@@ -165,9 +164,7 @@ const StackedCarousel = <T,>({
         </AnimatePresence>
       </section>
 
-      {/* Navigation Arrows */}
       <div className="flex items-center justify-center gap-8 mt-4">
-        {/* Indicators */}
         <div className="flex gap-2">
           {items.map((_, index) => (
             <button

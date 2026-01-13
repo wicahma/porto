@@ -1,7 +1,7 @@
-import { ForwardRefComponent, HTMLMotionProps, Variants } from "motion/react";
+import { Transition } from "motion";
+import { HTMLMotionProps, Variants } from "motion/react";
 import { ReactNode } from "react";
 import { TCustom } from "../app/experience";
-import { Transition } from "motion";
 
 export interface IChipProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -10,7 +10,7 @@ export interface IChipProps
   readonly children?: ReactNode;
   motioncomp: HTMLMotionProps<"div">;
   childClassName?: string;
-  activeColor?: string; // Custom color for active state
+  activeColor?: string;
 }
 
 export const chipTransition: Transition = {

@@ -27,7 +27,6 @@ const ExperienceDetail = () => {
             transition={{ delay: index * 0.05, duration: 0.3 }}
             className="mt-4 hover:bg-neutral-900/20 transition-all cursor-pointer"
           >
-            {/* Badge and Year */}
             <div className="flex items-center gap-3 mb-4">
               <span className="px-3 py-1 bg-purple-600/80 text-white rounded text-xs font-semibold uppercase">
                 FULL TIME
@@ -35,12 +34,10 @@ const ExperienceDetail = () => {
               <span className="text-sm text-neutral-400">2024 - Present</span>
             </div>
 
-            {/* Company/Position Name */}
             <p className="text-sm text-neutral-500 mb-4">
               Berjalan Technocenter
             </p>
 
-            {/* Description */}
             <p className="text-neutral-400 leading-relaxed mb-6">
               {exp.text} Lorem ipsum dolor sit amet, consectetur adipiscing
               elit, sed do eiusmod tempor incididunt ut labore et dolore magna
@@ -49,7 +46,6 @@ const ExperienceDetail = () => {
               dolor i...
             </p>
 
-            {/* Tech Tags */}
             <div className="flex flex-wrap gap-3 mb-4">
               <span className="text-sm text-neutral-500 hover:text-neutral-300 transition-colors cursor-pointer">
                 NextJs

@@ -27,12 +27,10 @@ const ProjectDetail = () => {
             transition={{ delay: index * 0.1, duration: 0.4 }}
             className="mt-4"
           >
-            {/* Year and Category */}
             <p className="text-sm text-neutral-500 mb-4">
               {project.year} - {project.title}
             </p>
 
-            {/* The Problem Section */}
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-orange-400 mb-2">
                 The problem
@@ -46,7 +44,6 @@ const ProjectDetail = () => {
               </p>
             </div>
 
-            {/* Solution Section */}
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-teal-400 mb-2">
                 Solution
@@ -60,7 +57,6 @@ const ProjectDetail = () => {
               </p>
             </div>
 
-            {/* Tech Tags */}
             <div className="flex flex-wrap gap-3 mb-4">
               {project.tags.map((tag) => (
                 <span
@@ -76,7 +72,6 @@ const ProjectDetail = () => {
         ))}
       </div>
 
-      {/* Heart Icon */}
       <div className="flex justify-center py-8">
         <span className="text-xs text-neutral-500">
           Created with ❤️ by Teguh

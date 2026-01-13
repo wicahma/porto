@@ -45,7 +45,6 @@ const Container: FC<IContainerProps> = ({
           className
         )}
       >
-        {/* Left Panel - Shrinks when detail page is shown */}
         <AnimatePresence mode="wait">
           {!detailPage && (
             <m.div
@@ -61,7 +60,6 @@ const Container: FC<IContainerProps> = ({
           )}
         </AnimatePresence>
 
-        {/* Right Panel - Adjusts width based on detail page state */}
         <m.div
           animate={{
             right: detailPage ? "50%" : "0%",
@@ -74,7 +72,6 @@ const Container: FC<IContainerProps> = ({
           {right}
         </m.div>
 
-        {/* Detail Panel - Slides in from right */}
         <AnimatePresence mode="wait">
           {detailPage && (
             <m.div
