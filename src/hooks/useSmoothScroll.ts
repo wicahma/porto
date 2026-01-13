@@ -1,3 +1,4 @@
+import { isMdUp } from "@/utils/helper/responsive";
 import { useEffect, useRef } from "react";
 
 interface SmoothScrollOptions {
@@ -19,8 +20,14 @@ export const useSmoothScroll = ({
     if (!element) return;
 
     let isScrolling = false;
+    let enabled = isMdUp();
+
+    const handleResize = () => {
+      enabled = isMdUp();
+    };
 
     const handleWheel = (e: WheelEvent) => {
+      if (!enabled) return;
       e.preventDefault();
       targetScrollRef.current += e.deltaY * speed;
       targetScrollRef.current = Math.max(
@@ -55,9 +62,11 @@ export const useSmoothScroll = ({
     currentScrollRef.current = element.scrollTop;
     targetScrollRef.current = element.scrollTop;
 
+    window.addEventListener("resize", handleResize);
     element.addEventListener("wheel", handleWheel, { passive: false });
 
     return () => {
+      window.removeEventListener("resize", handleResize);
       element.removeEventListener("wheel", handleWheel);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);

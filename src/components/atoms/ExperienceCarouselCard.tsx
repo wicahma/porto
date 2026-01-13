@@ -6,6 +6,7 @@ import { useState, useRef, useEffect } from "react";
 import { useScrollStore } from "@/store/scrollStore";
 import { createPortal } from "react-dom";
 import Image from "next/image";
+import { isMdUp } from "@/utils/helper/responsive";
 
 interface ExperienceCardProps {
   data: ExperienceCard;
@@ -46,7 +47,7 @@ const ExperienceCarouselCard = ({ data, isCenter }: ExperienceCardProps) => {
     <m.div
       ref={cardRef}
       className="bg-[#131313] border border-[#1a1a1a] rounded-2xl shadow-2xl overflow-hidden"
-      onMouseEnter={() => canHover && setIsHovered(true)}
+      onMouseEnter={() => canHover && isMdUp() && setIsHovered(true)}
       animate={{}}
       transition={{
         opacity: { delay: isExpanded ? 0 : 0.5 },

@@ -36,7 +36,7 @@ const RightCard = () => {
   return (
     <m.div
       ref={scrollRef}
-      className="mask-color-top w-full pt-10 space-y-10 overflow-y-scroll overflow-x-clip h-[calc(100vh-10rem)] pb-20"
+      className="md:mask-color-top pt-10 space-y-10 md:overflow-y-scroll md:overflow-x-clip md:h-[calc(100vh-10rem)] pb-20"
     >
       <AnimatePresence mode="wait">
         {detailPage ? (

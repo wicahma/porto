@@ -7,7 +7,7 @@
     --gradient-blur-percent-outside: 99%;
     --gradient-blur-percent-inside: 90%;
     --gradient-blur-color-outside: rgb(0, 0, 0);
-    --blur-strength: 15px;
+    --blur-strength: 1rem;
     /* mask */
     --gradient-mask-percent-outside: 99.5%;
     --gradient-mask-percent-inside: 90%;
@@ -110,6 +110,15 @@ body {
     backdrop-filter: blur(var(--blur-strength));
 }
 
+.mask-blur-y {
+    -webkit-mask: linear-gradient(to top, transparent var(--gradient-blur-percent-inside),  var(--gradient-blur-color-outside) var(--gradient-blur-percent-outside)), 
+        linear-gradient(to bottom, transparent var(--gradient-blur-percent-inside),  var(--gradient-blur-color-outside) var(--gradient-blur-percent-outside));
+    mask: linear-gradient(to top, transparent var(--gradient-blur-percent-inside), var(--gradient-blur-color-outside) var(--gradient-blur-percent-outside)),
+        linear-gradient(to bottom, transparent var(--gradient-blur-percent-inside), var(--gradient-blur-color-outside) var(--gradient-blur-percent-outside));
+    -webkit-backdrop-filter: blur(var(--blur-strength));
+    backdrop-filter: blur(var(--blur-strength));
+}
+
 .mask-color {
     -webkit-mask: linear-gradient(to top, transparent var(--gradient-mask-percent-inside),  var(--gradient-mask-color-outside) var(--gradient-mask-percent-outside)), 
         linear-gradient(to bottom, transparent var(--gradient-mask-percent-inside),  var(--gradient-mask-color-outside) var(--gradient-mask-percent-outside)), 
@@ -119,6 +128,14 @@ body {
         linear-gradient(to bottom, transparent var(--gradient-mask-percent-inside), var(--gradient-mask-color-outside) var(--gradient-mask-percent-outside)), 
         linear-gradient(to left, transparent var(--gradient-mask-percent-inside), var(--gradient-mask-color-outside) var(--gradient-mask-percent-outside)), 
         linear-gradient(to right, transparent var(--gradient-mask-percent-inside), var(--gradient-mask-color-outside) var(--gradient-mask-percent-outside));
+    background-color: var(--background);
+}
+
+.mask-color-y {
+    -webkit-mask: linear-gradient(to top, transparent var(--gradient-mask-percent-inside),  var(--gradient-mask-color-outside) var(--gradient-mask-percent-outside)), 
+        linear-gradient(to bottom, transparent var(--gradient-mask-percent-inside),  var(--gradient-mask-color-outside) var(--gradient-mask-percent-outside));
+    mask: linear-gradient(to top, transparent var(--gradient-mask-percent-inside), var(--gradient-mask-color-outside) var(--gradient-mask-percent-outside)),
+        linear-gradient(to bottom, transparent var(--gradient-mask-percent-inside), var(--gradient-mask-color-outside) var(--gradient-mask-percent-outside));
     background-color: var(--background);
 }
 

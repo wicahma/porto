@@ -1,12 +1,13 @@
 "use client";
 import { IContainerProps } from "@/interface/organisms/container";
 import { cn } from "@/utils/helper/cn";
-import { FC } from "react";
+import { FC, useEffect, useMemo } from "react";
 import Breadcrumb from "../molecules/header/Breadcrumb";
 import Infographic from "../molecules/header/Infograpnic";
 import { useNavigationStore } from "@/store/navigationStore";
 import { m, AnimatePresence } from "motion/react";
 import { useLoadingStore } from "@/store/loadingStore";
+import { isMdUp } from "@/utils/helper/responsive";
 
 const Container: FC<IContainerProps> = ({
   left,
@@ -33,7 +34,7 @@ const Container: FC<IContainerProps> = ({
       <div
         className={cn(
           className,
-          "flex gap-20 container flex-nowrap shrink-0 mx-auto w-full items-center"
+          "flex md:flex-nowrap flex-wrap-reverse md:gap-20 gap-5 container shrink-0 mx-auto w-full items-center md:mb-0 mb-5 md:px-0 px-5"
         )}
       >
         <Breadcrumb />
@@ -41,7 +42,7 @@ const Container: FC<IContainerProps> = ({
       </div>
       <div
         className={cn(
-          "flex gap-20 container flex-nowrap shrink-0 mx-auto w-full relative",
+          "flex gap-20 container md:flex-nowrap md:px-0 px-5 flex-wrap shrink-0 mx-auto w-full relative",
           className
         )}
       >
@@ -53,7 +54,7 @@ const Container: FC<IContainerProps> = ({
               animate={{ opacity: 1 }}
               exit={{ opacity: 1 }}
               transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-              className={cn("w-1/2 pr-10", classNameLeft)}
+              className={cn("md:w-1/2 md:pr-10 w-full", classNameLeft)}
             >
               {left}
             </m.div>
@@ -63,11 +64,18 @@ const Container: FC<IContainerProps> = ({
         <m.div
           animate={{
             right: detailPage ? "50%" : "0%",
-            paddingRight: detailPage ? "2.5rem" : "0rem",
-            paddingLeft: detailPage ? "0rem" : "2.5rem",
+            ...(isMdUp()
+              ? {
+                  paddingRight: detailPage ? "2.5rem" : "0rem",
+                  paddingLeft: detailPage ? "0rem" : "2.5rem",
+                }
+              : {}),
           }}
           transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-          className={cn("overflow-hidden w-1/2 absolute", classNameRight)}
+          className={cn(
+            "md:overflow-hidden md:w-1/2 w-full md:absolute md:px-0 px-5",
+            classNameRight
+          )}
         >
           {right}
         </m.div>
@@ -91,7 +99,7 @@ const Container: FC<IContainerProps> = ({
               }}
               transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
               className={cn(
-                "overflow-hidden absolute w-1/2 pl-10",
+                "overflow-hidden md:absolute md:w-1/2 md:pl-10 w-full md:px-0 px-5",
                 classNameDetail
               )}
             >

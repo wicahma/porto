@@ -11,7 +11,7 @@ const ButtonBig: FC<IButtonBigProps> = ({ className, children, ...props }) => {
       animate={{ ...(props?.animate as any), opacity: 1, y: 0, scale: 1 }}
       className={cn(
         className,
-        "text-xl cursor-pointer font-semibold px-8 py-5 rounded-full"
+        "md:text-xl text-base text-nowrap whitespace-nowrap cursor-pointer font-semibold md:px-8 md:py-5 px-5 py-3 rounded-full"
       )}
     >
       {children}

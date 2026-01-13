@@ -16,7 +16,7 @@ const ArticleDetail = () => {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 50 }}
       transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-      className="space-y-0 h-[calc(100vh-10rem)] overflow-y-auto mask-color-top pt-10 pb-20"
+      className="space-y-0 md:h-[calc(100vh-10rem)] md:overflow-y-auto md:mask-color-top md:pt-10 pb-20"
     >
       <div className="space-y-0">
         {articleCardData.map((article, index) => (

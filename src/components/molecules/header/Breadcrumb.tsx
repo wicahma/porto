@@ -63,11 +63,14 @@ export default function Breadcrumb() {
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
             >
-              <BreadcrumbArrow isActive={isActive} />
+              <BreadcrumbArrow
+                className="aspect-square max-md:w-4"
+                isActive={isActive}
+              />
               <span
                 className={cn(
                   isActive ? "text-[#02C380]" : "text-[#004E33]",
-                  "font-medium text-xl"
+                  "font-medium md:text-xl text-base"
                 )}
               >
                 {crumb.label}

@@ -1,6 +1,9 @@
+import { SVGProps } from "react";
+
 export default function BreadcrumbArrow({
   isActive,
-}: Readonly<{ isActive: boolean }>) {
+  ...props
+}: Readonly<{ isActive: boolean } & SVGProps<SVGSVGElement>>) {
   return (
     <svg
       width="24"
@@ -8,6 +11,7 @@ export default function BreadcrumbArrow({
       viewBox="0 0 24 23"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <circle
         cx="12"

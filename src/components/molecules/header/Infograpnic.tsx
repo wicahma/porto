@@ -38,12 +38,14 @@ export default function Infographic() {
   };
 
   return (
-    <div className="flex justify-between items-center w-1/2">
+    <div className="flex justify-between items-center md:w-1/2 w-full">
       <div>
         <h3 className="text-nowrap truncate max-w-[200px] text-xl font-semibold text-[#02C380]">
           {getDayName()}
         </h3>
-        <p className="text-sm font-semibold">{formatTime()} GMT+7</p>
+        <p className="text-sm font-semibold text-nowrap">
+          {formatTime()} GMT+7
+        </p>
       </div>
       <Tooltip
         position="bottom"
