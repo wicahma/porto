@@ -75,6 +75,7 @@ const RightCard = () => {
             <m.div
               layout
               layoutId="project-card"
+              id="mainpage-card-project"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
@@ -89,6 +90,7 @@ const RightCard = () => {
             <m.div
               layout
               layoutId="experience-card"
+              id="mainpage-card-experience"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
@@ -103,6 +105,7 @@ const RightCard = () => {
             <m.div
               layout
               layoutId="article-card"
+              id="mainpage-card-article"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{

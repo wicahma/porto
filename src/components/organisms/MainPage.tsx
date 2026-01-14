@@ -1,15 +1,38 @@
 "use client";
 
-import Container from "./Container";
+import { useNavigationStore } from "@/store/navigationStore";
+import { useEffect, useRef } from "react";
+import ArticleDetail from "../molecules/article/ArticleDetail";
+import ExperienceDetail from "../molecules/experience/ExperienceDetail";
 import LeftCard from "../molecules/home/LeftCard";
 import RightCard from "../molecules/home/RightCard";
-import ArticleDetail from "../molecules/article/ArticleDetail";
 import ProjectDetail from "../molecules/projects/ProjectDetail";
-import ExperienceDetail from "../molecules/experience/ExperienceDetail";
-import { useNavigationStore } from "@/store/navigationStore";
+import Container from "./Container";
 
 const MainPage = () => {
   const detailPage = useNavigationStore((state) => state.detailPage);
+  const lastDetailPageRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (lastDetailPageRef.current && detailPage === null) {
+      setTimeout(() => {
+        const id = `mainpage-card-${lastDetailPageRef.current}`;
+        const el = document.getElementById(id);
+        if (el) {
+          el.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+            inline: "start",
+          });
+        }
+      }, 1500);
+    } else {
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        lastDetailPageRef.current = detailPage;
+      }, 300);
+    }
+  }, [detailPage]);
 
   const getDetailComponent = () => {
     switch (detailPage) {
