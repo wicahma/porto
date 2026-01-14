@@ -1,4 +1,5 @@
 import NotFoundWaterAnimation from "@/components/molecules/NotFoundWaterAnimation";
+import Link from "next/link";
 
 export default function NotFound() {
   return (
@@ -6,13 +7,18 @@ export default function NotFound() {
       <div className="absolute inset-0 overflow-hidden">
         <NotFoundWaterAnimation />
       </div>
-      <div className="relative z-10 text-center space-y-6 px-4 max-w-xl w-full">
-        <span className="text-white font-mono font-bold text-4xl drop-shadow-lg">
-          404
-        </span>
-        <p className="text-gray-300 text-lg font-medium drop-shadow-md">
-          Page Not Found
-        </p>
+      <div className="relative z-10 text-center space-y-2 px-4 max-w-xl w-full">
+        <div>
+          <span className="text-white font-mono font-bold text-4xl drop-shadow-lg">
+            How did you end here?
+          </span>
+        </div>
+        <Link
+          href="/"
+          className="transition-colors hover:underline hover:text-sky-700"
+        >
+          go to home.
+        </Link>
       </div>
     </div>
   );

@@ -2,6 +2,14 @@
 import { useEffect, useRef } from "react";
 
 export default function NotFoundWaterAnimation() {
+  // Splash particles state
+  const splashParticlesRef = useRef<
+    Array<{ x: number; y: number; vx: number; vy: number; life: number }>
+  >([]);
+  const boatAngleRef = useRef(0); // current boat angle
+  const boatTargetAngleRef = useRef(0); // target angle from wave
+  const lastWaveAngleRef = useRef(0);
+  const lastAngleChangeRef = useRef(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameRef = useRef<number>(0);
   const timeRef = useRef(0);
@@ -62,20 +70,78 @@ export default function NotFoundWaterAnimation() {
       ctx.lineTo(0, height);
       ctx.closePath();
       ctx.fill();
-      // Draw boat (more boat-like)
+      // Boat parameters
       const boatWidth = 90;
       const boatHeight = 34;
       const boatX = width / 2 - boatWidth / 2;
       // Boat follows the main wave
       let boatY = waterLevel;
-      boatY += Math.sin(boatX * 0.012 + timeRef.current * 1.2) * 18;
-      boatY += Math.sin(boatX * 0.022 - timeRef.current * 0.7) * 8;
-      boatY += Math.sin(boatX * 0.008 + timeRef.current * 0.4) * 6;
-      boatY += Math.cos(boatX * 0.018 - timeRef.current * 0.9) * 5;
-      boatY -= boatHeight / 2;
+      // Get wave value at boatX and boatX+pixelStep for angle
+      function getWaveY(x: number) {
+        let y = waterLevel;
+        y += Math.sin(x * 0.012 + timeRef.current * 1.2) * 18;
+        y += Math.sin(x * 0.022 - timeRef.current * 0.7) * 8;
+        y += Math.sin(x * 0.008 + timeRef.current * 0.4) * 6;
+        y += Math.cos(x * 0.018 - timeRef.current * 0.9) * 5;
+        return y;
+      }
+      const waveY1 = getWaveY(boatX);
+      const waveY2 = getWaveY(boatX + boatWidth);
+      boatY = waveY1 - boatHeight / 2;
+      // Calculate wave angle under boat
+      const dx = boatWidth;
+      const dy = waveY2 - waveY1;
+      let waveAngle = Math.atan2(dy, dx); // radians
+      // Smooth boat rotation (simulate weight/delay)
+      const smoothing = 0.08;
+      boatTargetAngleRef.current = waveAngle;
+      boatAngleRef.current +=
+        (boatTargetAngleRef.current - boatAngleRef.current) * smoothing;
+      // Detect rapid angle change for splash
+      const angleChange = Math.abs(
+        boatAngleRef.current - lastWaveAngleRef.current
+      );
+      if (
+        angleChange > 0.25 &&
+        Math.abs(boatAngleRef.current - lastAngleChangeRef.current) > 0.18
+      ) {
+        // Add splash particles
+        for (let i = 0; i < 12; i++) {
+          const angle = waveAngle + (Math.random() - 0.5) * 0.8;
+          const speed = 2.5 + Math.random() * 2.5;
+          splashParticlesRef.current.push({
+            x: boatX + boatWidth / 2 + (Math.cos(waveAngle) * boatWidth) / 2,
+            y: boatY + boatHeight / 2 + (Math.sin(waveAngle) * boatHeight) / 2,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed - 2,
+            life: 1 + Math.random() * 0.7,
+          });
+        }
+        lastAngleChangeRef.current = boatAngleRef.current;
+      }
+      lastWaveAngleRef.current = boatAngleRef.current;
+      // Draw splash particles
+      splashParticlesRef.current = splashParticlesRef.current.filter(
+        (p) => p.life > 0
+      );
+      for (const p of splashParticlesRef.current) {
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, p.life);
+        ctx.fillStyle = "#e0e7ff";
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+        // Update
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.18; // gravity
+        p.life -= 0.04;
+      }
+      // Draw boat
       ctx.save();
       ctx.translate(boatX + boatWidth / 2, boatY + boatHeight / 2);
-      ctx.rotate(Math.sin(timeRef.current * 0.5) * 0.04);
+      ctx.rotate(boatAngleRef.current);
       // Hull (rounded)
       ctx.beginPath();
       ctx.moveTo(-boatWidth / 2, 0);
