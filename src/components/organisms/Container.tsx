@@ -73,7 +73,7 @@ const Container: FC<IContainerProps> = ({
           }}
           transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
           className={cn(
-            "md:overflow-hidden md:w-1/2 w-full md:absolute md:px-0 px-5",
+            "md:overflow-hidden md:w-1/2 w-full md:absolute",
             classNameRight
           )}
         >
@@ -99,7 +99,7 @@ const Container: FC<IContainerProps> = ({
               }}
               transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
               className={cn(
-                "overflow-hidden md:absolute md:w-1/2 md:pl-10 w-full md:px-0 px-5",
+                "overflow-hidden md:absolute md:w-1/2 md:pl-10 w-full",
                 classNameDetail
               )}
             >

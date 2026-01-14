@@ -9,6 +9,7 @@ import AboutCard from "../about/AboutCard";
 import ArticleCard from "../article/ArticleCard";
 import ExperienceCard from "../experience/ExperienceCard";
 import ProjectCard from "../projects/ProjectCard";
+import { cn } from "@/utils/helper/cn";
 
 const RightCard = () => {
   const scrollRef = useSmoothScroll();
@@ -36,7 +37,9 @@ const RightCard = () => {
   return (
     <m.div
       ref={scrollRef}
-      className="md:mask-color-top pt-10 space-y-10 md:overflow-y-scroll md:overflow-x-clip md:h-[calc(100vh-10rem)] pb-20"
+      className={cn(
+        "mask-color-card-top pt-10 space-y-10 md:overflow-y-scroll md:overflow-x-clip md:h-[calc(100vh-10rem)] pb-20"
+      )}
     >
       <AnimatePresence mode="wait">
         {detailPage ? (
@@ -58,12 +61,13 @@ const RightCard = () => {
             )}
           </m.div>
         ) : (
-          <m.div key="all-cards" layout className="space-y-10">
+          <m.div key="all-cards" layout className="md:space-y-10 space-y-16">
             <m.div
               layout
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0, duration: 1, ease: [0.4, 0, 0.2, 1] }}
+              className="space-y-3"
             >
               <AboutCard />
             </m.div>

@@ -2,6 +2,7 @@ import { isMdUp } from "@/utils/helper/responsive";
 import { useEffect, useRef } from "react";
 
 interface SmoothScrollOptions {
+  disableOnMobile?: boolean;
   speed?: number;
   smoothness?: number;
 }
@@ -9,6 +10,7 @@ interface SmoothScrollOptions {
 export const useSmoothScroll = ({
   speed = 1,
   smoothness = 0.07,
+  disableOnMobile = false,
 }: SmoothScrollOptions = {}) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const currentScrollRef = useRef(0);
@@ -20,10 +22,10 @@ export const useSmoothScroll = ({
     if (!element) return;
 
     let isScrolling = false;
-    let enabled = isMdUp();
+    let enabled = isMdUp() && !disableOnMobile;
 
     const handleResize = () => {
-      enabled = isMdUp();
+      enabled = isMdUp() && !disableOnMobile;
     };
 
     const handleWheel = (e: WheelEvent) => {

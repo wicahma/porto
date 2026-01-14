@@ -15,13 +15,12 @@ const AboutCard = () => {
           <h3 className="text-3xl font-semibold">The Person Behind the Work</h3>
         </div>
         <p className="leading-8 text-[#ABABAB] text-lg tracking-wider">
-          Driven by a passion for creating seamless digital experiences, I
-          specialize in turning complex problems into elegant, user-centric
-          solutions. I believe that great design/code isn't just about how it
-          looks, but how it functions and scales. Over the years, I’ve honed my
-          ability to bridge the gap between technical constraints and creative
-          vision, ensuring every project I touch delivers measurable value and a
-          lasting impression.
+          I build digital products that balance technical logic with intuitive
+          design. My focus is always on the end user: taking a complicated
+          challenge and finding the most elegant way to solve it. I’ve spent my
+          career learning how to turn a creative vision into a functional
+          reality, making sure that whatever I build doesn't just look great,
+          but performs exactly how it’s supposed to.
         </p>
       </div>
     </>

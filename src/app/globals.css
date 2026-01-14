@@ -149,7 +149,7 @@ body {
     mask: linear-gradient(to left, transparent 1%, var(--gradient-mask-color-outside) 10%);
     background-color: var(--background);
 }
-.mask-color-top {
+.mask-color-top, .mask-color-card-top {
     -webkit-mask: linear-gradient(to bottom, transparent 1%,  var(--gradient-mask-color-outside) 10%);
     mask: linear-gradient(to bottom, transparent 1%, var(--gradient-mask-color-outside) 10%);
     background-color: var(--background);
@@ -173,4 +173,12 @@ body {
     border: 1.5px solid transparent;
     background-clip: content-box;
     background-color: #1d1d1d;
+}
+
+@media (width <= 48rem) {
+    .mask-color-card-top {
+        -webkit-mask: none;
+        mask: none;
+        background-color: none;
+    }
 }

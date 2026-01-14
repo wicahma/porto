@@ -5,6 +5,7 @@ import NextTopLoader from "nextjs-toploader";
 import React, { useEffect } from "react";
 import LoadingScreen from "@/components/molecules/LoadingScreen";
 import { usePageLoading } from "@/hooks/usePageLoading";
+import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 
 const Layout: React.FC<ILayoutProps> = ({ children }) => {
   usePageLoading();
@@ -17,6 +18,10 @@ const Layout: React.FC<ILayoutProps> = ({ children }) => {
     window.history.replaceState(null, "", `/${detailPage}`);
   }, [detailPage]);
 
+  const scrollRef = useSmoothScroll({
+    disableOnMobile: false,
+  });
+
   return (
     <main className="max-w-screen overflow-hidden">
       <LoadingScreen />
@@ -26,6 +31,7 @@ const Layout: React.FC<ILayoutProps> = ({ children }) => {
       <div className="w-screen overflow-visible md:h-screen min-h-screen md:pt-[7rem] pt-[3rem]">
         <div
           id="core-animation-component"
+          ref={scrollRef}
           className="max-w-[1080px] mx-auto h-full"
         >
           {children}
