@@ -1,15 +1,19 @@
 "use client";
+import LoadingScreen from "@/components/molecules/LoadingScreen";
+import { usePageLoading } from "@/hooks/usePageLoading";
+import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 import { ILayoutProps } from "@/interface/app/layout";
 import { useNavigationStore } from "@/store/navigationStore";
 import NextTopLoader from "nextjs-toploader";
 import React, { useEffect } from "react";
-import LoadingScreen from "@/components/molecules/LoadingScreen";
-import { usePageLoading } from "@/hooks/usePageLoading";
-import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 
 const Layout: React.FC<ILayoutProps> = ({ children }) => {
   usePageLoading();
   const detailPage = useNavigationStore((state) => state.detailPage);
+  const scrollRef = useSmoothScroll({
+    disableOnMobile: false,
+  });
+
   useEffect(() => {
     if (!detailPage) {
       window.history.replaceState(null, "", `/`);
@@ -17,10 +21,6 @@ const Layout: React.FC<ILayoutProps> = ({ children }) => {
     }
     window.history.replaceState(null, "", `/${detailPage}`);
   }, [detailPage]);
-
-  const scrollRef = useSmoothScroll({
-    disableOnMobile: false,
-  });
 
   return (
     <main className="max-w-screen overflow-hidden">
