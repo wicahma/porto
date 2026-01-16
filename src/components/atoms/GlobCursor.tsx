@@ -11,6 +11,18 @@ import {
 import React, { useEffect, useState } from "react";
 
 export const GlobCursor: React.FC = () => {
+  const [enabled, setEnabled] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setEnabled(window.innerWidth >= 768);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const springOpt: SpringOptions = {
     stiffness: 800,
     damping: 50,
@@ -38,6 +50,10 @@ export const GlobCursor: React.FC = () => {
   const smoothY = useSpring(y, springOpt);
 
   useEffect(() => {
+    if (!enabled) return;
+
+    console.log("enabled dan masih jalan");
+
     const handleMouseMove = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const unhoverTarget = target.closest(".unhoverable") as HTMLElement;
@@ -128,6 +144,12 @@ export const GlobCursor: React.FC = () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseenter", handleMouseEnter);
       window.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, [enabled]);
+
+  // Clean up motion values on unmount
+  useEffect(() => {
+    return () => {
       x.destroy();
       y.destroy();
       cursorX.destroy();
@@ -146,6 +168,8 @@ export const GlobCursor: React.FC = () => {
       smoothY.destroy();
     };
   }, []);
+
+  if (!enabled) return null;
 
   return (
     <LazyMotion features={domMax} strict>

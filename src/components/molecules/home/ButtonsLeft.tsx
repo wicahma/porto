@@ -46,9 +46,9 @@ const ButtonsLeft = () => {
   };
 
   return (
-    <div className="px-3.5 flex justify-between mt-5">
-      <ButtonBig className="hoverable bg-red-600 flex gap-3 justify-center">
-        <Chat /> Open to discuss
+    <div className="md:px-3.5 gap-2 flex justify-between mt-5">
+      <ButtonBig className="hoverable bg-red-600 flex gap-3 justify-center items-center">
+        <Chat className="md:w-7 md:h-7 w-5 h-5" /> Open to discuss
       </ButtonBig>
       <ButtonBig
         className="hoverable bg-[#222222]"

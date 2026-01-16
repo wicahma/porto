@@ -101,13 +101,13 @@ const MeCard = () => {
         }}
       />
       <div className="text-xl flex justify-between items-center gap-2">
-        <div className="relative pl-8 pr-2 py-6 font-bold w-fit h-fit flex items-center justify-center">
-          <p className="relative z-10 right-3 bottom-0.5 md:text-base text-sm">
+        <div className="relative md:pl-8 pl-0 md:pr-2 py-6 font-bold w-fit h-fit flex items-center justify-center">
+          <p className="relative z-10 md:right-3 bottom-0.5 md:text-base text-sm text-nowrap">
             Hello, I'm
           </p>
-          <Hello className="absolute md:w-[134px] aspect-auto w-[100px] left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2" />
+          <Hello className="absolute md:w-33.5 aspect-auto w-22.5 left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2" />
         </div>
-        <div className="h-1 grow bg-red-600 rounded-2xl" />
+        <div className="h-1 grow bg-red-600 md:p-0 rounded-2xl md:block hidden" />
         <LettersPull
           delay={1}
           className="font-semibold md:text-base text-lg"
@@ -122,7 +122,7 @@ const MeCard = () => {
             <span>Software{"\n"}</span>
             <span className="relative block">
               Developer
-              <CubeBluered className="absolute -bottom-5 right-0" />
+              <CubeBluered className="absolute -bottom-5 right-0 md:block hidden" />
             </span>
           </FadePull>
         </h2>
