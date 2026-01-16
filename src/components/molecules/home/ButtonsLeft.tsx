@@ -1,6 +1,7 @@
 "use client";
 import { Chat } from "@/assets/svg/chat";
 import ButtonBig from "@/components/atoms/ButtonBig";
+import { env } from "@/constants/env";
 import { useExperiences } from "@/hooks/queries/useExperiences";
 import { useProjects } from "@/hooks/queries/useProjects";
 import { useState } from "react";
@@ -45,9 +46,16 @@ const ButtonsLeft = () => {
     }
   };
 
+  const handleRedirectToEmail = () => {
+    window.open(`mailto:${env.email}`, "_blank");
+  };
+
   return (
     <div className="md:px-3.5 gap-2 flex justify-between mt-5">
-      <ButtonBig className="hoverable bg-red-600 flex gap-3 justify-center items-center">
+      <ButtonBig
+        onClick={handleRedirectToEmail}
+        className="hoverable bg-red-600 flex gap-3 justify-center items-center"
+      >
         <Chat className="md:w-7 md:h-7 w-5 h-5" /> Open to discuss
       </ButtonBig>
       <ButtonBig
