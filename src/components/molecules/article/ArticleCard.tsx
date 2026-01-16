@@ -1,15 +1,20 @@
 import CircleArrow from "@/assets/svg/circle-arrow";
 import Triangles from "@/assets/svg/triangles";
-import { articleCardData } from "@/constants/dummies/article-card";
 import MainCard from "@/components/atoms/ArticleCard";
 import { useNavigationStore } from "@/store/navigationStore";
 import ChipGroup from "@/components/molecules/chips/ChipGroup";
 import { articleFilters } from "@/constants/dummies/article-filters";
 import { m, AnimatePresence } from "motion/react";
+import { useArticles } from "@/hooks/queries/useArticles";
+import { mapArticleToCard } from "@/utils/mappers/article.mapper";
 
 const ArticleCard = () => {
   const setPage = useNavigationStore((state) => state.setPage);
   const detailPage = useNavigationStore((state) => state.detailPage);
+
+  const { data: articlesData, isLoading } = useArticles(1, 5);
+  const articles = articlesData?.data;
+  const mappedArticles = articles?.map(mapArticleToCard) || [];
 
   const handleSetPage = () => {
     setPage("article");
@@ -77,9 +82,24 @@ const ArticleCard = () => {
             </div>
           </button>
           <div className="mt-5">
-            {articleCardData.map((article) => (
-              <MainCard key={article.id} article={article} />
-            ))}
+            {isLoading ? (
+              <div className="space-y-4">
+                {[...Array(3)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="w-full h-24 bg-neutral-800 animate-pulse rounded-xl"
+                  />
+                ))}
+              </div>
+            ) : mappedArticles.length > 0 ? (
+              mappedArticles.map((article) => (
+                <MainCard key={article.id} article={article} />
+              ))
+            ) : (
+              <div className="text-center text-neutral-500 py-10">
+                No articles found
+              </div>
+            )}
           </div>
         </m.div>
       )}

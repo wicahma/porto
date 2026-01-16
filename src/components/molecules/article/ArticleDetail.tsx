@@ -2,12 +2,63 @@
 
 import Batik from "@/assets/svg/batik";
 import Br from "@/assets/svg/br";
-import { articleCardData } from "@/constants/dummies/article-card";
+import Skeleton from "@/components/atoms/Skeleton";
+import { useArticles } from "@/hooks/queries/useArticles";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
-import { m } from "motion/react";
+import { AnimatePresence, m } from "motion/react";
+import Link from "next/link";
+
+const ArticleDetailSkeleton = () => {
+  return (
+    <div className="space-y-0 md:pt-10 pb-20">
+      {[...Array(3)].map((_, index) => (
+        <div key={index} className="mt-4">
+          <div className="flex items-center gap-3 mb-6">
+            <Skeleton className="w-24 h-7" />
+            <Skeleton className="w-20 h-5" />
+            <Skeleton className="w-1 h-1 rounded-full" />
+            <Skeleton className="w-16 h-5" />
+          </div>
+          <Skeleton className="w-full h-16 mb-6" />
+          <div className="flex flex-wrap gap-3 mb-4">
+            <Skeleton className="w-16 h-5" />
+            <Skeleton className="w-20 h-5" />
+            <Skeleton className="w-24 h-5" />
+          </div>
+          <Br />
+        </div>
+      ))}
+    </div>
+  );
+};
 
 const ArticleDetail = () => {
   const scrollRef = useSmoothScroll();
+  const { data, isLoading, isError } = useArticles(1, 100);
+
+  if (isLoading) {
+    return (
+      <m.div
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="md:h-[calc(100vh-10rem)] md:overflow-y-auto mask-color-card-top"
+      >
+        <ArticleDetailSkeleton />
+      </m.div>
+    );
+  }
+
+  if (isError || !data?.data) {
+    return (
+      <m.div
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="text-center py-12"
+      >
+        <p className="text-neutral-400">Failed to load articles</p>
+      </m.div>
+    );
+  }
 
   return (
     <m.div
@@ -19,45 +70,52 @@ const ArticleDetail = () => {
       className="space-y-0 md:h-[calc(100vh-10rem)] md:overflow-y-auto mask-color-card-top md:pt-10 pb-20"
     >
       <div className="space-y-0">
-        {articleCardData.map((article, index) => (
-          <m.article
-            key={article.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1, duration: 0.4 }}
-            className="mt-4 hover:bg-neutral-900/20 transition-all cursor-pointer"
-          >
-            <div className="flex items-center gap-3 mb-6">
-              <span className="px-4 py-1.5 bg-pink-500/80 text-white rounded-full text-xs font-semibold uppercase">
-                {article.category}
-              </span>
-              <span className="text-sm text-neutral-400">{article.date}</span>
-              <span className="text-sm text-neutral-400">•</span>
-              <span className="text-sm text-neutral-400">
-                {article.readTime}
-              </span>
-            </div>
+        <AnimatePresence mode="popLayout">
+          {data.data.map((article, index) => (
+            <Link key={article.id} href={`/article/${article.slug}`}>
+              <m.article
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{
+                  delay: index * 0.08,
+                  duration: 0.5,
+                  ease: [0.4, 0, 0.2, 1],
+                }}
+                className="mt-4 hover:bg-neutral-900/20 transition-all cursor-pointer"
+              >
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="px-4 py-1.5 bg-pink-500/80 text-white rounded-full text-xs font-semibold uppercase">
+                    {article.category}
+                  </span>
+                  <span className="text-sm text-neutral-400">
+                    {new Date(article.created_at).toLocaleDateString()}
+                  </span>
+                  <span className="text-sm text-neutral-400">•</span>
+                  <span className="text-sm text-neutral-400">
+                    {article.read_time}
+                  </span>
+                </div>
 
-            <p className="text-neutral-400 leading-relaxed mb-6">
-              {article.title} Lorem ipsum dolor sit amet, consectetur adipiscing
-              elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-              aliqua. Ut enim ad minim veniam, quis nostrud e...
-            </p>
+                <p className="text-neutral-400 leading-relaxed mb-6">
+                  {article.excerpt || article.title}
+                </p>
 
-            <div className="flex flex-wrap gap-3 mb-4">
-              <span className="text-sm text-neutral-500 hover:text-neutral-300 transition-colors cursor-pointer">
-                NextJs
-              </span>
-              <span className="text-sm text-neutral-500 hover:text-neutral-300 transition-colors cursor-pointer">
-                ReactJs
-              </span>
-              <span className="text-sm text-neutral-500 hover:text-neutral-300 transition-colors cursor-pointer">
-                Postgresql
-              </span>
-            </div>
-            <Br />
-          </m.article>
-        ))}
+                <div className="flex flex-wrap gap-3 mb-4">
+                  {article.tags.slice(0, 3).map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-sm text-neutral-500 hover:text-neutral-300 transition-colors cursor-pointer"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <Br />
+              </m.article>
+            </Link>
+          ))}
+        </AnimatePresence>
       </div>
 
       <div className="flex justify-center py-8">

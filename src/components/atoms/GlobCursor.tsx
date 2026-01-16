@@ -101,7 +101,6 @@ export const GlobCursor: React.FC = () => {
     };
 
     const handleMouseLeave = () => {
-      console.log("mouse leave");
       const circSize = 0;
 
       setHoverable(false);
@@ -112,7 +111,6 @@ export const GlobCursor: React.FC = () => {
     };
 
     const handleMouseEnter = () => {
-      console.log("mouse enter");
       const circSize = 30;
 
       setHoverable(false);

@@ -4,25 +4,14 @@ import { Bulb } from "@/components/atoms/Bulb";
 import { FadePull } from "@/components/atoms/FadePull";
 import { nav_link } from "@/constants/navbar";
 import { cn } from "@/utils/helper/cn";
-import { Link, useTransitionRouter } from "next-view-transitions";
+import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 
 const Navbar = () => {
   const cnLink = "text-neutral-300 hover:text-neutral-100 transition-colors";
   const pathname = usePathname();
-  const router = useTransitionRouter();
-  const [darkmode, setDarkmode] = useState(true);
   const prevPathRef = React.useRef(pathname);
-
-  const handlePageChange: React.MouseEventHandler<HTMLLIElement> = (e) => {
-    console.log("e", e.currentTarget.offsetLeft);
-    console.log("e", e.currentTarget.offsetParent);
-  };
-
-  const handleChangeTheme: React.MouseEventHandler<SVGSVGElement> = (e) => {
-    setDarkmode((prev) => !prev);
-  };
 
   React.useEffect(() => {
     if (prevPathRef.current !== pathname) {
