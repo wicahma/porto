@@ -123,44 +123,45 @@ const StackedCarousel = <T,>({
             <ChevronRight className="w-6 h-6 transition-transform group-hover:scale-110" />
           </button>
         </div>
-        <AnimatePresence initial={false}>
-          {visibleItems.map(({ item, originalIndex, relativePosition }) => {
-            const style = getCardStyle(relativePosition);
-
-            return (
-              <m.div
-                key={originalIndex}
-                className="absolute"
-                style={{
-                  zIndex: style.zIndex,
-                  width: `${cardWidth}px`,
-                }}
-                initial={{
-                  scale: style.scale,
-                  x: style.x,
-                  filter: `blur(${style.blur}px)`,
-                  opacity: style.opacity,
-                }}
-                animate={{
-                  scale: style.scale,
-                  x: style.x,
-                  filter: `blur(${style.blur}px)`,
-                  opacity: style.opacity,
-                }}
-                transition={{
-                  duration: 1,
-                  ease: [0.32, 0.72, 0, 1],
-                }}
-                onClick={() => {
-                  if (relativePosition !== 0) {
-                    setActiveIndex(originalIndex);
-                  }
-                }}
-              >
-                {renderCard(item, originalIndex, relativePosition === 0)}
-              </m.div>
-            );
-          })}
+        <AnimatePresence initial={true} mode="wait">
+          {visibleItems.map(
+            ({ item, originalIndex, relativePosition }, index) => {
+              const style = getCardStyle(relativePosition);
+              return (
+                <m.div
+                  key={`${originalIndex}`}
+                  className="absolute select-none"
+                  style={{
+                    zIndex: style.zIndex,
+                    width: `${cardWidth}px`,
+                  }}
+                  initial={{
+                    scale: style.scale,
+                    x: style.x,
+                    filter: `blur(${style.blur}px)`,
+                    opacity: style.opacity,
+                  }}
+                  animate={{
+                    scale: style.scale,
+                    x: style.x,
+                    filter: `blur(${style.blur}px)`,
+                    opacity: style.opacity,
+                  }}
+                  transition={{
+                    duration: 1,
+                    ease: [0.32, 0.72, 0, 1],
+                  }}
+                  onClick={() => {
+                    if (relativePosition !== 0) {
+                      setActiveIndex(originalIndex);
+                    }
+                  }}
+                >
+                  {renderCard(item, originalIndex, relativePosition === 0)}
+                </m.div>
+              );
+            }
+          )}
         </AnimatePresence>
       </section>
 

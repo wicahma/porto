@@ -81,7 +81,7 @@ export class ArticleService {
 
     if (error) throw error;
 
-    return data as Article[];
+    return data;
   }
 
   static async createArticle(input: CreateArticleInput): Promise<Article> {

@@ -22,10 +22,56 @@ export const useSmoothScroll = ({
     if (!element) return;
 
     let isScrolling = false;
-    let enabled = isMdUp() && !disableOnMobile;
+    let enabled = false;
+    let initFrameId: number;
+    let retryCount = 0;
+    const maxRetries = 10;
+
+    const initAfterReady = () => {
+      const checkAndInit = () => {
+        const isDesktop = isMdUp();
+        const hasOverflow = element.scrollHeight > element.clientHeight;
+        const hasHeight = element.clientHeight > 0;
+
+        if (isDesktop && hasHeight && hasOverflow && !disableOnMobile) {
+          enabled = true;
+          return;
+        }
+        if (retryCount < maxRetries && isDesktop && hasHeight && !hasOverflow) {
+          retryCount++;
+          initFrameId = requestAnimationFrame(checkAndInit);
+        }
+      };
+
+      initFrameId = requestAnimationFrame(checkAndInit);
+    };
+
+    initAfterReady();
+
+    const mutationObserver = new MutationObserver(() => {
+      const isDesktop = isMdUp();
+      const hasOverflow = element.scrollHeight > element.clientHeight;
+      const wasDisabled = !enabled;
+
+      if (isDesktop && hasOverflow && !disableOnMobile && wasDisabled) {
+        enabled = true;
+        return;
+      }
+      if (!hasOverflow && enabled) {
+        enabled = false;
+      }
+    });
+
+    mutationObserver.observe(element, {
+      childList: true,
+      subtree: true,
+    });
 
     const handleResize = () => {
-      enabled = isMdUp() && !disableOnMobile;
+      const shouldBeEnabled = isMdUp() && !disableOnMobile;
+      if (enabled !== shouldBeEnabled) {
+        enabled = shouldBeEnabled;
+      }
     };
 
     const handleWheel = (e: WheelEvent) => {
@@ -68,13 +114,17 @@ export const useSmoothScroll = ({
     element.addEventListener("wheel", handleWheel, { passive: false });
 
     return () => {
+      if (initFrameId) {
+        cancelAnimationFrame(initFrameId);
+      }
+      mutationObserver.disconnect();
       window.removeEventListener("resize", handleResize);
       element.removeEventListener("wheel", handleWheel);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [speed, smoothness]);
+  }, [speed, smoothness, disableOnMobile]);
 
   return scrollRef;
 };

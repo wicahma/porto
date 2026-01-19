@@ -6,7 +6,10 @@ import {
   StyleSheet,
   Font,
 } from "@react-pdf/renderer";
-import { Experience } from "@/interface/entities/experience.interface";
+import {
+  Experience,
+  ExperienceJob,
+} from "@/interface/entities/experience.interface";
 import { Project } from "@/interface/entities/project.interface";
 
 const styles = StyleSheet.create({
@@ -98,7 +101,7 @@ const styles = StyleSheet.create({
 });
 
 interface CVDocumentProps {
-  experiences: Experience[];
+  experiences: (Experience & { jobs: ExperienceJob[] })[];
   projects: Project[];
 }
 
@@ -133,17 +136,32 @@ const CVDocument = ({ experiences, projects }: CVDocumentProps) => (
         <Text style={styles.sectionTitle}>Experience</Text>
         {experiences.map((exp) => (
           <View key={exp.id} style={styles.itemGroup}>
-            <View style={styles.itemHeader}>
-              <View>
-                <Text style={styles.itemTitle}>{exp.company}</Text>
-                <Text style={styles.itemSubtitle}>{exp.position}</Text>
+            {/* Company Header */}
+            <Text style={styles.itemTitle}>{exp.company}</Text>
+            <Text style={{ fontSize: 9, color: "#666", marginBottom: 4 }}>
+              {exp.location} • {exp.total_duration}
+            </Text>
+
+            {/* Jobs within company */}
+            {exp.jobs?.map((job) => (
+              <View key={job.id} style={{ marginLeft: 10, marginBottom: 6 }}>
+                <View style={styles.itemHeader}>
+                  <View>
+                    <Text style={styles.itemSubtitle}>{job.position}</Text>
+                    <Text style={{ fontSize: 9, color: "#666" }}>
+                      {job.employment_type}
+                    </Text>
+                  </View>
+                  <Text style={styles.itemDate}>
+                    {formatDate(job.start_date)} -{" "}
+                    {job.is_current ? "Present" : formatDate(job.end_date!)}
+                  </Text>
+                </View>
+                <Text style={styles.itemDescription}>{job.description}</Text>
               </View>
-              <Text style={styles.itemDate}>
-                {formatDate(exp.start_date)} -{" "}
-                {exp.is_current ? "Present" : formatDate(exp.end_date!)}
-              </Text>
-            </View>
-            <Text style={styles.itemDescription}>{exp.description}</Text>
+            ))}
+
+            {/* Company-level tags */}
             <View
               style={{
                 flexDirection: "row",
@@ -152,7 +170,7 @@ const CVDocument = ({ experiences, projects }: CVDocumentProps) => (
                 gap: 4,
               }}
             >
-              {exp.tags.map((tag, idx) => (
+              {exp?.tags?.map((tag, idx) => (
                 <Text key={idx} style={{ fontSize: 9, color: "#444" }}>
                   • {tag}
                 </Text>
@@ -180,8 +198,11 @@ const CVDocument = ({ experiences, projects }: CVDocumentProps) => (
                 gap: 4,
               }}
             >
-              {project.tags.map((tag, idx) => (
-                <Text key={idx} style={{ fontSize: 9, color: "#444" }}>
+              {project?.tags?.map((tag, idx) => (
+                <Text
+                  key={`${tag}${idx}`}
+                  style={{ fontSize: 9, color: "#444" }}
+                >
                   • {tag}
                 </Text>
               ))}

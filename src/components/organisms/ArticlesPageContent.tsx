@@ -42,6 +42,101 @@ const ArticlesPageContent = () => {
     }
   };
 
+  const renderTableContent = () => {
+    if (isLoading) {
+      return (
+        <div className="flex items-center justify-center py-12">
+          <div className="h-8 w-8 border-4 border-pink-500 border-t-transparent rounded-full animate-spin" />
+        </div>
+      );
+    }
+
+    if (data?.data && data.data.length > 0) {
+      return (
+        <Table>
+          <TableHeader>
+            <TableRow className="border-neutral-800 hover:bg-neutral-800/50">
+              <TableHead className="text-neutral-300">Title</TableHead>
+              <TableHead className="text-neutral-300">Category</TableHead>
+              <TableHead className="text-neutral-300">Slug</TableHead>
+              <TableHead className="text-neutral-300">Created</TableHead>
+              <TableHead className="text-neutral-300 text-right">
+                Actions
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {data.data.map((article) => (
+              <TableRow
+                key={article.id}
+                className="border-neutral-800 hover:bg-neutral-800/50"
+              >
+                <TableCell className="font-medium text-white">
+                  {article.title}
+                </TableCell>
+                <TableCell>
+                  <Badge className="bg-pink-500/20 text-pink-400 border-pink-500/30">
+                    {article.category}
+                  </Badge>
+                </TableCell>
+                <TableCell className="text-neutral-400 font-mono text-sm">
+                  /{article.slug}
+                </TableCell>
+                <TableCell className="text-neutral-400">
+                  {article.created_at
+                    ? new Date(article.created_at).toLocaleDateString()
+                    : "N/A"}
+                </TableCell>
+                <TableCell className="text-right">
+                  <div className="flex items-center justify-end gap-2">
+                    <Link href={`/article/${article.slug}`} target="_blank">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-neutral-400 hover:text-white"
+                      >
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                    </Link>
+                    <Link href={`/admin/articles/${article.id}`}>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-neutral-400 hover:text-white"
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                    </Link>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-red-400 hover:text-red-300 hover:bg-red-950/30"
+                      onClick={() => setDeleteId(article.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      );
+    }
+
+    return (
+      <div className="text-center py-12">
+        <p className="text-neutral-400 mb-4">No articles yet</p>
+        <Link href="/admin/articles/new">
+          <Button className="bg-linear-to-r from-pink-600 to-rose-600">
+            <Plus className="mr-2 h-4 w-4" />
+            Create Your First Article
+          </Button>
+        </Link>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950 p-8">
       <div className="max-w-7xl mx-auto space-y-6">
@@ -65,93 +160,7 @@ const ArticlesPageContent = () => {
               {data?.count ?? 0} articles total
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex items-center justify-center py-12">
-                <div className="h-8 w-8 border-4 border-pink-500 border-t-transparent rounded-full animate-spin" />
-              </div>
-            ) : data?.data && data.data.length > 0 ? (
-              <Table>
-                <TableHeader>
-                  <TableRow className="border-neutral-800 hover:bg-neutral-800/50">
-                    <TableHead className="text-neutral-300">Title</TableHead>
-                    <TableHead className="text-neutral-300">Category</TableHead>
-                    <TableHead className="text-neutral-300">Slug</TableHead>
-                    <TableHead className="text-neutral-300">Created</TableHead>
-                    <TableHead className="text-neutral-300 text-right">
-                      Actions
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {data.data.map((article) => (
-                    <TableRow
-                      key={article.id}
-                      className="border-neutral-800 hover:bg-neutral-800/50"
-                    >
-                      <TableCell className="font-medium text-white">
-                        {article.title}
-                      </TableCell>
-                      <TableCell>
-                        <Badge className="bg-pink-500/20 text-pink-400 border-pink-500/30">
-                          {article.category}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-neutral-400 font-mono text-sm">
-                        /{article.slug}
-                      </TableCell>
-                      <TableCell className="text-neutral-400">
-                        {new Date(article.created_at).toLocaleDateString()}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex items-center justify-end gap-2">
-                          <Link
-                            href={`/article/${article.slug}`}
-                            target="_blank"
-                          >
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="text-neutral-400 hover:text-white"
-                            >
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                          </Link>
-                          <Link href={`/admin/articles/${article.id}`}>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="text-neutral-400 hover:text-white"
-                            >
-                              <Pencil className="h-4 w-4" />
-                            </Button>
-                          </Link>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="text-red-400 hover:text-red-300 hover:bg-red-950/30"
-                            onClick={() => setDeleteId(article.id)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            ) : (
-              <div className="text-center py-12">
-                <p className="text-neutral-400 mb-4">No articles yet</p>
-                <Link href="/admin/articles/new">
-                  <Button className="bg-gradient-to-r from-pink-600 to-rose-600">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Create Your First Article
-                  </Button>
-                </Link>
-              </div>
-            )}
-          </CardContent>
+          <CardContent>{renderTableContent()}</CardContent>
         </Card>
 
         <Dialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>

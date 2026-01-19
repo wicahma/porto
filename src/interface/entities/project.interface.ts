@@ -1,15 +1,9 @@
-export interface Project {
+import { Database } from "./database.interface";
+
+export type TProjectRow = Database["public"]["Tables"]["projects"]["Row"];
+
+export interface Project extends TProjectRow {
   id: string;
-  title: string;
-  description: string;
-  problem?: string;
-  solution?: string;
-  image: string;
-  tags: string[];
-  year: string;
-  link?: string;
-  created_at: string;
-  updated_at: string;
 }
 
 export interface CreateProjectInput {

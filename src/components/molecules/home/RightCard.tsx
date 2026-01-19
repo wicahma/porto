@@ -1,19 +1,19 @@
 import Batik from "@/assets/svg/batik";
 import Br from "@/assets/svg/br";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
-import { useNavigationStore } from "@/store/navigationStore";
 import { useScrollStore } from "@/store/scrollStore";
+import { cn } from "@/utils/helper/cn";
 import { AnimatePresence, m } from "motion/react";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import AboutCard from "../about/AboutCard";
 import ArticleCard from "../article/ArticleCard";
 import ExperienceCard from "../experience/ExperienceCard";
 import ProjectCard from "../projects/ProjectCard";
-import { cn } from "@/utils/helper/cn";
 
 const RightCard = () => {
   const scrollRef = useSmoothScroll();
-  const detailPage = useNavigationStore((state) => state.detailPage);
+  const pathname = usePathname();
   const setScrolling = useScrollStore((state) => state.setScrolling);
   const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -42,19 +42,19 @@ const RightCard = () => {
       )}
     >
       <AnimatePresence mode="wait">
-        {detailPage ? (
-          <m.div key={`${detailPage}-card`} layout className="space-y-10">
-            {detailPage === "project" && (
+        {pathname !== "/" ? (
+          <m.div key={`${pathname}-card`} layout className="space-y-10">
+            {pathname === "/project" && (
               <m.div layout layoutId="project-card">
                 <ProjectCard />
               </m.div>
             )}
-            {detailPage === "experience" && (
+            {pathname === "/experience" && (
               <m.div layout layoutId="experience-card">
                 <ExperienceCard />
               </m.div>
             )}
-            {detailPage === "article" && (
+            {pathname === "/article" && (
               <m.div layout layoutId="article-card">
                 <ArticleCard />
               </m.div>

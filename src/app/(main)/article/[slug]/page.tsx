@@ -37,17 +37,17 @@ export async function generateMetadata({
     keywords: article.meta_keywords,
     openGraph: {
       title: article.meta_title || article.title,
-      description: article.meta_description || article.excerpt,
+      description: article.meta_description || article.excerpt || undefined,
       images: article.og_image ? [article.og_image] : [article.image],
       type: "article",
-      publishedTime: article.created_at,
-      modifiedTime: article.updated_at,
+      publishedTime: article.created_at || undefined,
+      modifiedTime: article.updated_at || undefined,
       tags: article.tags,
     },
     twitter: {
       card: "summary_large_image",
       title: article.meta_title || article.title,
-      description: article.meta_description || article.excerpt,
+      description: article.meta_description || article.excerpt || undefined,
       images: article.og_image ? [article.og_image] : [article.image],
     },
   };
@@ -90,12 +90,15 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             <span className="text-neutral-700">•</span>
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
-              <time dateTime={article.created_at}>
-                {new Date(article.created_at).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
+              <time dateTime={article.created_at || ""}>
+                {new Date(article.created_at || "").toLocaleDateString(
+                  "en-US",
+                  {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  }
+                )}
               </time>
             </div>
             <span className="text-neutral-700">•</span>
@@ -145,10 +148,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             dangerouslySetInnerHTML={{ __html: article.content }}
           />
 
-          {article.tags.length > 0 && (
+          {(article?.tags?.length || 0) > 0 && (
             <div className="mt-16 pt-8 border-t border-neutral-800/50">
               <div className="flex flex-wrap gap-2">
-                {article.tags.map((tag) => (
+                {article?.tags?.map((tag) => (
                   <span
                     key={tag}
                     className="px-4 py-2 bg-neutral-800 text-neutral-300 rounded-full text-sm font-medium hover:bg-neutral-700 transition-colors cursor-pointer"

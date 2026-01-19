@@ -3,24 +3,14 @@ import LoadingScreen from "@/components/molecules/LoadingScreen";
 import { usePageLoading } from "@/hooks/usePageLoading";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 import { ILayoutProps } from "@/interface/app/layout";
-import { useNavigationStore } from "@/store/navigationStore";
 import NextTopLoader from "nextjs-toploader";
-import React, { useEffect } from "react";
+import React from "react";
 
 const Layout: React.FC<ILayoutProps> = ({ children }) => {
   usePageLoading();
-  const detailPage = useNavigationStore((state) => state.detailPage);
   const scrollRef = useSmoothScroll({
     disableOnMobile: false,
   });
-
-  useEffect(() => {
-    if (!detailPage) {
-      window.history.replaceState(null, "", `/`);
-      return;
-    }
-    window.history.replaceState(null, "", `/${detailPage}`);
-  }, [detailPage]);
 
   return (
     <main className="max-w-screen overflow-hidden">

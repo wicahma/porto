@@ -23,9 +23,7 @@ export default function RootLayout({
   return (
     <ViewTransitions>
       <html lang="en" className="dark">
-        <body
-          className={`${openSans.variable} antialiased bg-neutral-950 text-white`}
-        >
+        <body className={`${openSans.variable} antialiased`}>
           <Providers>{children}</Providers>
         </body>
       </html>

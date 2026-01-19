@@ -1,14 +1,13 @@
 "use client";
 import BreadcrumbArrow from "@/components/atoms/BreadcrumbArrow";
-import { useNavigationStore, values } from "@/store/navigationStore";
 import { cn } from "@/utils/helper/cn";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Breadcrumb() {
   const pathname = usePathname();
+  const router = useRouter();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const setPage = useNavigationStore((state) => state.setPage);
 
   const getBreadcrumbs = () => {
     const paths = pathname.split("/").filter(Boolean);
@@ -31,12 +30,14 @@ export default function Breadcrumb() {
     return [{ label: "Home", href: "/", index: -1 }];
   };
 
-  const handleSetPage = (href: typeof values.detailPage | "home") => {
+  const handleSetPage = (href: string) => {
     if (href === "home") {
-      setPage(null);
+      window.history.replaceState(null, "", "/");
+      router.prefetch("/");
       return;
     }
-    setPage(href);
+    window.history.replaceState(null, "", `/${href}`);
+    router.prefetch(`/${href}`);
   };
 
   const breadcrumbs = getBreadcrumbs();
@@ -55,11 +56,7 @@ export default function Breadcrumb() {
             <button
               key={crumb.href}
               className="flex items-center gap-2 bg-transparent border-0 p-0 cursor-pointer"
-              onClick={() =>
-                handleSetPage(
-                  crumb.label.toLowerCase() as typeof values.detailPage | "home"
-                )
-              }
+              onClick={() => handleSetPage(crumb.label.toLowerCase())}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
             >

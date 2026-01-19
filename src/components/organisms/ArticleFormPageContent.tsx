@@ -56,7 +56,7 @@ const ArticleFormPageContent = () => {
       setContent(existingArticle.content);
       setCategory(existingArticle.category);
       setImage(existingArticle.image);
-      setTags(existingArticle.tags.join(", "));
+      setTags(existingArticle?.tags?.join(", ") || "");
       setReadTime(existingArticle.read_time);
       setMetaTitle(existingArticle.meta_title || "");
       setMetaDescription(existingArticle.meta_description || "");
@@ -395,8 +395,8 @@ const ArticleFormPageContent = () => {
               {createArticle.isPending || updateArticle.isPending
                 ? "Saving..."
                 : isEdit
-                ? "Update Article"
-                : "Create Article"}
+                  ? "Update Article"
+                  : "Create Article"}
             </Button>
           </div>
         </form>

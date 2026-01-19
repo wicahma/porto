@@ -16,8 +16,8 @@ export const mapProjectToUI = (project: Project): ProjectUI => {
     title: project.title,
     description: project.description,
     year: project.year,
-    tags: project.tags,
-    link: project.link,
+    tags: project.tags || [],
+    link: project.link || undefined,
     image: project.image,
   };
 };

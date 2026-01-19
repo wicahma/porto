@@ -52,8 +52,6 @@ export const GlobCursor: React.FC = () => {
   useEffect(() => {
     if (!enabled) return;
 
-    console.log("enabled dan masih jalan");
-
     const handleMouseMove = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const unhoverTarget = target.closest(".unhoverable") as HTMLElement;

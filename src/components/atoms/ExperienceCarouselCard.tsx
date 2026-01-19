@@ -7,6 +7,7 @@ import { useScrollStore } from "@/store/scrollStore";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { isMdUp } from "@/utils/helper/responsive";
+import ListLimiter from "./chips/ListLimiter";
 
 interface ExperienceCardProps {
   data: ExperienceCard;
@@ -71,12 +72,27 @@ const ExperienceCarouselCard = ({ data, isCenter }: ExperienceCardProps) => {
     </m.div>
   );
 
+  const showMoreComponent = (_: string[], rem: string[]) => (
+    <m.span
+      className="px-2 py-0.5 bg-white/5 border border-white/10 rounded-full text-xs text-white inline-block"
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        duration: 0.3,
+        delay: 0.75,
+        ease: [0.32, 0.72, 0, 1],
+      }}
+    >
+      {rem.length}+
+    </m.span>
+  );
+
   const ExpandedCard = () =>
     createPortal(
       <AnimatePresence>
         {isExpanded && (
           <m.div
-            className="fixed cursor-pointer bg-[#131313] border border-[#1a1a1a] rounded-2xl shadow-2xl overflow-hidden"
+            className="fixed select-none cursor-pointer bg-[#131313] border border-[#1a1a1a] rounded-2xl shadow-2xl overflow-hidden"
             initial={{
               top: cardPosition.top,
               left: cardPosition.left,
@@ -105,28 +121,7 @@ const ExperienceCarouselCard = ({ data, isCenter }: ExperienceCardProps) => {
             onMouseLeave={() => setIsHovered(false)}
           >
             <div className="flex h-full">
-              <m.div
-                className="relative flex-shrink-0 overflow-hidden"
-                initial={{ width: "0px", opacity: 0 }}
-                animate={{ width: "200px", opacity: 1 }}
-                transition={{
-                  duration: 0.5,
-                  delay: 0.2,
-                  ease: [0.32, 0.72, 0, 1],
-                }}
-              >
-                {data.image && (
-                  <Image
-                    src={data.image}
-                    alt={data.company}
-                    fill
-                    className="object-cover"
-                  />
-                )}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#0a0a0a]/50" />
-              </m.div>
-
-              <div className="flex-1 py-6 px-3 flex flex-col justify-center gap-3">
+              <div className="flex-1 py-6 px-5 flex flex-col justify-center gap-3">
                 <m.div
                   className="text-center"
                   initial={{ opacity: 0, y: -10 }}
@@ -154,7 +149,9 @@ const ExperienceCarouselCard = ({ data, isCenter }: ExperienceCardProps) => {
                     ease: [0.32, 0.72, 0, 1],
                   }}
                 >
-                  <p className="text-[#ABABAB]  text-xs">{data.description}</p>
+                  <p className="text-[#ABABAB] line-clamp-2 text-xs">
+                    {data.description}
+                  </p>
                 </m.div>
 
                 <m.div
@@ -170,21 +167,29 @@ const ExperienceCarouselCard = ({ data, isCenter }: ExperienceCardProps) => {
                     Technologies:
                   </p>
                   <div className="flex flex-wrap gap-1.5">
-                    {data.technologies.map((tech, index) => (
-                      <m.span
-                        key={`${tech[0]}-${index}`}
-                        className="px-2 py-0.5 bg-white/5 border border-white/10 rounded-full text-xs text-white inline-block"
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{
-                          duration: 0.3,
-                          delay: 0.75 + index * 0.05,
-                          ease: [0.32, 0.72, 0, 1],
-                        }}
-                      >
-                        {tech}
-                      </m.span>
-                    ))}
+                    <ListLimiter
+                      items={data.technologies}
+                      limit={5}
+                      className="flex flex-wrap gap-1.5"
+                      showMoreComponent={showMoreComponent}
+                    >
+                      {(tech, index) => {
+                        return (
+                          <m.span
+                            className="px-2 py-0.5 bg-white/5 border border-white/10 rounded-full text-xs text-white inline-block"
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{
+                              duration: 0.3,
+                              delay: 0.75 + index * 0.05,
+                              ease: [0.32, 0.72, 0, 1],
+                            }}
+                          >
+                            {tech}
+                          </m.span>
+                        );
+                      }}
+                    </ListLimiter>
                   </div>
                 </m.div>
               </div>

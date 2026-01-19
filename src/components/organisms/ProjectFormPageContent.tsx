@@ -47,7 +47,7 @@ const ProjectFormPageContent = () => {
       setProblem(existingProject.problem || "");
       setSolution(existingProject.solution || "");
       setImage(existingProject.image);
-      setTags(existingProject.tags.join(", "));
+      setTags(existingProject?.tags?.join(", ") || "");
       setYear(existingProject.year);
       setLink(existingProject.link || "");
     }
@@ -271,8 +271,8 @@ const ProjectFormPageContent = () => {
               {createProject.isPending || updateProject.isPending
                 ? "Saving..."
                 : isEdit
-                ? "Update Project"
-                : "Create Project"}
+                  ? "Update Project"
+                  : "Create Project"}
             </Button>
           </div>
         </form>

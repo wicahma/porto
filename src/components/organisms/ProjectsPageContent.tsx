@@ -66,11 +66,12 @@ const ProjectsPageContent = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {isLoading ? (
+            {isLoading && (
               <div className="flex items-center justify-center py-12">
                 <div className="h-8 w-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin" />
               </div>
-            ) : data?.data && data.data.length > 0 ? (
+            )}
+            {!isLoading && data?.data && data.data.length > 0 && (
               <Table>
                 <TableHeader>
                   <TableRow className="border-neutral-800 hover:bg-neutral-800/50">
@@ -98,9 +99,13 @@ const ProjectsPageContent = () => {
                         </Badge>
                       </TableCell>
                       <TableCell className="text-neutral-400">
-                        {project.tags.slice(0, 2).join(", ")}
-                        {project.tags.length > 2 &&
-                          ` +${project.tags.length - 2}`}
+                        {project.tags && project.tags.length > 0 && (
+                          <>
+                            {project.tags.slice(0, 2).join(", ")}
+                            {project.tags.length > 2 &&
+                              ` +${project.tags.length - 2}`}
+                          </>
+                        )}
                       </TableCell>
                       <TableCell>
                         {project.link ? (
@@ -141,11 +146,12 @@ const ProjectsPageContent = () => {
                   ))}
                 </TableBody>
               </Table>
-            ) : (
+            )}
+            {!isLoading && (!data?.data || data.data.length === 0) && (
               <div className="text-center py-12">
                 <p className="text-neutral-400 mb-4">No projects yet</p>
                 <Link href="/admin/projects/new">
-                  <Button className="bg-gradient-to-r from-purple-600 to-indigo-600">
+                  <Button className="bg-linear-to-r from-purple-600 to-indigo-600">
                     <Plus className="mr-2 h-4 w-4" />
                     Create Your First Project
                   </Button>

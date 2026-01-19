@@ -2,14 +2,15 @@
 import FolderIcon from "@/assets/svg/folder";
 import ProjectIcon from "@/assets/svg/project-icon";
 import { useProjectCount } from "@/hooks/queries/useProjects";
-import { useNavigationStore } from "@/store/navigationStore";
+import { useRouter } from "next/navigation";
 
 const ProjectCard = () => {
-  const setPage = useNavigationStore((state) => state.setPage);
+  const router = useRouter();
   const { data: count, isLoading } = useProjectCount();
 
   const handleSetPage = () => {
-    setPage("project");
+    window.history.replaceState(null, "", `/project`);
+    router.prefetch("/project");
   };
 
   return (

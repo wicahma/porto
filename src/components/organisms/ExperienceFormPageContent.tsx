@@ -25,8 +25,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ArrowLeft, Save } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import {
+  ArrowLeft,
+  Save,
+  Plus,
+  Trash2,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 import Link from "next/link";
+import { formatDateRange } from "@/utils/helper/date.utils";
+import toast from "react-hot-toast";
+import { CreateExperienceInput } from "@/interface/entities/experience.interface";
+
+interface JobFormData {
+  id?: string;
+  position: string;
+  employment_type: string;
+  description: string;
+  start_date: string;
+  end_date?: string;
+  is_current: boolean;
+}
 
 const ExperienceFormPageContent = () => {
   const router = useRouter();
@@ -41,42 +62,147 @@ const ExperienceFormPageContent = () => {
   const updateExperience = useUpdateExperience();
 
   const [company, setCompany] = useState("");
-  const [position, setPosition] = useState("");
-  const [employmentType, setEmploymentType] = useState("FULL TIME");
-  const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
   const [tags, setTags] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [isCurrent, setIsCurrent] = useState(false);
+
+  const [jobs, setJobs] = useState<JobFormData[]>([
+    {
+      position: "",
+      employment_type: "Full-time",
+      description: "",
+      start_date: "",
+      end_date: "",
+      is_current: false,
+    },
+  ]);
+
+  const [collapsedJobs, setCollapsedJobs] = useState<boolean[]>([false]);
 
   useEffect(() => {
     if (existingExperience) {
       setCompany(existingExperience.company);
-      setPosition(existingExperience.position);
-      setEmploymentType(existingExperience.employment_type);
-      setDescription(existingExperience.description);
-      setTags(existingExperience.tags.join(", "));
-      setStartDate(existingExperience.start_date);
-      setEndDate(existingExperience.end_date || "");
-      setIsCurrent(existingExperience.is_current);
+      setLocation(existingExperience.location);
+      setTags((existingExperience?.tags ?? []).join(", "));
+
+      if ((existingExperience?.jobs ?? []).length > 0) {
+        const loadedJobs = (existingExperience?.jobs ?? []).map((job) => ({
+          id: job.id,
+          position: job.position,
+          employment_type: job.employment_type,
+          description: job.description,
+          start_date: job.start_date,
+          end_date: job.end_date || "",
+          is_current: job.is_current,
+        }));
+        setJobs(loadedJobs);
+      }
     }
   }, [existingExperience]);
+
+  const addJob = () => {
+    setJobs([
+      ...jobs,
+      {
+        position: "",
+        employment_type: "Full-time",
+        description: "",
+        start_date: "",
+        end_date: "",
+        is_current: false,
+      },
+    ]);
+  };
+
+  const removeJob = (index: number) => {
+    if (jobs.length > 1) {
+      setJobs(jobs.filter((_, i) => i !== index));
+      setCollapsedJobs(collapsedJobs.filter((_, i) => i !== index));
+    } else {
+      toast.error("At least one job position is required");
+    }
+  };
+
+  const updateJob = (
+    index: number,
+    field: keyof JobFormData,
+    value: string | boolean
+  ) => {
+    const updatedJobs = [...jobs];
+    updatedJobs[index] = { ...updatedJobs[index], [field]: value };
+    setJobs(updatedJobs);
+  };
+
+  const toggleCollapse = (index: number) => {
+    const updated = [...collapsedJobs];
+    updated[index] = !updated[index];
+    setCollapsedJobs(updated);
+  };
+
+  const validateForm = (): boolean => {
+    if (!company.trim()) {
+      toast.error("Company name is required");
+      return false;
+    }
+
+    if (!location.trim()) {
+      toast.error("Location is required");
+      return false;
+    }
+
+    if (jobs.length === 0) {
+      toast.error("At least one job position is required");
+      return false;
+    }
+
+    for (let i = 0; i < jobs.length; i++) {
+      const job = jobs[i];
+      if (!job.position.trim()) {
+        toast.error(`Position ${i + 1}: Position title is required`);
+        return false;
+      }
+      if (!job.description.trim()) {
+        toast.error(`Position ${i + 1}: Description is required`);
+        return false;
+      }
+      if (!job.start_date) {
+        toast.error(`Position ${i + 1}: Start date is required`);
+        return false;
+      }
+      if (!job.is_current && !job.end_date) {
+        toast.error(
+          `Position ${i + 1}: End date is required (or mark as current)`
+        );
+        return false;
+      }
+    }
+
+    return true;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const experienceData = {
+    if (!validateForm()) return;
+
+    const experienceData: CreateExperienceInput = {
       company,
-      position,
-      employment_type: employmentType,
-      description,
+      location,
       tags: tags
         .split(",")
         .map((t) => t.trim())
         .filter(Boolean),
-      start_date: startDate,
-      end_date: isCurrent ? undefined : endDate,
-      is_current: isCurrent,
+      jobs: jobs.map((job) => ({
+        position: job.position,
+        employment_type: job.employment_type,
+        description: job.description,
+        start_date: job.start_date,
+        end_date: job.is_current ? null : (job.end_date ?? null),
+        is_current: job.is_current,
+        created_at: null,
+        updated_at: null,
+        experience_id: "",
+        competency: [],
+      })),
     };
 
     try {
@@ -85,12 +211,14 @@ const ExperienceFormPageContent = () => {
           id: experienceId,
           ...experienceData,
         });
+        toast.success("Experience updated successfully!");
       } else {
         await createExperience.mutateAsync(experienceData);
+        toast.success("Experience created successfully!");
       }
       router.push("/admin/experiences");
     } catch (error) {
-      console.error("Failed to save experience:", error);
+      toast.error("Failed to save experience");
     }
   };
 
@@ -121,8 +249,8 @@ const ExperienceFormPageContent = () => {
             </h1>
             <p className="text-neutral-400">
               {isEdit
-                ? "Update your work experience"
-                : "Add a new work experience"}
+                ? "Update work experience with multiple positions"
+                : "Add a new work experience with multiple positions"}
             </p>
           </div>
         </div>
@@ -130,15 +258,15 @@ const ExperienceFormPageContent = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <Card className="border-neutral-800 bg-neutral-900/50 backdrop-blur">
             <CardHeader>
-              <CardTitle className="text-white">Basic Information</CardTitle>
+              <CardTitle className="text-white">Company Information</CardTitle>
               <CardDescription className="text-neutral-400">
-                Company, position, and employment details
+                Basic information about the company
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="company" className="text-neutral-200">
-                  Company *
+                  Company Name *
                 </Label>
                 <Input
                   id="company"
@@ -146,57 +274,21 @@ const ExperienceFormPageContent = () => {
                   onChange={(e) => setCompany(e.target.value)}
                   required
                   className="bg-neutral-800 border-neutral-700 text-white"
-                  placeholder="Company name"
+                  placeholder="e.g., Google, Microsoft, Startup Inc"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="position" className="text-neutral-200">
-                  Position *
+                <Label htmlFor="location" className="text-neutral-200">
+                  Location *
                 </Label>
                 <Input
-                  id="position"
-                  value={position}
-                  onChange={(e) => setPosition(e.target.value)}
+                  id="location"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
                   required
                   className="bg-neutral-800 border-neutral-700 text-white"
-                  placeholder="Job title"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="employmentType" className="text-neutral-200">
-                  Employment Type *
-                </Label>
-                <Select
-                  value={employmentType}
-                  onValueChange={setEmploymentType}
-                >
-                  <SelectTrigger className="bg-neutral-800 border-neutral-700 text-white">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-neutral-800 border-neutral-700">
-                    <SelectItem value="FULL TIME">Full Time</SelectItem>
-                    <SelectItem value="PART TIME">Part Time</SelectItem>
-                    <SelectItem value="CONTRACT">Contract</SelectItem>
-                    <SelectItem value="FREELANCE">Freelance</SelectItem>
-                    <SelectItem value="INTERNSHIP">Internship</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="description" className="text-neutral-200">
-                  Description *
-                </Label>
-                <Textarea
-                  id="description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  required
-                  className="bg-neutral-800 border-neutral-700 text-white"
-                  placeholder="Describe your role and responsibilities"
-                  rows={5}
+                  placeholder="e.g., Jakarta, Indonesia"
                 />
               </div>
 
@@ -212,7 +304,7 @@ const ExperienceFormPageContent = () => {
                   value={tags}
                   onChange={(e) => setTags(e.target.value)}
                   className="bg-neutral-800 border-neutral-700 text-white"
-                  placeholder="Next.js, React, TypeScript"
+                  placeholder="React, TypeScript, Next.js, Node.js"
                 />
               </div>
             </CardContent>
@@ -220,56 +312,188 @@ const ExperienceFormPageContent = () => {
 
           <Card className="border-neutral-800 bg-neutral-900/50 backdrop-blur">
             <CardHeader>
-              <CardTitle className="text-white">Employment Period</CardTitle>
-              <CardDescription className="text-neutral-400">
-                Start and end dates
-              </CardDescription>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="text-white">Job Positions</CardTitle>
+                  <CardDescription className="text-neutral-400">
+                    Add all positions you held at this company
+                  </CardDescription>
+                </div>
+                <Button
+                  type="button"
+                  onClick={addJob}
+                  className="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700"
+                >
+                  <Plus className="mr-2 h-4 w-4" />
+                  Add Position
+                </Button>
+              </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="startDate" className="text-neutral-200">
-                  Start Date *
-                </Label>
-                <Input
-                  id="startDate"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
-                  required
-                  className="bg-neutral-800 border-neutral-700 text-white"
-                  placeholder="2024"
-                />
-              </div>
-
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="isCurrent"
-                  checked={isCurrent}
-                  onChange={(e) => setIsCurrent(e.target.checked)}
-                  className="h-4 w-4 rounded border-neutral-700 bg-neutral-800 text-teal-600"
-                />
-                <Label
-                  htmlFor="isCurrent"
-                  className="text-neutral-200 cursor-pointer"
+              {jobs.map((job, index) => (
+                <Card
+                  key={index}
+                  className="border-neutral-700 bg-neutral-800/30"
                 >
-                  I currently work here
-                </Label>
-              </div>
+                  <CardHeader
+                    className="cursor-pointer hover:bg-neutral-800/50 transition-colors"
+                    onClick={() => toggleCollapse(index)}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3 flex-1">
+                        {collapsedJobs[index] ? (
+                          <ChevronDown className="h-5 w-5 text-neutral-400" />
+                        ) : (
+                          <ChevronUp className="h-5 w-5 text-neutral-400" />
+                        )}
+                        <div className="flex-1">
+                          <CardTitle className="text-white text-lg">
+                            {job.position || `Position ${index + 1}`}
+                          </CardTitle>
+                          <CardDescription className="text-neutral-400 text-sm">
+                            {job.employment_type}
+                            {job.start_date &&
+                              ` • ${formatDateRange(
+                                job.start_date,
+                                job.end_date,
+                                job.is_current
+                              )}`}
+                          </CardDescription>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {job.is_current && (
+                          <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+                            Current
+                          </Badge>
+                        )}
+                        {jobs.length > 1 && (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              removeJob(index);
+                            }}
+                            className="text-red-400 hover:text-red-300 hover:bg-red-950/30"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  </CardHeader>
 
-              {!isCurrent && (
-                <div className="space-y-2">
-                  <Label htmlFor="endDate" className="text-neutral-200">
-                    End Date
-                  </Label>
-                  <Input
-                    id="endDate"
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                    className="bg-neutral-800 border-neutral-700 text-white"
-                    placeholder="2025"
-                  />
-                </div>
-              )}
+                  {!collapsedJobs[index] && (
+                    <CardContent className="space-y-4 pt-4">
+                      <div className="space-y-2">
+                        <Label className="text-neutral-200">
+                          Position Title *
+                        </Label>
+                        <Input
+                          value={job.position}
+                          onChange={(e) =>
+                            updateJob(index, "position", e.target.value)
+                          }
+                          required
+                          className="bg-neutral-800 border-neutral-700 text-white"
+                          placeholder="e.g., Senior Software Engineer"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label className="text-neutral-200">
+                          Employment Type *
+                        </Label>
+                        <Select
+                          value={job.employment_type}
+                          onValueChange={(value) =>
+                            updateJob(index, "employment_type", value)
+                          }
+                        >
+                          <SelectTrigger className="bg-neutral-800 border-neutral-700 text-white">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="bg-neutral-800 border-neutral-700">
+                            <SelectItem value="Full-time">Full-time</SelectItem>
+                            <SelectItem value="Part-time">Part-time</SelectItem>
+                            <SelectItem value="Contract">Contract</SelectItem>
+                            <SelectItem value="Freelance">Freelance</SelectItem>
+                            <SelectItem value="Internship">
+                              Internship
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label className="text-neutral-200">
+                          Description *
+                        </Label>
+                        <Textarea
+                          value={job.description}
+                          onChange={(e) =>
+                            updateJob(index, "description", e.target.value)
+                          }
+                          required
+                          className="bg-neutral-800 border-neutral-700 text-white"
+                          placeholder="Describe your role and responsibilities..."
+                          rows={5}
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label className="text-neutral-200">
+                            Start Date *
+                          </Label>
+                          <Input
+                            type="date"
+                            value={job.start_date}
+                            onChange={(e) =>
+                              updateJob(index, "start_date", e.target.value)
+                            }
+                            required
+                            className="bg-neutral-800 border-neutral-700 text-white"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label className="text-neutral-200">End Date</Label>
+                          <Input
+                            type="date"
+                            value={job.end_date || ""}
+                            onChange={(e) =>
+                              updateJob(index, "end_date", e.target.value)
+                            }
+                            disabled={job.is_current}
+                            className="bg-neutral-800 border-neutral-700 text-white disabled:opacity-50"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          id={`current-${index}`}
+                          checked={job.is_current}
+                          onChange={(e) =>
+                            updateJob(index, "is_current", e.target.checked)
+                          }
+                          className="h-4 w-4 rounded border-neutral-700 bg-neutral-800 text-teal-600"
+                        />
+                        <Label
+                          htmlFor={`current-${index}`}
+                          className="text-neutral-200 cursor-pointer"
+                        >
+                          I currently work in this position
+                        </Label>
+                      </div>
+                    </CardContent>
+                  )}
+                </Card>
+              ))}
             </CardContent>
           </Card>
 
@@ -294,8 +518,8 @@ const ExperienceFormPageContent = () => {
               {createExperience.isPending || updateExperience.isPending
                 ? "Saving..."
                 : isEdit
-                ? "Update Experience"
-                : "Add Experience"}
+                  ? "Update Experience"
+                  : "Create Experience"}
             </Button>
           </div>
         </form>

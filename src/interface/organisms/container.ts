@@ -8,4 +8,5 @@ export interface IContainerProps {
   classNameLeft?: string;
   classNameRight?: string;
   classNameDetail?: string;
+  isInitialLoad?: boolean;
 }

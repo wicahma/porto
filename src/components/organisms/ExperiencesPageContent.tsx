@@ -4,6 +4,7 @@ import {
   useExperiences,
   useDeleteExperience,
 } from "@/hooks/queries/useExperiences";
+import { getNewestJob, formatDateRange } from "@/utils/helper/date.utils";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -73,77 +74,95 @@ const ExperiencesPageContent = () => {
               <div className="flex items-center justify-center py-12">
                 <div className="h-8 w-8 border-4 border-teal-500 border-t-transparent rounded-full animate-spin" />
               </div>
-            ) : data?.data && data.data.length > 0 ? (
-              <Table>
-                <TableHeader>
-                  <TableRow className="border-neutral-800 hover:bg-neutral-800/50">
-                    <TableHead className="text-neutral-300">Position</TableHead>
-                    <TableHead className="text-neutral-300">Company</TableHead>
-                    <TableHead className="text-neutral-300">Type</TableHead>
-                    <TableHead className="text-neutral-300">Period</TableHead>
-                    <TableHead className="text-neutral-300 text-right">
-                      Actions
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {data.data.map((experience) => (
-                    <TableRow
-                      key={experience.id}
-                      className="border-neutral-800 hover:bg-neutral-800/50"
-                    >
-                      <TableCell className="font-medium text-white">
-                        {experience.position}
-                      </TableCell>
-                      <TableCell className="text-neutral-400">
-                        {experience.company}
-                      </TableCell>
-                      <TableCell>
-                        <Badge className="bg-teal-500/20 text-teal-400 border-teal-500/30">
-                          {experience.employment_type}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-neutral-400">
-                        {experience.start_date} -{" "}
-                        {experience.is_current
-                          ? "Present"
-                          : experience.end_date}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex items-center justify-end gap-2">
-                          <Link href={`/admin/experiences/${experience.id}`}>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="text-neutral-400 hover:text-white"
-                            >
-                              <Pencil className="h-4 w-4" />
-                            </Button>
-                          </Link>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="text-red-400 hover:text-red-300 hover:bg-red-950/30"
-                            onClick={() => setDeleteId(experience.id)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
             ) : (
-              <div className="text-center py-12">
-                <p className="text-neutral-400 mb-4">No experiences yet</p>
-                <Link href="/admin/experiences/new">
-                  <Button className="bg-gradient-to-r from-teal-600 to-cyan-600">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Add Your First Experience
-                  </Button>
-                </Link>
-              </div>
+              <>
+                {data?.data && data.data.length > 0 ? (
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="border-neutral-800 hover:bg-neutral-800/50">
+                        <TableHead className="text-neutral-300">
+                          Position
+                        </TableHead>
+                        <TableHead className="text-neutral-300">
+                          Company
+                        </TableHead>
+                        <TableHead className="text-neutral-300">Type</TableHead>
+                        <TableHead className="text-neutral-300">
+                          Period
+                        </TableHead>
+                        <TableHead className="text-neutral-300 text-right">
+                          Actions
+                        </TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {data.data.map((experience) => {
+                        const newestJob = getNewestJob(
+                          (experience as any)?.jobs || []
+                        );
+                        return (
+                          <TableRow
+                            key={experience.id}
+                            className="border-neutral-800 hover:bg-neutral-800/50"
+                          >
+                            <TableCell className="font-medium text-white">
+                              {newestJob.position}
+                            </TableCell>
+                            <TableCell className="text-neutral-400">
+                              {experience.company}
+                            </TableCell>
+                            <TableCell>
+                              <Badge className="bg-teal-500/20 text-teal-400 border-teal-500/30">
+                                {newestJob.employment_type}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="text-neutral-400">
+                              {formatDateRange(
+                                newestJob.start_date,
+                                newestJob.end_date ?? undefined,
+                                newestJob.is_current
+                              )}
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <div className="flex items-center justify-end gap-2">
+                                <Link
+                                  href={`/admin/experiences/${experience.id}`}
+                                >
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="text-neutral-400 hover:text-white"
+                                  >
+                                    <Pencil className="h-4 w-4" />
+                                  </Button>
+                                </Link>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="text-red-400 hover:text-red-300 hover:bg-red-950/30"
+                                  onClick={() => setDeleteId(experience.id)}
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
+                ) : (
+                  <div className="text-center py-12">
+                    <p className="text-neutral-400 mb-4">No experiences yet</p>
+                    <Link href="/admin/experiences/new">
+                      <Button className="bg-linear-to-r from-teal-600 to-cyan-600">
+                        <Plus className="mr-2 h-4 w-4" />
+                        Add Your First Experience
+                      </Button>
+                    </Link>
+                  </div>
+                )}
+              </>
             )}
           </CardContent>
         </Card>

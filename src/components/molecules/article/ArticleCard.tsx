@@ -1,28 +1,28 @@
 import CircleArrow from "@/assets/svg/circle-arrow";
 import Triangles from "@/assets/svg/triangles";
 import MainCard from "@/components/atoms/ArticleCard";
-import { useNavigationStore } from "@/store/navigationStore";
 import ChipGroup from "@/components/molecules/chips/ChipGroup";
 import { articleFilters } from "@/constants/dummies/article-filters";
-import { m, AnimatePresence } from "motion/react";
 import { useArticles } from "@/hooks/queries/useArticles";
 import { mapArticleToCard } from "@/utils/mappers/article.mapper";
+import { AnimatePresence, m } from "motion/react";
+import { usePathname, useRouter } from "next/navigation";
 
 const ArticleCard = () => {
-  const setPage = useNavigationStore((state) => state.setPage);
-  const detailPage = useNavigationStore((state) => state.detailPage);
-
   const { data: articlesData, isLoading } = useArticles(1, 5);
+  const pathname = usePathname();
+  const router = useRouter();
   const articles = articlesData?.data;
   const mappedArticles = articles?.map(mapArticleToCard) || [];
 
   const handleSetPage = () => {
-    setPage("article");
+    window.history.replaceState(null, "", `/article`);
+    router.prefetch("/article");
   };
 
   return (
     <AnimatePresence mode="wait">
-      {detailPage === "article" ? (
+      {pathname === "/article" ? (
         <m.div
           key="article-detail"
           className="relative p-3 rounded-xl shadow-lg overflow-hidden"

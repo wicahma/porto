@@ -1,26 +1,22 @@
-export interface Experience {
+import { Database } from "./database.interface";
+
+export type TExperienceRow = Database["public"]["Tables"]["experiences"]["Row"];
+export type TExperienceJobRow =
+  Database["public"]["Tables"]["experience_jobs"]["Row"];
+
+export interface ExperienceJob extends TExperienceJobRow {
   id: string;
-  company: string;
-  position: string;
-  employment_type: string;
-  description: string;
-  tags: string[];
-  start_date: string;
-  end_date?: string;
-  is_current: boolean;
-  created_at: string;
-  updated_at: string;
+}
+
+export interface Experience extends TExperienceRow {
+  id: string;
 }
 
 export interface CreateExperienceInput {
   company: string;
-  position: string;
-  employment_type: string;
-  description: string;
+  location: string;
   tags: string[];
-  start_date: string;
-  end_date?: string;
-  is_current: boolean;
+  jobs: Omit<ExperienceJob, "id">[];
 }
 
 export interface UpdateExperienceInput extends Partial<CreateExperienceInput> {

@@ -1,13 +1,13 @@
 "use client";
 import { IContainerProps } from "@/interface/organisms/container";
+import { useLoadingStore } from "@/store/loadingStore";
 import { cn } from "@/utils/helper/cn";
-import { FC, useEffect, useMemo } from "react";
+import { isMdUp } from "@/utils/helper/responsive";
+import { AnimatePresence, m } from "motion/react";
+import { FC } from "react";
 import Breadcrumb from "../molecules/header/Breadcrumb";
 import Infographic from "../molecules/header/Infograpnic";
-import { useNavigationStore } from "@/store/navigationStore";
-import { m, AnimatePresence } from "motion/react";
-import { useLoadingStore } from "@/store/loadingStore";
-import { isMdUp } from "@/utils/helper/responsive";
+import { usePathname } from "next/navigation";
 
 const Container: FC<IContainerProps> = ({
   left,
@@ -17,8 +17,9 @@ const Container: FC<IContainerProps> = ({
   classNameLeft,
   classNameRight,
   classNameDetail,
+  isInitialLoad = false,
 }) => {
-  const detailPage = useNavigationStore((state) => state.detailPage);
+  const pathname = usePathname();
   const { isLoading } = useLoadingStore((state) => state);
 
   return (
@@ -47,7 +48,7 @@ const Container: FC<IContainerProps> = ({
         )}
       >
         <AnimatePresence mode="wait">
-          {!detailPage && (
+          {pathname === "/" && (
             <m.div
               key="left-panel"
               initial={{ opacity: 0 }}
@@ -63,11 +64,11 @@ const Container: FC<IContainerProps> = ({
 
         <m.div
           animate={{
-            right: detailPage ? "50%" : "0%",
+            right: pathname !== "/" ? "50%" : "0%",
             ...(isMdUp()
               ? {
-                  paddingRight: detailPage ? "2.5rem" : "0rem",
-                  paddingLeft: detailPage ? "0rem" : "2.5rem",
+                  paddingRight: pathname !== "/" ? "2.5rem" : "0rem",
+                  paddingLeft: pathname !== "/" ? "0rem" : "2.5rem",
                 }
               : {}),
           }}
@@ -81,15 +82,19 @@ const Container: FC<IContainerProps> = ({
         </m.div>
 
         <AnimatePresence mode="wait">
-          {detailPage && (
+          {pathname !== "/" && (
             <m.div
               key="detail-panel"
-              initial={{
-                opacity: 0,
-                right: "-20%",
-                scale: 0.75,
-                zIndex: -100,
-              }}
+              initial={
+                isInitialLoad
+                  ? false
+                  : {
+                      opacity: 0,
+                      right: "-20%",
+                      scale: 0.75,
+                      zIndex: -100,
+                    }
+              }
               animate={{ opacity: 1, right: "0%", zIndex: 0, scale: 1 }}
               exit={{
                 opacity: 0,

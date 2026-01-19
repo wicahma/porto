@@ -20,7 +20,6 @@ const ButtonsLeft = () => {
       const experiences = experiencesData?.data || [];
       const projects = projectsData?.data || [];
 
-      // Dynamically import to avoid server-side issues with react-pdf
       const { pdf } = await import("@react-pdf/renderer");
       const CVDocument = (await import("@/components/pdf/CVDocument")).default;
 
@@ -39,7 +38,6 @@ const ButtonsLeft = () => {
 
       toast.success("CV downloaded successfully!");
     } catch (error) {
-      console.error("Failed to generate CV:", error);
       toast.error("Failed to generate CV. Please try again.");
     } finally {
       setIsGenerating(false);

@@ -12,7 +12,7 @@ export const mapArticleToCard = (article: Article): ArticleCard => {
     hour12: false,
   };
 
-  const date = new Date(article.created_at);
+  const date = new Date(article.created_at || "");
   const time = date
     .toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })
     .replace(":", ".");
