@@ -8,12 +8,14 @@ interface JobPositionItemProps {
   job: ExperienceJob;
   isNested?: boolean;
   index?: number;
+  onClick?: () => void;
 }
 
 const JobPositionItem = ({
   job,
   isNested = false,
   index = 0,
+  onClick,
 }: JobPositionItemProps) => {
   return (
     <m.div
@@ -25,11 +27,12 @@ const JobPositionItem = ({
         duration: 0.5,
         ease: [0.4, 0, 0.2, 1],
       }}
+      onClick={onClick}
       className={`${
         isNested
           ? "pl-6 border-l-2 border-neutral-800 hover:border-purple-600/50"
           : ""
-      } transition-all`}
+      } transition-all ${onClick ? "cursor-pointer hover:bg-neutral-900/20 rounded-lg p-3 -m-3" : ""}`}
     >
       <h4 className="text-xl font-semibold text-neutral-400 mb-2">
         {job.position}
@@ -42,7 +45,7 @@ const JobPositionItem = ({
           {formatDateRange(
             job.start_date,
             job.end_date || undefined,
-            job.is_current
+            job.is_current,
           )}
         </span>
       </div>

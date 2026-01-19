@@ -1,11 +1,14 @@
 "use client";
 
 import JobPositionItem from "@/components/atoms/JobPositionItem";
+import ExperienceDialog from "@/components/molecules/experience/ExperienceDialog";
+import { ExperienceCard } from "@/constants/dummies/experience-carousel";
 import {
   Experience,
   ExperienceJob,
 } from "@/interface/entities/experience.interface";
 import { cn } from "@/lib/utils";
+import { formatDateRange } from "@/utils/helper/date.utils";
 import { ChevronUp } from "lucide-react";
 import { m } from "motion/react";
 import { useState } from "react";
@@ -20,7 +23,29 @@ const CompanyExperienceGroup = ({
   index = 0,
 }: CompanyExperienceGroupProps) => {
   const [isExpanded, setIsExpanded] = useState(true);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedJob, setSelectedJob] = useState<ExperienceJob | null>(null);
   const hasMultipleJobs = (experience?.jobs?.length || 0) > 1;
+
+  const mapJobToExperienceCard = (job: ExperienceJob): ExperienceCard => {
+    return {
+      id: job.id,
+      company: experience.company,
+      role: job.position,
+      period: formatDateRange(
+        job.start_date,
+        job.end_date || undefined,
+        job.is_current,
+      ),
+      description: job.description,
+      technologies: experience.tags || [],
+    };
+  };
+
+  const handleJobClick = (job: ExperienceJob) => {
+    setSelectedJob(job);
+    setIsDialogOpen(true);
+  };
 
   return (
     <m.div
@@ -72,7 +97,7 @@ const CompanyExperienceGroup = ({
               <ChevronUp
                 className={cn(
                   "w-5 h-5 transition-transform duration-300",
-                  isExpanded && "rotate-180"
+                  isExpanded && "rotate-180",
                 )}
               />
             </div>
@@ -88,9 +113,18 @@ const CompanyExperienceGroup = ({
               job={job}
               isNested={hasMultipleJobs}
               index={jobIndex}
+              onClick={() => handleJobClick(job)}
             />
           ))}
         </div>
+      )}
+
+      {selectedJob && (
+        <ExperienceDialog
+          data={mapJobToExperienceCard(selectedJob)}
+          isOpen={isDialogOpen}
+          onClose={() => setIsDialogOpen(false)}
+        />
       )}
     </m.div>
   );

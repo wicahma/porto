@@ -61,7 +61,7 @@ const ArticleDetail = ({ skipAnimation = false }: ArticleDetailProps) => {
       <RenderIf condition={Boolean(!isLoading && !isError && data?.data)}>
         <div className="space-y-0">
           <AnimatePresence mode="popLayout">
-            {data.data.map((article, index) => (
+            {data?.data?.map((article, index) => (
               <Link key={article.id} href={`/article/${article.slug}`}>
                 <m.article
                   initial={{ opacity: 0, y: 20 }}

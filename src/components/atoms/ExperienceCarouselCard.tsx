@@ -5,9 +5,9 @@ import { m, AnimatePresence } from "motion/react";
 import { useState, useRef, useEffect } from "react";
 import { useScrollStore } from "@/store/scrollStore";
 import { createPortal } from "react-dom";
-import Image from "next/image";
 import { isMdUp } from "@/utils/helper/responsive";
 import ListLimiter from "./chips/ListLimiter";
+import ExperienceDialog from "@/components/molecules/experience/ExperienceDialog";
 
 interface ExperienceCardProps {
   data: ExperienceCard;
@@ -19,6 +19,7 @@ const ExperienceCarouselCard = ({ data, isCenter }: ExperienceCardProps) => {
   const [cardPosition, setCardPosition] = useState({ top: 0, left: 0 });
   const [canHover, setCanHover] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const isScrolling = useScrollStore((state) => state.isScrolling);
   const isExpanded = isCenter && isHovered && canHover && !isScrolling;
 
@@ -119,6 +120,7 @@ const ExperienceCarouselCard = ({ data, isCenter }: ExperienceCardProps) => {
               zIndex: 100,
             }}
             onMouseLeave={() => setIsHovered(false)}
+            onClick={() => setIsDialogOpen(true)}
           >
             <div className="flex h-full">
               <div className="flex-1 py-6 px-5 flex flex-col justify-center gap-3">
@@ -197,13 +199,18 @@ const ExperienceCarouselCard = ({ data, isCenter }: ExperienceCardProps) => {
           </m.div>
         )}
       </AnimatePresence>,
-      document.body
+      document.body,
     );
 
   return (
     <>
       <CollapsedCard />
       {isExpanded && <ExpandedCard />}
+      <ExperienceDialog
+        data={data}
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+      />
     </>
   );
 };
