@@ -18,8 +18,8 @@ import {
 import Link from "next/link";
 import { Save, ArrowLeft } from "lucide-react";
 import { useArticleFormHooks } from "@/hooks/pages/article-form.hook";
-import RenderIf from "@/utils/helper/render-if";
-import WysiwygEditor from "../molecules/article/WysiwygEditor";
+import { RenderIf } from "@/utils/helper/render-if";
+import WysiwygEditor from "../molecules/WysiwygEditor";
 
 export const ArticleFormPage = () => {
   const hooks = useArticleFormHooks();
@@ -40,7 +40,6 @@ export const ArticleFormPage = () => {
   const {
     isEdit,
     isLoading,
-    setTitle,
     setSlug,
     setExcerpt,
     setContent,
@@ -82,7 +81,7 @@ export const ArticleFormPage = () => {
         </div>
 
         <RenderIf condition={isLoading && isEdit}>
-          <div className="min-h-screen bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950 flex items-center justify-center">
+          <div className="min-h-screen bg-linear-to-br from-neutral-950 via-neutral-900 to-neutral-950 flex items-center justify-center">
             <div className="h-12 w-12 border-4 border-pink-500 border-t-transparent rounded-full animate-spin" />
           </div>
         </RenderIf>

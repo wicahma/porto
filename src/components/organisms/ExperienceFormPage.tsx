@@ -29,7 +29,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { formatDateRange } from "@/utils/helper/date.utils";
-import RenderIf, { handleTernary } from "@/utils/helper/render-if";
+import { RenderIf, handleTernary } from "@/utils/helper/render-if";
 import { useExperienceFormHooks } from "@/hooks/pages/experience-form.hook";
 
 const ExperienceFormPageContent = () => {

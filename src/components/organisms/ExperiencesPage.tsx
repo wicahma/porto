@@ -17,8 +17,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/atoms/popups/dialog";
-import RenderIf from "@/utils/helper/render-if";
-import { ExperiencesTable } from "@/components/molecules/ExperiencesTable";
+import { RenderIf } from "@/utils/helper/render-if";
+import { ExperiencesTable } from "@/components/molecules/tables/ExperiencesTable";
 import { useExperiencesPageHook } from "@/hooks/pages/experiences-page.hook";
 
 const ExperiencesPageContent = () => {
@@ -99,7 +99,6 @@ const ExperiencesPageContent = () => {
               <Button
                 onClick={handleDelete}
                 className="bg-red-600 hover:bg-red-700"
-                // You may want to add a loading state from the hook if needed
               >
                 Delete
               </Button>

@@ -7,8 +7,8 @@ import {
 import Link from "next/link";
 import { Badge } from "@/components/atoms/chips/badge";
 import { Calendar, Clock } from "lucide-react";
-import ArticleHeader from "@/components/molecules/article/ArticleHeader";
-import ArticleFooter from "@/components/molecules/article/ArticleFooter";
+import ArticleHeader from "@/components/molecules/ArticleHeader";
+import ArticleFooter from "@/components/molecules/ArticleFooter";
 
 interface ArticlePageProps {
   params: Promise<{

@@ -11,7 +11,7 @@ import {
 import Link from "next/link";
 import { Pencil, Trash2 } from "lucide-react";
 import { getNewestJob, formatDateRange } from "@/utils/helper/date.utils";
-import RenderIf from "@/utils/helper/render-if";
+import { RenderIf } from "@/utils/helper/render-if";
 import { Experience } from "@/interface/entities/experience.interface";
 
 interface ExperiencesTableProps {

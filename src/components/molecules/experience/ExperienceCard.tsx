@@ -8,7 +8,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import ExperienceCarouselCard from "../carousels/ExperienceCarouselCard";
-import RenderIf from "@/utils/helper/render-if";
+import { RenderIf } from "@/utils/helper/render-if";
 
 const ExperienceCard = () => {
   const router = useRouter();

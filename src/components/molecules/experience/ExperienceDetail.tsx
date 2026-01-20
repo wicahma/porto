@@ -6,7 +6,7 @@ import Skeleton from "@/components/atoms/animations/Skeleton";
 import CompanyExperienceGroup from "@/components/molecules/experience/CompanyExperienceGroup";
 import { useExperiences } from "@/hooks/queries/experience.wrapper";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
-import RenderIf from "@/utils/helper/render-if";
+import { RenderIf } from "@/utils/helper/render-if";
 import { AnimatePresence, m } from "motion/react";
 
 const ExperienceDetailSkeleton = () => {

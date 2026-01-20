@@ -1,7 +1,7 @@
 import ArrowDown from "@/assets/svg/arrow-down";
-import ButtonsLeft from "@/components/molecules/home/ButtonsLeft";
-import MeCard from "@/components/molecules/home/MeCard";
-import Socials from "./Socials";
+import ButtonsLeft from "@/components/atoms/buttons/ButtonsLeft";
+import MeCard from "@/components/atoms/cards/MeCard";
+import Socials from "../../molecules/Socials";
 
 const LeftCard = () => {
   return (

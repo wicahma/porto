@@ -5,7 +5,7 @@ import Br from "@/assets/svg/br";
 import Skeleton from "@/components/atoms/animations/Skeleton";
 import { useProjects } from "@/hooks/queries/project.wrapper";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
-import RenderIf from "@/utils/helper/render-if";
+import { RenderIf } from "@/utils/helper/render-if";
 import { AnimatePresence, m } from "motion/react";
 
 const ProjectDetailSkeleton = () => {

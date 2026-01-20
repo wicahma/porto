@@ -6,10 +6,10 @@ import { cn } from "@/utils/helper/cn";
 import { AnimatePresence, m } from "motion/react";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
-import AboutCard from "../../atoms/cards/AboutCard";
-import ArticleCard from "../article/ArticleCard";
-import ExperienceCard from "../experience/ExperienceCard";
-import ProjectCard from "../projects/ProjectCard";
+import AboutCard from "./AboutCard";
+import ArticleCard from "./ArticleCardMain";
+import ExperienceCard from "../../molecules/experience/ExperienceCard";
+import ProjectCard from "./ProjectCard";
 
 const RightCard = () => {
   const scrollRef = useSmoothScroll();

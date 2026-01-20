@@ -1,10 +1,10 @@
+import DashboardPage from "@/components/organisms/DashboardPage";
 import AdminContainer from "@/components/organisms/wrapper/AdminContainer";
-import DashboardPageContent from "@/components/organisms/DashboardPage";
 
 const page = () => {
   return (
     <AdminContainer>
-      <DashboardPageContent />
+      <DashboardPage />
     </AdminContainer>
   );
 };
