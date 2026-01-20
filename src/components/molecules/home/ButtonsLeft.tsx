@@ -21,7 +21,8 @@ const ButtonsLeft = () => {
       const projects = projectsData?.data || [];
 
       const { pdf } = await import("@react-pdf/renderer");
-      const CVDocument = (await import("@/components/pdf/CVDocument")).default;
+      const CVDocument = (await import("@/components/molecules/pdf/CVDocument"))
+        .default;
 
       const blob = await pdf(
         <CVDocument experiences={experiences} projects={projects} />,

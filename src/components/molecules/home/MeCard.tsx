@@ -1,8 +1,8 @@
 import CubeBluered from "@/assets/svg/cube-bluered";
 import Hello from "@/assets/svg/hello";
 import { FadePull } from "@/components/atoms/animations/FadePull";
-import { LettersPull } from "@/components/atoms/text/LettersPull";
-import { WordsPull } from "@/components/atoms/text/WordsPull";
+import { LettersPull } from "@/components/atoms/animations/LettersPull";
+import { WordsPull } from "@/components/atoms/animations/WordsPull";
 import { cn } from "@/utils/helper/cn";
 import {
   animate,

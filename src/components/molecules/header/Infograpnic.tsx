@@ -2,7 +2,7 @@
 import { MapPin } from "lucide-react";
 import { useEffect, useState } from "react";
 import Globe from "@/components/atoms/animations/Globe";
-import Tooltip from "@/components/atoms/Tooltip";
+import Tooltip from "@/components/atoms/popups/Tooltip";
 
 export default function Infographic() {
   const [currentTime, setCurrentTime] = useState<Date | undefined>(undefined);

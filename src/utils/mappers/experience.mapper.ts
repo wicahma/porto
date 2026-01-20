@@ -6,7 +6,7 @@ import { ExperienceCard } from "@/constants/dummies/experience-carousel";
 import { getNewestJob } from "@/utils/helper/date.utils";
 
 export const mapExperienceToCard = (
-  experience: Experience & { jobs: ExperienceJob[] }
+  experience: Experience & { jobs: ExperienceJob[] },
 ): ExperienceCard => {
   const newestJob = getNewestJob(experience.jobs || []);
 
@@ -23,6 +23,7 @@ export const mapExperienceToCard = (
     id: experience.id,
     company: experience.company,
     role: newestJob.position,
+    competency: newestJob.competency,
     period,
     description: newestJob.description,
     technologies: experience.tags || [],
@@ -31,7 +32,7 @@ export const mapExperienceToCard = (
 };
 
 export const filterUniqueCompanies = (
-  experiences: (Experience & { jobs: ExperienceJob[] })[]
+  experiences: (Experience & { jobs: ExperienceJob[] })[],
 ): (Experience & { jobs: ExperienceJob[] })[] => {
   const companyMap = new Map<string, Experience & { jobs: ExperienceJob[] }>();
 

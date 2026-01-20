@@ -1,6 +1,5 @@
 "use client";
 import DiamaDev from "@/assets/svg/diama-dev";
-import { Bulb } from "@/components/atoms/Bulb";
 import { FadePull } from "@/components/atoms/animations/FadePull";
 import { nav_link } from "@/constants/navbar";
 import { cn } from "@/utils/helper/cn";
@@ -50,9 +49,6 @@ const Navbar = () => {
             ))}
           </FadePull>
         </ul>
-      </div>
-      <div className="z-10 aspect-square overflow-x-clip relative h-[56px] flex items-center justify-center ">
-        <Bulb />
       </div>
     </FadePull>
   );
