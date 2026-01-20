@@ -1,6 +1,6 @@
 "use client";
 
-import JobPositionItem from "@/components/atoms/JobPositionItem";
+import JobPositionItem from "@/components/molecules/carousels/JobPositionItem";
 import ExperienceDialog from "@/components/molecules/experience/ExperienceDialog";
 import { ExperienceCard } from "@/constants/dummies/experience-carousel";
 import {

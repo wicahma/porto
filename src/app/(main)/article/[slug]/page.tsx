@@ -5,7 +5,7 @@ import {
   getRelatedArticlesAction,
 } from "@/actions/article.actions";
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/components/atoms/chips/badge";
 import { Calendar, Clock } from "lucide-react";
 import ArticleHeader from "@/components/molecules/article/ArticleHeader";
 import ArticleFooter from "@/components/molecules/article/ArticleFooter";
@@ -66,7 +66,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const relatedResult = await getRelatedArticlesAction(
     article.id,
     article.category,
-    3
+    3,
   );
   const relatedArticles = relatedResult.success ? relatedResult.data : [];
 
@@ -97,7 +97,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
-                  }
+                  },
                 )}
               </time>
             </div>

@@ -1,6 +1,5 @@
 import Sun from "@/assets/svg/sun";
-import ExperienceCarouselCard from "@/components/atoms/ExperienceCarouselCard";
-import StackedCarousel from "@/components/atoms/StackedCarousel";
+import StackedCarousel from "@/components/molecules/carousels/StackedCarousel";
 import { useExperiences } from "@/hooks/queries/experience.wrapper";
 import {
   filterUniqueCompanies,
@@ -8,6 +7,8 @@ import {
 } from "@/utils/mappers/experience.mapper";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
+import ExperienceCarouselCard from "../carousels/ExperienceCarouselCard";
+import RenderIf from "@/utils/helper/render-if";
 
 const ExperienceCard = () => {
   const router = useRouter();
@@ -15,7 +16,7 @@ const ExperienceCard = () => {
   const experiences = experiencesData?.data;
 
   const handleSetPage = () => {
-    window.history.replaceState(null, "", `/experience`);
+    globalThis.history.replaceState(null, "", `/experience`);
     router.prefetch("/experience");
   };
 
@@ -37,11 +38,13 @@ const ExperienceCard = () => {
         <Sun />
       </button>
 
-      {isLoading ? (
+      <RenderIf condition={isLoading}>
         <div className="w-full h-50 flex justify-center items-center mt-10">
           <div className="animate-pulse w-50 h-50 bg-[#131313] border border-[#1a1a1a] rounded-2xl" />
         </div>
-      ) : mappedExperiences.length > 0 ? (
+      </RenderIf>
+
+      <RenderIf condition={!isLoading && mappedExperiences.length > 0}>
         <StackedCarousel
           items={mappedExperiences}
           renderCard={(item, _, isCenter) => (
@@ -54,11 +57,13 @@ const ExperienceCard = () => {
           cardHeight={200}
           className="mt-10"
         />
-      ) : (
+      </RenderIf>
+
+      <RenderIf condition={!isLoading && mappedExperiences.length === 0}>
         <div className="w-full h-50 flex justify-center items-center mt-10 text-neutral-500">
           No experience data available
         </div>
-      )}
+      </RenderIf>
     </div>
   );
 };

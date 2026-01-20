@@ -9,8 +9,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+} from "@/components/atoms/cards/card";
+import { Button } from "@/components/atoms/buttons/button";
 import { FileText, Briefcase, Award, Plus, Eye } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import "./globals.css";
-import Providers from "@/components/organisms/Providers";
+import Providers from "@/components/organisms/wrapper/Providers";
 import { ViewTransitions } from "next-view-transitions";
 
 const openSans = Open_Sans({

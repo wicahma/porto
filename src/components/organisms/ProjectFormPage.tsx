@@ -7,17 +7,17 @@ import {
   useCreateProject,
   useUpdateProject,
 } from "@/hooks/queries/project.wrapper";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/atoms/buttons/button";
+import { Input } from "@/components/atoms/inputs/input";
+import { Label } from "@/components/atoms/inputs/label";
+import { Textarea } from "@/components/atoms/inputs/textarea";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/atoms/cards/card";
 import { ArrowLeft, Save } from "lucide-react";
 import Link from "next/link";
 

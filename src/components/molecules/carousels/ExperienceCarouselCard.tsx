@@ -6,8 +6,8 @@ import { useState, useRef, useEffect } from "react";
 import { useScrollStore } from "@/store/scrollStore";
 import { createPortal } from "react-dom";
 import { isMdUp } from "@/utils/helper/responsive";
-import ListLimiter from "./chips/ListLimiter";
 import ExperienceDialog from "@/components/molecules/experience/ExperienceDialog";
+import ListLimiter from "@/components/atoms/chips/ListLimiter";
 
 interface ExperienceCardProps {
   data: ExperienceCard;

@@ -7,7 +7,7 @@ import ExperienceDetail from "../molecules/experience/ExperienceDetail";
 import LeftCard from "../molecules/home/LeftCard";
 import RightCard from "../molecules/home/RightCard";
 import ProjectDetail from "../molecules/projects/ProjectDetail";
-import Container from "./Container";
+import Container from "./wrapper/Container";
 
 const MainPage = () => {
   const pathname = usePathname();

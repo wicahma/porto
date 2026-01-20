@@ -1,7 +1,7 @@
 "use client";
 import DiamaDev from "@/assets/svg/diama-dev";
 import { Bulb } from "@/components/atoms/Bulb";
-import { FadePull } from "@/components/atoms/FadePull";
+import { FadePull } from "@/components/atoms/animations/FadePull";
 import { nav_link } from "@/constants/navbar";
 import { cn } from "@/utils/helper/cn";
 import { Link } from "next-view-transitions";
@@ -40,7 +40,7 @@ const Navbar = () => {
                 <Link
                   className={cn(
                     cnLink,
-                    pathname.startsWith(d.href) && "text-neutral-100"
+                    pathname.startsWith(d.href) && "text-neutral-100",
                   )}
                   href={d.href}
                 >
@@ -82,7 +82,7 @@ const pageAnimation = (from: string, to: string) => {
     {
       duration: 1000,
       easing: "cubic-bezier(0.76, 0, 0.24, 1)",
-    }
+    },
   );
 };
 

@@ -1,24 +1,24 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/atoms/buttons/button";
+import { Input } from "@/components/atoms/inputs/input";
+import { Label } from "@/components/atoms/inputs/label";
+import { Textarea } from "@/components/atoms/inputs/textarea";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/atoms/cards/card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
+} from "@/components/atoms/inputs/select";
+import { Badge } from "@/components/atoms/chips/badge";
 import {
   ArrowLeft,
   Save,

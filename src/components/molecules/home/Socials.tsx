@@ -1,5 +1,5 @@
 "use client";
-import { StaggerPull } from "@/components/atoms/StaggerPull";
+import { StaggerPull } from "@/components/atoms/animations/StaggerPull";
 import { cn } from "@/utils/helper/cn";
 import { Github, Instagram, Linkedin } from "lucide-react";
 import { m, useInView } from "motion/react";

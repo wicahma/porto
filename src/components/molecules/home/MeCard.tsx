@@ -1,6 +1,6 @@
 import CubeBluered from "@/assets/svg/cube-bluered";
 import Hello from "@/assets/svg/hello";
-import { FadePull } from "@/components/atoms/FadePull";
+import { FadePull } from "@/components/atoms/animations/FadePull";
 import { LettersPull } from "@/components/atoms/text/LettersPull";
 import { WordsPull } from "@/components/atoms/text/WordsPull";
 import { cn } from "@/utils/helper/cn";
@@ -34,7 +34,7 @@ const MeCard = () => {
   const boxShadow = useTransform(
     hoverProgress,
     [0, 1],
-    ["0px 0px 0px rgba(0,0,0,0)", "0px 40px 80px rgba(0,0,0,0.35)"]
+    ["0px 0px 0px rgba(0,0,0,0)", "0px 40px 80px rgba(0,0,0,0.35)"],
   );
 
   const transform = useMotionTemplate`rotateX(${xSpring}deg) rotateY(${ySpring}deg)`;
@@ -93,7 +93,7 @@ const MeCard = () => {
       <m.div
         className={cn(
           `absolute aspect-square bg-cyan-300 rounded-full opacity-50 cursor-pointer blur-2xl`,
-          "w-[160px]"
+          "w-[160px]",
         )}
         style={{
           x: xGlow,

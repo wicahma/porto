@@ -1,7 +1,7 @@
 "use client";
 import { MapPin } from "lucide-react";
 import { useEffect, useState } from "react";
-import Globe from "@/components/atoms/Globe";
+import Globe from "@/components/atoms/animations/Globe";
 import Tooltip from "@/components/atoms/Tooltip";
 
 export default function Infographic() {

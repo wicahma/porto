@@ -1,6 +1,6 @@
 "use client";
 import { Chat } from "@/assets/svg/chat";
-import ButtonBig from "@/components/atoms/ButtonBig";
+import ButtonBig from "@/components/atoms/buttons/ButtonBig";
 import { env } from "@/constants/env";
 import { useExperiences } from "@/hooks/queries/experience.wrapper";
 import { useProjects } from "@/hooks/queries/project.wrapper";

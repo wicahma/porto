@@ -1,5 +1,5 @@
 "use client";
-import BreadcrumbArrow from "@/components/atoms/BreadcrumbArrow";
+import BreadcrumbArrow from "@/components/atoms/breadcrumbs/BreadcrumbArrow";
 import { cn } from "@/utils/helper/cn";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -67,7 +67,7 @@ export default function Breadcrumb() {
               <span
                 className={cn(
                   isActive ? "text-[#02C380]" : "text-[#004E33]",
-                  "font-medium md:text-xl text-base"
+                  "font-medium md:text-xl text-base",
                 )}
               >
                 {crumb.label}

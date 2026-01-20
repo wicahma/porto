@@ -1,14 +1,14 @@
 "use client";
 
 import { useArticles, useDeleteArticle } from "@/hooks/queries/article.wrapper";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/atoms/buttons/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/atoms/cards/card";
 import {
   Table,
   TableBody,
@@ -16,8 +16,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
+} from "@/components/atoms/table";
+import { Badge } from "@/components/atoms/chips/badge";
 import { Plus, Pencil, Trash2, Eye } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -28,7 +28,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@/components/atoms/popups/dialog";
 
 const ArticlesPageContent = () => {
   const { data, isLoading } = useArticles(1, 100);

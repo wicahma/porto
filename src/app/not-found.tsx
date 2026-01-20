@@ -1,5 +1,5 @@
 "use client";
-import NotFoundWaterAnimation from "@/components/molecules/NotFoundWaterAnimation";
+import NotFoundWaterAnimation from "@/components/molecules/loaders-notfound/NotFoundWaterAnimation";
 import Link from "next/link";
 import { AnimatePresence, m } from "motion/react";
 export default function NotFound() {

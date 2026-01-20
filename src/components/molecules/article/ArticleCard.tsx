@@ -1,6 +1,6 @@
 import CircleArrow from "@/assets/svg/circle-arrow";
 import Triangles from "@/assets/svg/triangles";
-import MainCard from "@/components/atoms/ArticleCard";
+import MainCard from "@/components/atoms/cards/ArticleCard";
 import ChipGroup from "@/components/molecules/chips/ChipGroup";
 import { articleFilters } from "@/constants/dummies/article-filters";
 import { useArticles } from "@/hooks/queries/article.wrapper";

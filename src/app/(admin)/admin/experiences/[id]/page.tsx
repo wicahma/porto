@@ -1,5 +1,5 @@
-import AdminContainer from "@/components/organisms/AdminContainer";
-import ExperienceFormPageContent from "@/components/organisms/ExperienceFormPageContent";
+import AdminContainer from "@/components/organisms/wrapper/AdminContainer";
+import ExperienceFormPageContent from "@/components/organisms/ExperienceFormPage";
 
 const page = () => {
   return (

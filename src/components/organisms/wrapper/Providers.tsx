@@ -1,7 +1,7 @@
 "use client";
 import { domAnimation, LazyMotion } from "motion/react";
 import React from "react";
-import { GlobCursor } from "../atoms/GlobCursor";
+import { GlobCursor } from "../../atoms/animations/GlobCursor";
 import { useSecretHotkeys } from "@/hooks/secret-hotkeys.hook";
 import { useRouter } from "next/navigation";
 import { env } from "@/constants/env";

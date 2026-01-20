@@ -1,5 +1,5 @@
 import React from "react";
-import { AdminNav } from "../molecules/admin/AdminNav";
+import { AdminNav } from "../../molecules/navs/AdminNav";
 
 const AdminContainer: React.FC<{ children: React.ReactNode }> = ({
   children,

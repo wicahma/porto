@@ -1,21 +1,21 @@
 "use client";
 
 import { getUserAction, signInAction } from "@/actions/auth.actions";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/atoms/popups/alert";
+import { Button } from "@/components/atoms/buttons/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from "@/components/atoms/cards/card";
+import { Input } from "@/components/atoms/inputs/input";
+import { Label } from "@/components/atoms/inputs/label";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import AdminContainer from "./AdminContainer";
+import AdminContainer from "./wrapper/AdminContainer";
 
 const LoginPage = () => {
   const router = useRouter();

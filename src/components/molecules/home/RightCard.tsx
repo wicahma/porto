@@ -6,7 +6,7 @@ import { cn } from "@/utils/helper/cn";
 import { AnimatePresence, m } from "motion/react";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
-import AboutCard from "../about/AboutCard";
+import AboutCard from "../../atoms/cards/AboutCard";
 import ArticleCard from "../article/ArticleCard";
 import ExperienceCard from "../experience/ExperienceCard";
 import ProjectCard from "../projects/ProjectCard";
@@ -38,7 +38,7 @@ const RightCard = () => {
     <m.div
       ref={scrollRef}
       className={cn(
-        "mask-color-card-top pt-10 space-y-10 md:overflow-y-scroll md:overflow-x-clip md:h-[calc(100vh-10rem)] pb-20"
+        "mask-color-card-top pt-10 space-y-10 md:overflow-y-scroll md:overflow-x-clip md:h-[calc(100vh-10rem)] pb-20",
       )}
     >
       <AnimatePresence mode="wait">

@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/atoms/buttons/button";
 import {
   FileText,
   Briefcase,
@@ -64,7 +64,7 @@ export function AdminNav() {
                   variant="ghost"
                   className={cn(
                     "text-neutral-400 hover:text-white hover:bg-neutral-800",
-                    isActive && "bg-neutral-800 text-white"
+                    isActive && "bg-neutral-800 text-white",
                   )}
                 >
                   <Icon className="mr-2 h-4 w-4" />

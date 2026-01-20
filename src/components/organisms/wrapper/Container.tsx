@@ -5,8 +5,8 @@ import { cn } from "@/utils/helper/cn";
 import { isMdUp } from "@/utils/helper/responsive";
 import { AnimatePresence, m } from "motion/react";
 import { FC } from "react";
-import Breadcrumb from "../molecules/header/Breadcrumb";
-import Infographic from "../molecules/header/Infograpnic";
+import Breadcrumb from "../../molecules/header/Breadcrumb";
+import Infographic from "../../molecules/header/Infograpnic";
 import { usePathname } from "next/navigation";
 
 const Container: FC<IContainerProps> = ({
@@ -35,7 +35,7 @@ const Container: FC<IContainerProps> = ({
       <div
         className={cn(
           className,
-          "flex md:flex-nowrap flex-wrap-reverse md:gap-20 gap-5 container shrink-0 mx-auto w-full items-center md:mb-0 mb-5 md:px-0 px-5"
+          "flex md:flex-nowrap flex-wrap-reverse md:gap-20 gap-5 container shrink-0 mx-auto w-full items-center md:mb-0 mb-5 md:px-0 px-5",
         )}
       >
         <Breadcrumb />
@@ -44,7 +44,7 @@ const Container: FC<IContainerProps> = ({
       <div
         className={cn(
           "flex gap-20 container md:flex-nowrap md:px-0 px-5 flex-wrap shrink-0 mx-auto w-full relative",
-          className
+          className,
         )}
       >
         <AnimatePresence mode="wait">
@@ -75,7 +75,7 @@ const Container: FC<IContainerProps> = ({
           transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
           className={cn(
             "md:overflow-hidden md:w-1/2 w-full md:absolute",
-            classNameRight
+            classNameRight,
           )}
         >
           {right}
@@ -105,7 +105,7 @@ const Container: FC<IContainerProps> = ({
               transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
               className={cn(
                 "overflow-hidden md:absolute md:w-1/2 md:pl-10 w-full",
-                classNameDetail
+                classNameDetail,
               )}
             >
               {detail}

@@ -1,5 +1,5 @@
-import AdminContainer from "@/components/organisms/AdminContainer";
-import ExperiencesPageContent from "@/components/organisms/ExperiencesPageContent";
+import AdminContainer from "@/components/organisms/wrapper/AdminContainer";
+import ExperiencesPageContent from "@/components/organisms/ExperiencesPage";
 
 const page = () => {
   return (

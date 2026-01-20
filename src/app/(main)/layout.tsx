@@ -1,5 +1,5 @@
 "use client";
-import LoadingScreen from "@/components/molecules/LoadingScreen";
+import LoadingScreen from "@/components/molecules/loaders-notfound/LoadingScreen";
 import { usePageLoading } from "@/hooks/loading.hook";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 import { ILayoutProps } from "@/interface/app/layout";

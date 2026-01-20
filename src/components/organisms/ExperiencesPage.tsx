@@ -5,14 +5,14 @@ import {
   useDeleteExperience,
 } from "@/hooks/queries/experience.wrapper";
 import { getNewestJob, formatDateRange } from "@/utils/helper/date.utils";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/atoms/buttons/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/atoms/cards/card";
 import {
   Table,
   TableBody,
@@ -20,8 +20,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
+} from "@/components/atoms/table";
+import { Badge } from "@/components/atoms/chips/badge";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -32,7 +32,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@/components/atoms/popups/dialog";
 
 const ExperiencesPageContent = () => {
   const { data, isLoading } = useExperiences(1, 100);
