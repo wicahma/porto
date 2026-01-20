@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/atoms/buttons/button";
 import {
   Card,

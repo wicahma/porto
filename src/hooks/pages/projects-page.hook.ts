@@ -1,3 +1,4 @@
+"use client";
 import { useProjects, useDeleteProject } from "@/hooks/queries/project.wrapper";
 import { useState } from "react";
 import toast from "react-hot-toast";
