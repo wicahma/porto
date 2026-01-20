@@ -1,11 +1,6 @@
 "use client";
-
-import {
-  useExperiences,
-  useDeleteExperience,
-} from "@/hooks/queries/experience.wrapper";
-import { getNewestJob, formatDateRange } from "@/utils/helper/date.utils";
-import { Button } from "@/components/atoms/buttons/button";
+import { Plus } from "lucide-react";
+import Link from "next/link";
 import {
   Card,
   CardContent,
@@ -13,18 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/atoms/cards/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/atoms/table";
-import { Badge } from "@/components/atoms/chips/badge";
-import { Plus, Pencil, Trash2 } from "lucide-react";
-import Link from "next/link";
-import { useState } from "react";
+import { Button } from "@/components/atoms/buttons/button";
 import {
   Dialog,
   DialogContent,
@@ -33,21 +17,18 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/atoms/popups/dialog";
+import RenderIf from "@/utils/helper/render-if";
+import { ExperiencesTable } from "@/components/molecules/ExperiencesTable";
+import { useExperiencesPageHook } from "@/hooks/pages/experiences-page.hook";
 
 const ExperiencesPageContent = () => {
-  const { data, isLoading } = useExperiences(1, 100);
-  const deleteExperience = useDeleteExperience();
-  const [deleteId, setDeleteId] = useState<string | null>(null);
-
-  const handleDelete = async () => {
-    if (deleteId) {
-      await deleteExperience.mutateAsync(deleteId);
-      setDeleteId(null);
-    }
-  };
+  const {
+    data: { experiences, count, isLoading, deleteId },
+    handlers: { setDeleteId, handleDelete },
+  } = useExperiencesPageHook();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950 p-8">
+    <div className="min-h-screen bg-linear-to-br from-neutral-950 via-neutral-900 to-neutral-950 p-8">
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="flex items-center justify-between">
           <div>
@@ -55,7 +36,7 @@ const ExperiencesPageContent = () => {
             <p className="text-neutral-400">Manage your work experience</p>
           </div>
           <Link href="/admin/experiences/new">
-            <Button className="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700">
+            <Button className="bg-linear-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700">
               <Plus className="mr-2 h-4 w-4" />
               Add Experience
             </Button>
@@ -66,104 +47,33 @@ const ExperiencesPageContent = () => {
           <CardHeader>
             <CardTitle className="text-white">All Experiences</CardTitle>
             <CardDescription className="text-neutral-400">
-              {data?.count ?? 0} experiences total
+              {count} experiences total
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {isLoading ? (
+            <RenderIf condition={isLoading}>
               <div className="flex items-center justify-center py-12">
                 <div className="h-8 w-8 border-4 border-teal-500 border-t-transparent rounded-full animate-spin" />
               </div>
-            ) : (
-              <>
-                {data?.data && data.data.length > 0 ? (
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="border-neutral-800 hover:bg-neutral-800/50">
-                        <TableHead className="text-neutral-300">
-                          Position
-                        </TableHead>
-                        <TableHead className="text-neutral-300">
-                          Company
-                        </TableHead>
-                        <TableHead className="text-neutral-300">Type</TableHead>
-                        <TableHead className="text-neutral-300">
-                          Period
-                        </TableHead>
-                        <TableHead className="text-neutral-300 text-right">
-                          Actions
-                        </TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {data.data.map((experience) => {
-                        const newestJob = getNewestJob(
-                          (experience as any)?.jobs || [],
-                        );
-                        return (
-                          <TableRow
-                            key={experience.id}
-                            className="border-neutral-800 hover:bg-neutral-800/50"
-                          >
-                            <TableCell className="font-medium text-white">
-                              {newestJob.position}
-                            </TableCell>
-                            <TableCell className="text-neutral-400">
-                              {experience.company}
-                            </TableCell>
-                            <TableCell>
-                              <Badge className="bg-teal-500/20 text-teal-400 border-teal-500/30">
-                                {newestJob.employment_type}
-                              </Badge>
-                            </TableCell>
-                            <TableCell className="text-neutral-400">
-                              {formatDateRange(
-                                newestJob.start_date,
-                                newestJob.end_date ?? undefined,
-                                newestJob.is_current,
-                              )}
-                            </TableCell>
-                            <TableCell className="text-right">
-                              <div className="flex items-center justify-end gap-2">
-                                <Link
-                                  href={`/admin/experiences/${experience.id}`}
-                                >
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    className="text-neutral-400 hover:text-white"
-                                  >
-                                    <Pencil className="h-4 w-4" />
-                                  </Button>
-                                </Link>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="text-red-400 hover:text-red-300 hover:bg-red-950/30"
-                                  onClick={() => setDeleteId(experience.id)}
-                                >
-                                  <Trash2 className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    </TableBody>
-                  </Table>
-                ) : (
-                  <div className="text-center py-12">
-                    <p className="text-neutral-400 mb-4">No experiences yet</p>
-                    <Link href="/admin/experiences/new">
-                      <Button className="bg-linear-to-r from-teal-600 to-cyan-600">
-                        <Plus className="mr-2 h-4 w-4" />
-                        Add Your First Experience
-                      </Button>
-                    </Link>
-                  </div>
-                )}
-              </>
-            )}
+            </RenderIf>
+            <RenderIf condition={!isLoading && experiences.length > 0}>
+              <ExperiencesTable
+                experiences={experiences}
+                onEdit={() => {}}
+                onDelete={setDeleteId}
+              />
+            </RenderIf>
+            <RenderIf condition={!isLoading && experiences.length === 0}>
+              <div className="text-center py-12">
+                <p className="text-neutral-400 mb-4">No experiences yet</p>
+                <Link href="/admin/experiences/new">
+                  <Button className="bg-linear-to-r from-teal-600 to-cyan-600">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add Your First Experience
+                  </Button>
+                </Link>
+              </div>
+            </RenderIf>
           </CardContent>
         </Card>
 
@@ -189,9 +99,9 @@ const ExperiencesPageContent = () => {
               <Button
                 onClick={handleDelete}
                 className="bg-red-600 hover:bg-red-700"
-                disabled={deleteExperience.isPending}
+                // You may want to add a loading state from the hook if needed
               >
-                {deleteExperience.isPending ? "Deleting..." : "Delete"}
+                Delete
               </Button>
             </DialogFooter>
           </DialogContent>
