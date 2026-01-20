@@ -1,4 +1,4 @@
-export const env = {
+export const vals = {
   siteUrl:
     process.env.NEXT_PUBLIC_SITE_URL ||
     (globalThis.window === undefined

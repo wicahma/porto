@@ -1,30 +1,34 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, ProxyConfig, type NextRequest } from "next/server";
-import { env } from "@/constants/env";
+import { vals } from "@/constants/val";
 
 export default async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
   });
 
-  const supabase = createServerClient(env.supabase.url, env.supabase.anonKey, {
-    cookies: {
-      getAll() {
-        return request.cookies.getAll();
-      },
-      setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value, options }) =>
-          request.cookies.set(name, value)
-        );
-        supabaseResponse = NextResponse.next({
-          request,
-        });
-        cookiesToSet.forEach(({ name, value, options }) =>
-          supabaseResponse.cookies.set(name, value, options)
-        );
+  const supabase = createServerClient(
+    vals.supabase.url,
+    vals.supabase.anonKey,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) =>
+            request.cookies.set(name, value),
+          );
+          supabaseResponse = NextResponse.next({
+            request,
+          });
+          cookiesToSet.forEach(({ name, value, options }) =>
+            supabaseResponse.cookies.set(name, value, options),
+          );
+        },
       },
     },
-  });
+  );
 
   const {
     data: { user },
@@ -33,7 +37,7 @@ export default async function proxy(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith("/admin")) {
     if (request.nextUrl.pathname === "/admin/login") {
       const key = request.nextUrl.searchParams.get("key");
-      if (key !== env.adminSecretKey) {
+      if (key !== vals.adminSecretKey) {
         return NextResponse.redirect(new URL("/not-found", request.url));
       }
 

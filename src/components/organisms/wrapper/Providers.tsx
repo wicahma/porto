@@ -4,15 +4,15 @@ import React from "react";
 import { GlobCursor } from "../../atoms/animations/GlobCursor";
 import { useSecretHotkeys } from "@/hooks/secret-hotkeys.hook";
 import { useRouter } from "next/navigation";
-import { env } from "@/constants/env";
+import { vals } from "@/constants/val";
 import { QueryProvider } from "./QueryProvider";
 
 const Providers: React.FC<{ readonly children: React.ReactNode }> = ({
   children,
 }) => {
   const router = useRouter();
-  useSecretHotkeys(env.hotkeys, (hotkey) => {
-    router.push(`${env.redirectPage}?key=${env.adminSecretKey}`);
+  useSecretHotkeys(vals.hotkeys, (hotkey) => {
+    router.push(`${vals.redirectPage}?key=${vals.adminSecretKey}`);
   });
 
   return (

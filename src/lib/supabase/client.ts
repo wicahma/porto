@@ -1,7 +1,10 @@
 import { createBrowserClient } from "@supabase/ssr";
-import { env } from "@/constants/env";
+import { vals } from "@/constants/val";
 import { Database } from "@/interface/entities/database.interface";
 
 export function createClient() {
-  return createBrowserClient<Database>(env.supabase.url, env.supabase.anonKey);
+  return createBrowserClient<Database>(
+    vals.supabase.url,
+    vals.supabase.anonKey,
+  );
 }

@@ -1,7 +1,7 @@
 "use client";
 import { Chat } from "@/assets/svg/chat";
 import ButtonBig from "@/components/atoms/buttons/ButtonBig";
-import { env } from "@/constants/env";
+import { vals } from "@/constants/val";
 import { useExperiences } from "@/hooks/queries/experience.wrapper";
 import { useProjects } from "@/hooks/queries/project.wrapper";
 import { useState } from "react";
@@ -46,7 +46,7 @@ const ButtonsLeft = () => {
   };
 
   const handleRedirectToEmail = () => {
-    window.open(`mailto:${env.email}`, "_blank");
+    window.open(`mailto:${vals.email}`, "_blank");
   };
 
   return (

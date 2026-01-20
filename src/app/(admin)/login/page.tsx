@@ -1,5 +1,5 @@
 import LoginPage from "@/components/organisms/LoginPage";
-import { env } from "@/constants/env";
+import { vals } from "@/constants/val";
 import { notFound } from "next/navigation";
 
 const page = async ({
@@ -9,7 +9,7 @@ const page = async ({
 }) => {
   const sp = await searchParams;
 
-  if (sp.key !== env.adminSecretKey) {
+  if (sp.key !== vals.adminSecretKey) {
     return notFound();
   }
 
