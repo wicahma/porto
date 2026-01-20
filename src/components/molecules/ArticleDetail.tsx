@@ -54,8 +54,17 @@ const ArticleDetail = ({ skipAnimation = false }: ArticleDetailProps) => {
         <ArticleDetailSkeleton />
       </RenderIf>
 
-      <RenderIf condition={Boolean(!isError && data?.data)}>
-        <p className="text-neutral-400">Failed to load articles</p>
+      <RenderIf condition={!isLoading && Boolean(isError && data?.data)}>
+        <p className="text-neutral-400 text-center">Failed to load articles</p>
+      </RenderIf>
+
+      <RenderIf
+        condition={!isLoading && Boolean(!isError && data?.data.length === 0)}
+      >
+        <p className="text-neutral-400 text-center mt-5">
+          Hi, for now there is no article created yet, but please stay tuned for
+          upcoming articles.
+        </p>
       </RenderIf>
 
       <RenderIf condition={Boolean(!isLoading && !isError && data?.data)}>

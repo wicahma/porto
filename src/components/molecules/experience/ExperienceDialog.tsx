@@ -77,31 +77,31 @@ const ExperienceDialog = ({ data, isOpen, onClose }: ExperienceDialogProps) => {
                   ease: [0.4, 0, 0.2, 1],
                 }}
               >
-                <h3 className="text-xs md:text-sm font-semibold text-white mb-1.5 md:mb-2">
+                <h3 className="md:text-lg font-semibold text-white mb-1.5 md:mb-2">
                   Description
                 </h3>
-                <p className="text-[#ABABAB] text-xs md:text-sm leading-relaxed">
+                <p className="text-[#ABABAB] leading-relaxed">
                   {data.description}
                 </p>
               </m.div>
 
-              <m.div>
+              <m.div className="space-y-3 mb-4 md:mb-6 text-[#ABABAB]">
                 {data?.competency?.map((comp, i) => (
                   <m.div
                     key={`${comp.slice(2)}-${i}`}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, x: 10, y: 30 }}
+                    animate={{ opacity: 1, x: 0, y: 0 }}
                     transition={{
-                      delay: 0.15 + i * 0.05,
+                      delay: 0.15 + i * 0.1,
                       duration: 1,
                       ease: [0.4, 0, 0.2, 1],
                     }}
                   >
-                    <p>
+                    <p className="flex items-start">
                       <span>
                         <ChevronRight color="#FFC501" />
-                      </span>{" "}
-                      {comp}
+                      </span>
+                      <span> {comp}</span>
                     </p>
                   </m.div>
                 ))}
@@ -116,7 +116,7 @@ const ExperienceDialog = ({ data, isOpen, onClose }: ExperienceDialogProps) => {
                   ease: [0.4, 0, 0.2, 1],
                 }}
               >
-                <h3 className="text-xs md:text-sm font-semibold text-white mb-2 md:mb-3">
+                <h3 className="font-semibold text-white mb-2 md:mb-3">
                   Technologies & Skills
                 </h3>
                 <div className="flex flex-wrap gap-1.5 md:gap-2">
@@ -127,7 +127,7 @@ const ExperienceDialog = ({ data, isOpen, onClose }: ExperienceDialogProps) => {
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{
-                        delay: 0.45 + index * 0.05,
+                        delay: 0.45 + index * 0.15,
                         duration: 1,
                         ease: [0.4, 0, 0.2, 1],
                       }}

@@ -55,8 +55,17 @@ const ProjectDetail = ({ skipAnimation = false }: ProjectDetailProps) => {
         <ProjectDetailSkeleton />
       </RenderIf>
 
-      <RenderIf condition={Boolean(isError || !data?.data)}>
-        <p className="text-neutral-400">Failed to load projects</p>
+      <RenderIf condition={!isLoading && Boolean(isError && data?.data)}>
+        <p className="text-neutral-400 text-center">Failed to load articles</p>
+      </RenderIf>
+
+      <RenderIf
+        condition={!isLoading && Boolean(!isError && data?.data.length === 0)}
+      >
+        <p className="text-neutral-400 text-center mt-5">
+          Hi, for now there is no project created yet, but this man is working
+          on it, I promise.
+        </p>
       </RenderIf>
 
       <RenderIf condition={Boolean(!isLoading && !isError && data?.data)}>

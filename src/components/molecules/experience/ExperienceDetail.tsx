@@ -53,8 +53,19 @@ const ExperienceDetail = ({ skipAnimation = false }: ExperienceDetailProps) => {
         <ExperienceDetailSkeleton />
       </RenderIf>
 
-      <RenderIf condition={isError || !data?.data}>
-        <p className="text-neutral-400">Failed to load experiences</p>
+      <RenderIf condition={!isLoading && Boolean(isError && data?.data)}>
+        <p className="text-neutral-400 text-center">
+          Failed to load experiences
+        </p>
+      </RenderIf>
+
+      <RenderIf
+        condition={!isLoading && Boolean(!isError && data?.data.length === 0)}
+      >
+        <p className="text-neutral-400 text-center mt-5">
+          There is no way to gain experience without experience, but stay tuned
+          for upcoming experiences!
+        </p>
       </RenderIf>
 
       <RenderIf condition={Boolean(!isLoading && !isError && data?.data)}>
