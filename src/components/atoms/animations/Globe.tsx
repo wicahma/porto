@@ -52,7 +52,7 @@ export default function Globe() {
       if (canvas) {
         const newScale = Math.max(
           0.8,
-          Math.min(3, currentScaleRef.current - e.deltaY * 0.002)
+          Math.min(3, currentScaleRef.current - e.deltaY * 0.002),
         );
         currentScaleRef.current = newScale;
         targetScaleRef.current = newScale;
@@ -99,7 +99,8 @@ export default function Globe() {
 
             currentScaleRef.current =
               currentScaleRef.current * 0.97 + targetScaleRef.current * 0.03;
-          } else if (autoRotate) {
+          }
+          if (autoRotate) {
             phiRef.current += 0.005;
             currentPhiRef.current = phiRef.current;
           }

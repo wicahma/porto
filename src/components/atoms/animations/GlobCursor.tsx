@@ -15,12 +15,12 @@ export const GlobCursor: React.FC = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setEnabled(window.innerWidth >= 768);
+      setEnabled(globalThis.innerWidth >= 768);
     };
 
     handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    globalThis.addEventListener("resize", handleResize);
+    return () => globalThis.removeEventListener("resize", handleResize);
   }, []);
 
   const springOpt: SpringOptions = {
@@ -66,7 +66,7 @@ export const GlobCursor: React.FC = () => {
 
       const hoverTarget = target.closest(".hoverable") as HTMLElement;
 
-      const tCursor = window.getComputedStyle(target)["cursor"];
+      const tCursor = globalThis.getComputedStyle(target)["cursor"];
       setUnhoverable(false);
       setCursor(tCursor);
 
@@ -134,14 +134,14 @@ export const GlobCursor: React.FC = () => {
       bf.set(0);
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseenter", handleMouseEnter);
-    window.addEventListener("mouseleave", handleMouseLeave);
+    globalThis.addEventListener("mousemove", handleMouseMove);
+    globalThis.addEventListener("mouseenter", handleMouseEnter);
+    globalThis.addEventListener("mouseleave", handleMouseLeave);
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseenter", handleMouseEnter);
-      window.removeEventListener("mouseleave", handleMouseLeave);
+      globalThis.removeEventListener("mousemove", handleMouseMove);
+      globalThis.removeEventListener("mouseenter", handleMouseEnter);
+      globalThis.removeEventListener("mouseleave", handleMouseLeave);
     };
   }, [enabled]);
 
@@ -180,7 +180,7 @@ export const GlobCursor: React.FC = () => {
       )}
 
       <m.div
-        className="fixed inset-0 z-[9999] pointer-events-none"
+        className="fixed inset-0 z-9999 pointer-events-none"
         style={{
           backdropFilter,
           clipPath,
@@ -189,13 +189,13 @@ export const GlobCursor: React.FC = () => {
 
       <m.div
         className={cn(
-          "fixed z-[9999] pointer-events-none -translate-x-1/2 -translate-y-1/2",
+          "fixed z-9999 pointer-events-none -translate-x-1/2 -translate-y-1/2",
           hoverable
-            ? "border-[2px] border-neutral-500/50"
+            ? "border-2 border-neutral-500/50"
             : "bg-white/20 backdrop-blur-xs",
           cursor === "pointer" && !unhoverable
-            ? "border-[1px] border-neutral-50 bg-white/10 backdrop-blur-none"
-            : null
+            ? "border border-neutral-50 bg-white/10 backdrop-blur-none"
+            : null,
         )}
         style={{
           x: smoothX,
@@ -208,7 +208,7 @@ export const GlobCursor: React.FC = () => {
 
       {(hoverable || cursor === "pointer") && (
         <m.div
-          className="fixed z-[10000] pointer-events-none -translate-x-1/2 -translate-y-1/2 bg-white rounded-full"
+          className="fixed z-10000 pointer-events-none -translate-x-1/2 -translate-y-1/2 bg-white rounded-full"
           style={{
             x: cursorX,
             y: cursorY,
