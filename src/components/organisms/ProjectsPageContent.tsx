@@ -1,6 +1,6 @@
 "use client";
 
-import { useProjects, useDeleteProject } from "@/hooks/queries/useProjects";
+import { useProjects, useDeleteProject } from "@/hooks/queries/project.wrapper";
 import { Button } from "@/components/ui/button";
 import {
   Card,

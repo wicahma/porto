@@ -3,7 +3,7 @@ import Triangles from "@/assets/svg/triangles";
 import MainCard from "@/components/atoms/ArticleCard";
 import ChipGroup from "@/components/molecules/chips/ChipGroup";
 import { articleFilters } from "@/constants/dummies/article-filters";
-import { useArticles } from "@/hooks/queries/useArticles";
+import { useArticles } from "@/hooks/queries/article.wrapper";
 import { mapArticleToCard } from "@/utils/mappers/article.mapper";
 import { AnimatePresence, m } from "motion/react";
 import { usePathname, useRouter } from "next/navigation";

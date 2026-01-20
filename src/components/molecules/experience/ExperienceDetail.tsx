@@ -4,7 +4,7 @@ import Batik from "@/assets/svg/batik";
 import Br from "@/assets/svg/br";
 import Skeleton from "@/components/atoms/Skeleton";
 import CompanyExperienceGroup from "@/components/molecules/experience/CompanyExperienceGroup";
-import { useExperiences } from "@/hooks/queries/useExperiences";
+import { useExperiences } from "@/hooks/queries/experience.wrapper";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 import RenderIf from "@/utils/helper/render-if";
 import { AnimatePresence, m } from "motion/react";

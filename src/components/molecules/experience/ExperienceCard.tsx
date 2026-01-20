@@ -1,7 +1,7 @@
 import Sun from "@/assets/svg/sun";
 import ExperienceCarouselCard from "@/components/atoms/ExperienceCarouselCard";
 import StackedCarousel from "@/components/atoms/StackedCarousel";
-import { useExperiences } from "@/hooks/queries/useExperiences";
+import { useExperiences } from "@/hooks/queries/experience.wrapper";
 import {
   filterUniqueCompanies,
   mapExperienceToCard,

@@ -2,8 +2,8 @@
 import { Chat } from "@/assets/svg/chat";
 import ButtonBig from "@/components/atoms/ButtonBig";
 import { env } from "@/constants/env";
-import { useExperiences } from "@/hooks/queries/useExperiences";
-import { useProjects } from "@/hooks/queries/useProjects";
+import { useExperiences } from "@/hooks/queries/experience.wrapper";
+import { useProjects } from "@/hooks/queries/project.wrapper";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -24,7 +24,7 @@ const ButtonsLeft = () => {
       const CVDocument = (await import("@/components/pdf/CVDocument")).default;
 
       const blob = await pdf(
-        <CVDocument experiences={experiences} projects={projects} />
+        <CVDocument experiences={experiences} projects={projects} />,
       ).toBlob();
 
       const url = URL.createObjectURL(blob);

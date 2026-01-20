@@ -12,3 +12,6 @@ const RenderIf = ({
 };
 
 export default RenderIf;
+
+export const handleTernary = <T, F>(cond: boolean, t: T, f: F) =>
+  cond ? t : f;

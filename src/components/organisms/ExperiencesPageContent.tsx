@@ -3,7 +3,7 @@
 import {
   useExperiences,
   useDeleteExperience,
-} from "@/hooks/queries/useExperiences";
+} from "@/hooks/queries/experience.wrapper";
 import { getNewestJob, formatDateRange } from "@/utils/helper/date.utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -98,7 +98,7 @@ const ExperiencesPageContent = () => {
                     <TableBody>
                       {data.data.map((experience) => {
                         const newestJob = getNewestJob(
-                          (experience as any)?.jobs || []
+                          (experience as any)?.jobs || [],
                         );
                         return (
                           <TableRow
@@ -120,7 +120,7 @@ const ExperiencesPageContent = () => {
                               {formatDateRange(
                                 newestJob.start_date,
                                 newestJob.end_date ?? undefined,
-                                newestJob.is_current
+                                newestJob.is_current,
                               )}
                             </TableCell>
                             <TableCell className="text-right">

@@ -1,6 +1,6 @@
 "use client";
 import LoadingScreen from "@/components/molecules/LoadingScreen";
-import { usePageLoading } from "@/hooks/usePageLoading";
+import { usePageLoading } from "@/hooks/loading.hook";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 import { ILayoutProps } from "@/interface/app/layout";
 import NextTopLoader from "nextjs-toploader";

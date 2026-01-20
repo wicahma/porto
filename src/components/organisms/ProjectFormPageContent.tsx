@@ -6,7 +6,7 @@ import {
   useProject,
   useCreateProject,
   useUpdateProject,
-} from "@/hooks/queries/useProjects";
+} from "@/hooks/queries/project.wrapper";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

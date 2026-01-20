@@ -1,8 +1,8 @@
 "use client";
 
-import { useArticleCount } from "@/hooks/queries/useArticles";
-import { useProjectCount } from "@/hooks/queries/useProjects";
-import { useExperienceCount } from "@/hooks/queries/useExperiences";
+import { useArticleCount } from "@/hooks/queries/article.wrapper";
+import { useProjectCount } from "@/hooks/queries/project.wrapper";
+import { useExperienceCount } from "@/hooks/queries/experience.wrapper";
 import {
   Card,
   CardContent,

@@ -10,7 +10,7 @@ import { calculateTotalDuration } from "@/utils/helper/date.utils";
 export class ExperienceService {
   static async getAllExperiences(
     page: number = 1,
-    limit: number = 50
+    limit: number = 50,
   ): Promise<{
     data: (Experience & { jobs: ExperienceJob[] })[];
     count: number;
@@ -52,7 +52,7 @@ export class ExperienceService {
         acc[job.experience_id].push(job as ExperienceJob);
         return acc;
       },
-      {} as Record<string, ExperienceJob[]>
+      {} as Record<string, ExperienceJob[]>,
     );
 
     const experiences = experiencesData.map((exp) => {
@@ -74,7 +74,7 @@ export class ExperienceService {
   }
 
   static async getExperienceById(
-    id: string
+    id: string,
   ): Promise<(Experience & { jobs: ExperienceJob[] }) | null> {
     const supabase = await createClient();
 
@@ -112,7 +112,7 @@ export class ExperienceService {
   }
 
   static async createExperience(
-    input: CreateExperienceInput
+    input: CreateExperienceInput,
   ): Promise<Experience> {
     const supabase = await createClient();
 
@@ -124,7 +124,7 @@ export class ExperienceService {
             jobs.map((job) => ({
               ...job,
               id: "",
-            }))
+            })),
           )
         : "0 mos";
 
@@ -165,7 +165,7 @@ export class ExperienceService {
   }
 
   static async updateExperience(
-    input: UpdateExperienceInput
+    input: UpdateExperienceInput,
   ): Promise<Experience> {
     const supabase = await createClient();
 
@@ -186,7 +186,7 @@ export class ExperienceService {
           created_at: job.created_at,
           updated_at: job.updated_at,
           competency: job.competency,
-        }))
+        })),
       );
     }
 

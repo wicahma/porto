@@ -22,3 +22,14 @@ export interface CreateExperienceInput {
 export interface UpdateExperienceInput extends Partial<CreateExperienceInput> {
   id: string;
 }
+
+export interface JobFormData {
+  id?: string;
+  position: string;
+  employment_type: string;
+  description: string;
+  competency: string;
+  start_date: string;
+  end_date?: string;
+  is_current: boolean;
+}

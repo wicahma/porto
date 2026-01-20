@@ -16,7 +16,7 @@ import {
   useArticle,
   useCreateArticle,
   useUpdateArticle,
-} from "@/hooks/queries/useArticles";
+} from "@/hooks/queries/article.wrapper";
 import { ArticleService } from "@/services/article.service";
 import { ArrowLeft, Save } from "lucide-react";
 import dynamic from "next/dynamic";

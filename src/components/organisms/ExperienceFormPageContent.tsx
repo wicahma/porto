@@ -1,12 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter, useParams } from "next/navigation";
-import {
-  useExperience,
-  useCreateExperience,
-  useUpdateExperience,
-} from "@/hooks/queries/useExperiences";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -36,202 +29,34 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { formatDateRange } from "@/utils/helper/date.utils";
-import toast from "react-hot-toast";
-import { CreateExperienceInput } from "@/interface/entities/experience.interface";
-
-interface JobFormData {
-  id?: string;
-  position: string;
-  employment_type: string;
-  description: string;
-  start_date: string;
-  end_date?: string;
-  is_current: boolean;
-}
+import RenderIf, { handleTernary } from "@/utils/helper/render-if";
+import { useExperienceFormHooks } from "@/hooks/pages/experience-form.hook";
 
 const ExperienceFormPageContent = () => {
-  const router = useRouter();
-  const params = useParams();
-  const isEdit = params?.id && params.id !== "new";
-  const experienceId = isEdit ? (params.id as string) : null;
+  const hooks = useExperienceFormHooks();
 
-  const { data: existingExperience, isLoading } = useExperience(
-    experienceId || ""
-  );
-  const createExperience = useCreateExperience();
-  const updateExperience = useUpdateExperience();
-
-  const [company, setCompany] = useState("");
-  const [location, setLocation] = useState("");
-  const [tags, setTags] = useState("");
-
-  const [jobs, setJobs] = useState<JobFormData[]>([
-    {
-      position: "",
-      employment_type: "Full-time",
-      description: "",
-      start_date: "",
-      end_date: "",
-      is_current: false,
-    },
-  ]);
-
-  const [collapsedJobs, setCollapsedJobs] = useState<boolean[]>([false]);
-
-  useEffect(() => {
-    if (existingExperience) {
-      setCompany(existingExperience.company);
-      setLocation(existingExperience.location);
-      setTags((existingExperience?.tags ?? []).join(", "));
-
-      if ((existingExperience?.jobs ?? []).length > 0) {
-        const loadedJobs = (existingExperience?.jobs ?? []).map((job) => ({
-          id: job.id,
-          position: job.position,
-          employment_type: job.employment_type,
-          description: job.description,
-          start_date: job.start_date,
-          end_date: job.end_date || "",
-          is_current: job.is_current,
-        }));
-        setJobs(loadedJobs);
-      }
-    }
-  }, [existingExperience]);
-
-  const addJob = () => {
-    setJobs([
-      ...jobs,
-      {
-        position: "",
-        employment_type: "Full-time",
-        description: "",
-        start_date: "",
-        end_date: "",
-        is_current: false,
-      },
-    ]);
-  };
-
-  const removeJob = (index: number) => {
-    if (jobs.length > 1) {
-      setJobs(jobs.filter((_, i) => i !== index));
-      setCollapsedJobs(collapsedJobs.filter((_, i) => i !== index));
-    } else {
-      toast.error("At least one job position is required");
-    }
-  };
-
-  const updateJob = (
-    index: number,
-    field: keyof JobFormData,
-    value: string | boolean
-  ) => {
-    const updatedJobs = [...jobs];
-    updatedJobs[index] = { ...updatedJobs[index], [field]: value };
-    setJobs(updatedJobs);
-  };
-
-  const toggleCollapse = (index: number) => {
-    const updated = [...collapsedJobs];
-    updated[index] = !updated[index];
-    setCollapsedJobs(updated);
-  };
-
-  const validateForm = (): boolean => {
-    if (!company.trim()) {
-      toast.error("Company name is required");
-      return false;
-    }
-
-    if (!location.trim()) {
-      toast.error("Location is required");
-      return false;
-    }
-
-    if (jobs.length === 0) {
-      toast.error("At least one job position is required");
-      return false;
-    }
-
-    for (let i = 0; i < jobs.length; i++) {
-      const job = jobs[i];
-      if (!job.position.trim()) {
-        toast.error(`Position ${i + 1}: Position title is required`);
-        return false;
-      }
-      if (!job.description.trim()) {
-        toast.error(`Position ${i + 1}: Description is required`);
-        return false;
-      }
-      if (!job.start_date) {
-        toast.error(`Position ${i + 1}: Start date is required`);
-        return false;
-      }
-      if (!job.is_current && !job.end_date) {
-        toast.error(
-          `Position ${i + 1}: End date is required (or mark as current)`
-        );
-        return false;
-      }
-    }
-
-    return true;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) return;
-
-    const experienceData: CreateExperienceInput = {
-      company,
-      location,
-      tags: tags
-        .split(",")
-        .map((t) => t.trim())
-        .filter(Boolean),
-      jobs: jobs.map((job) => ({
-        position: job.position,
-        employment_type: job.employment_type,
-        description: job.description,
-        start_date: job.start_date,
-        end_date: job.is_current ? null : (job.end_date ?? null),
-        is_current: job.is_current,
-        created_at: null,
-        updated_at: null,
-        experience_id: "",
-        competency: [],
-      })),
-    };
-
-    try {
-      if (isEdit && experienceId) {
-        await updateExperience.mutateAsync({
-          id: experienceId,
-          ...experienceData,
-        });
-        toast.success("Experience updated successfully!");
-      } else {
-        await createExperience.mutateAsync(experienceData);
-        toast.success("Experience created successfully!");
-      }
-      router.push("/admin/experiences");
-    } catch (error) {
-      toast.error("Failed to save experience");
-    }
-  };
+  const { collapsedJobs, company, jobs, location, tags } = hooks.data;
+  const { isEdit, isLoading, setCompany, setLocation, setTags } = hooks.state;
+  const {
+    addJob,
+    removeJob,
+    updateJob,
+    toggleCollapse,
+    handleSubmit,
+    createExperience,
+    updateExperience,
+  } = hooks.handlers;
 
   if (isLoading && isEdit) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950 flex items-center justify-center">
+      <div className="min-h-screen bg-linear-to-br from-neutral-950 via-neutral-900 to-neutral-950 flex items-center justify-center">
         <div className="h-12 w-12 border-4 border-teal-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950 p-8">
+    <div className="min-h-screen bg-linear-to-br from-neutral-950 via-neutral-900 to-neutral-950 p-8">
       <div className="max-w-5xl mx-auto space-y-6">
         <div className="flex items-center gap-4">
           <Link href="/admin/experiences">
@@ -245,12 +70,14 @@ const ExperienceFormPageContent = () => {
           </Link>
           <div>
             <h1 className="text-4xl font-bold text-white">
-              {isEdit ? "Edit Experience" : "Add Experience"}
+              {handleTernary(!!isEdit, "Edit Experience", "Add Experience")}
             </h1>
             <p className="text-neutral-400">
-              {isEdit
-                ? "Update work experience with multiple positions"
-                : "Add a new work experience with multiple positions"}
+              {handleTernary(
+                !!isEdit,
+                "Update work experience with multiple positions",
+                "Add a new work experience with multiple positions",
+              )}
             </p>
           </div>
         </div>
@@ -322,7 +149,7 @@ const ExperienceFormPageContent = () => {
                 <Button
                   type="button"
                   onClick={addJob}
-                  className="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700"
+                  className="bg-linear-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700"
                 >
                   <Plus className="mr-2 h-4 w-4" />
                   Add Position
@@ -332,7 +159,7 @@ const ExperienceFormPageContent = () => {
             <CardContent className="space-y-4">
               {jobs.map((job, index) => (
                 <Card
-                  key={index}
+                  key={`${job.id}${index}`}
                   className="border-neutral-700 bg-neutral-800/30"
                 >
                   <CardHeader
@@ -341,11 +168,12 @@ const ExperienceFormPageContent = () => {
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3 flex-1">
-                        {collapsedJobs[index] ? (
+                        <RenderIf condition={collapsedJobs[index]}>
                           <ChevronDown className="h-5 w-5 text-neutral-400" />
-                        ) : (
+                        </RenderIf>
+                        <RenderIf condition={!collapsedJobs[index]}>
                           <ChevronUp className="h-5 w-5 text-neutral-400" />
-                        )}
+                        </RenderIf>
                         <div className="flex-1">
                           <CardTitle className="text-white text-lg">
                             {job.position || `Position ${index + 1}`}
@@ -356,18 +184,19 @@ const ExperienceFormPageContent = () => {
                               ` • ${formatDateRange(
                                 job.start_date,
                                 job.end_date,
-                                job.is_current
+                                job.is_current,
                               )}`}
                           </CardDescription>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        {job.is_current && (
+                        <RenderIf condition={job.is_current}>
                           <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
                             Current
                           </Badge>
-                        )}
-                        {jobs.length > 1 && (
+                        </RenderIf>
+
+                        <RenderIf condition={jobs.length > 1}>
                           <Button
                             type="button"
                             variant="ghost"
@@ -380,12 +209,12 @@ const ExperienceFormPageContent = () => {
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
-                        )}
+                        </RenderIf>
                       </div>
                     </div>
                   </CardHeader>
 
-                  {!collapsedJobs[index] && (
+                  <RenderIf condition={!collapsedJobs[index]}>
                     <CardContent className="space-y-4 pt-4">
                       <div className="space-y-2">
                         <Label className="text-neutral-200">
@@ -443,6 +272,20 @@ const ExperienceFormPageContent = () => {
                         />
                       </div>
 
+                      <div className="space-y-2">
+                        <Label className="text-neutral-200">Competency *</Label>
+                        <Textarea
+                          value={job.competency}
+                          onChange={(e) =>
+                            updateJob(index, "competency", e.target.value)
+                          }
+                          required
+                          className="bg-neutral-800 border-neutral-700 text-white"
+                          placeholder="List the key skills and competencies... (separated by commas)"
+                          rows={5}
+                        />
+                      </div>
+
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label className="text-neutral-200">
@@ -491,7 +334,7 @@ const ExperienceFormPageContent = () => {
                         </Label>
                       </div>
                     </CardContent>
-                  )}
+                  </RenderIf>
                 </Card>
               ))}
             </CardContent>
@@ -509,17 +352,26 @@ const ExperienceFormPageContent = () => {
             </Link>
             <Button
               type="submit"
-              className="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700"
+              className="bg-linear-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700"
               disabled={
                 createExperience.isPending || updateExperience.isPending
               }
             >
               <Save className="mr-2 h-4 w-4" />
-              {createExperience.isPending || updateExperience.isPending
-                ? "Saving..."
-                : isEdit
-                  ? "Update Experience"
-                  : "Create Experience"}
+              {handleTernary(
+                createExperience.isPending || updateExperience.isPending,
+                "Saving...",
+                undefined,
+              )}
+              {handleTernary(
+                Boolean(
+                  (!createExperience.isPending &&
+                    !updateExperience.isPending) ||
+                  isEdit,
+                ),
+                "Update Experience",
+                "Create Experience",
+              )}
             </Button>
           </div>
         </form>

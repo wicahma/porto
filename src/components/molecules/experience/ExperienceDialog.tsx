@@ -2,7 +2,7 @@
 
 import { ExperienceCard } from "@/constants/dummies/experience-carousel";
 import { m, AnimatePresence } from "motion/react";
-import { X } from "lucide-react";
+import { ChevronRight, X } from "lucide-react";
 import { createPortal } from "react-dom";
 
 interface ExperienceDialogProps {
@@ -83,6 +83,28 @@ const ExperienceDialog = ({ data, isOpen, onClose }: ExperienceDialogProps) => {
                 <p className="text-[#ABABAB] text-xs md:text-sm leading-relaxed">
                   {data.description}
                 </p>
+              </m.div>
+
+              <m.div>
+                {data?.competency?.map((comp, i) => (
+                  <m.div
+                    key={`${comp.slice(2)}-${i}`}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      delay: 0.15 + i * 0.05,
+                      duration: 1,
+                      ease: [0.4, 0, 0.2, 1],
+                    }}
+                  >
+                    <p>
+                      <span>
+                        <ChevronRight color="#FFC501" />
+                      </span>{" "}
+                      {comp}
+                    </p>
+                  </m.div>
+                ))}
               </m.div>
 
               <m.div

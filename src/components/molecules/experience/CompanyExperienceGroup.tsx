@@ -31,6 +31,7 @@ const CompanyExperienceGroup = ({
     return {
       id: job.id,
       company: experience.company,
+      competency: job.competency,
       role: job.position,
       period: formatDateRange(
         job.start_date,

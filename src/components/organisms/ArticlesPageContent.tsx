@@ -1,6 +1,6 @@
 "use client";
 
-import { useArticles, useDeleteArticle } from "@/hooks/queries/useArticles";
+import { useArticles, useDeleteArticle } from "@/hooks/queries/article.wrapper";
 import { Button } from "@/components/ui/button";
 import {
   Card,

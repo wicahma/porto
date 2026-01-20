@@ -1,7 +1,7 @@
 "use client";
 import FolderIcon from "@/assets/svg/folder";
 import ProjectIcon from "@/assets/svg/project-icon";
-import { useProjectCount } from "@/hooks/queries/useProjects";
+import { useProjectCount } from "@/hooks/queries/project.wrapper";
 import { useRouter } from "next/navigation";
 
 const ProjectCard = () => {
