@@ -1,4 +1,9 @@
 export const env = {
+  siteUrl:
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    (globalThis.window === undefined
+      ? "http://localhost:3000"
+      : globalThis.window.location.origin),
   hotkeys: process.env.NEXT_PUBLIC_HOTKEYS as string,
   redirectPage: process.env.NEXT_PUBLIC_REDIRECT_PAGE as string,
   adminSecretKey: process.env.NEXT_PUBLIC_ADMIN_SECRET_KEY as string,

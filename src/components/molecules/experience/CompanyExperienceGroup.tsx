@@ -68,7 +68,7 @@ const CompanyExperienceGroup = ({
       >
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <h3 className="text-3xl font-bold text-neutral-100 mb-2">
+            <h3 className="text-3xl text-left font-bold text-neutral-100 mb-2">
               {experience.company}
             </h3>
             <div className="pl-3 flex items-center gap-3 mb-2">

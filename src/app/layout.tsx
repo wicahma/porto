@@ -10,9 +10,57 @@ const openSans = Open_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Portofolio Teguh Dwi Cahya Kusuma",
+  title: {
+    default: "Portofolio Teguh Dwi Cahya Kusuma",
+    template: "%s | Teguh Dwi Cahya Kusuma",
+  },
   description:
     "Kenali lebih dalam diri saya, riwayat pekerjaan, dan juga lainnya disini.",
+  keywords: [
+    "portofolio",
+    "web developer",
+    "software engineer",
+    "teguh dwi cahya kusuma",
+    "fullstack developer",
+    "next.js",
+    "react",
+    "typescript",
+  ],
+  authors: [{ name: "Teguh Dwi Cahya Kusuma" }],
+  creator: "Teguh Dwi Cahya Kusuma",
+  publisher: "Teguh Dwi Cahya Kusuma",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+  ),
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "id_ID",
+    url: "/",
+    title: "Portofolio Teguh Dwi Cahya Kusuma",
+    description:
+      "Kenali lebih dalam diri saya, riwayat pekerjaan, dan juga lainnya disini.",
+    siteName: "Teguh Dwi Cahya Kusuma Portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Portofolio Teguh Dwi Cahya Kusuma",
+    description:
+      "Kenali lebih dalam diri saya, riwayat pekerjaan, dan juga lainnya disini.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({
