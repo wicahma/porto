@@ -45,8 +45,8 @@ const ButtonsLeft = () => {
     }
   };
 
-  const handleRedirectToEmail = () => {
-    window.open(`mailto:${vals.email}`, "_blank");
+  const handleRedirectToEmail = async () => {
+    window.open(`mailto:${(await vals()).email}`, "_blank");
   };
 
   return (

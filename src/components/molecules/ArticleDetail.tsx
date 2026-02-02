@@ -8,6 +8,7 @@ import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 import { RenderIf } from "@/utils/helper/render-if";
 import { AnimatePresence, m } from "motion/react";
 import Link from "next/link";
+import { StorageImage } from "../atoms/images/StorageImage";
 
 const ArticleDetailSkeleton = () => {
   return (
@@ -83,6 +84,14 @@ const ArticleDetail = ({ skipAnimation = false }: ArticleDetailProps) => {
                   }}
                   className="mt-4 hover:bg-neutral-900/20 transition-all cursor-pointer"
                 >
+                  <StorageImage
+                    src={article.image}
+                    alt={article.title}
+                    className="overflow-hidden rounded-xl"
+                  />
+                  <h2 className="mt-2 mb-4 text-3xl font-semibold text-neutral-300">
+                    {article.title}
+                  </h2>
                   <div className="flex items-center gap-3 mb-6">
                     <span className="px-4 py-1.5 bg-pink-500/80 text-white rounded-full text-xs font-semibold uppercase">
                       {article.category}

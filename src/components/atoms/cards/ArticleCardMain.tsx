@@ -14,6 +14,7 @@ const ArticleCard = () => {
   const router = useRouter();
   const articles = articlesData?.data;
   const mappedArticles = articles?.map(mapArticleToCard) || [];
+  console.log("mappedArticles:", mappedArticles);
 
   const handleSetPage = () => {
     window.history.replaceState(null, "", `/article`);

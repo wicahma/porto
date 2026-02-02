@@ -28,6 +28,9 @@ export interface ArticleFormState {
   setMetaDescription: (value: string) => void;
   setMetaKeywords: (value: string) => void;
   setOgImage: (value: string) => void;
+  imageFile: File | null;
+  setImageFile: (file: File | null) => void;
+  isUploading: boolean;
 }
 
 export interface ArticleFormHandlers {

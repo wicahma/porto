@@ -5,10 +5,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
   try {
-    // Get all articles from the database
     const { data: articles } = await ArticleService.getAllArticles(1, 1000);
 
-    // Create article entries
     const articleEntries: MetadataRoute.Sitemap = articles.map((article) => ({
       url: `${baseUrl}/article/${article.slug}`,
       lastModified: new Date(
@@ -18,7 +16,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     }));
 
-    // Static pages
     const staticPages: MetadataRoute.Sitemap = [
       {
         url: baseUrl,
@@ -50,7 +47,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   } catch (error) {
     console.error("Error generating sitemap:", error);
 
-    // Return static pages only if there's an error
     return [
       {
         url: baseUrl,

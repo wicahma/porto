@@ -6,10 +6,11 @@ import { Database } from "@/interface/entities/database.interface";
 
 export async function createClient() {
   const cookieStore = await cookies();
+  const resolvedVal = await vals();
 
   return createServerClient<Database>(
-    vals.supabase.url,
-    vals.supabase.anonKey,
+    resolvedVal.supabase.url,
+    resolvedVal.supabase.anonKey,
     {
       cookies: {
         getAll() {

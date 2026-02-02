@@ -32,5 +32,6 @@ export const mapArticleToCard = (article: Article): ArticleCard => {
     category: article.category,
     date: formattedDate,
     readTime: article.read_time,
+    slug: article.slug,
   };
 };

@@ -1,14 +1,17 @@
-import { notFound } from "next/navigation";
-import { Metadata } from "next";
 import {
   getArticleBySlugAction,
   getRelatedArticlesAction,
 } from "@/actions/article.actions";
-import Link from "next/link";
 import { Badge } from "@/components/atoms/chips/badge";
-import { Calendar, Clock } from "lucide-react";
-import ArticleHeader from "@/components/molecules/ArticleHeader";
+import { StorageHtmlContent } from "@/components/atoms/content/StorageHtmlContent";
+import { StorageImg } from "@/components/atoms/images/StorageImage";
 import ArticleFooter from "@/components/molecules/ArticleFooter";
+import ArticleHeader from "@/components/molecules/ArticleHeader";
+import ScrollableContainer from "@/components/organisms/wrapper/ScrollableContainer";
+import { Calendar, Clock } from "lucide-react";
+import { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
 interface ArticlePageProps {
   params: Promise<{
@@ -71,10 +74,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const relatedArticles = relatedResult.success ? relatedResult.data : [];
 
   return (
-    <div className="min-h-screen bg-neutral-950 relative">
-      <div className="absolute inset-0 bg-gradient-to-b from-neutral-900/50 via-neutral-950 to-neutral-950 pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-pink-900/10 via-neutral-950 to-neutral-950 pointer-events-none" />
-
+    <ScrollableContainer className="h-screen relative rounded-2xl overflow-y-auto">
       <ArticleHeader />
 
       <article className="max-w-350 mx-auto px-6 py-16 relative z-10">
@@ -110,9 +110,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         </div>
 
         {article.image && (
-          <div className="max-w-230 mx-auto mb-16">
+          <div className="max-w-200 mx-auto mb-16">
             <div className="rounded-xl overflow-hidden shadow-2xl">
-              <img
+              <StorageImg
                 src={article.image}
                 alt={article.title}
                 className="w-full h-auto object-cover"
@@ -130,7 +130,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         )}
 
         <div className="max-w-170 mx-auto">
-          <div
+          <StorageHtmlContent
+            content={article.content}
             className="prose prose-invert prose-lg md:prose-xl max-w-none
               prose-headings:text-white prose-headings:font-bold prose-headings:tracking-tight
               prose-h1:text-4xl prose-h1:mb-4 prose-h1:mt-12
@@ -145,7 +146,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               prose-li:text-neutral-300 prose-li:my-2
               prose-blockquote:border-l-pink-500 prose-blockquote:text-neutral-400 prose-blockquote:italic prose-blockquote:pl-6
               prose-img:rounded-lg prose-img:shadow-lg"
-            dangerouslySetInnerHTML={{ __html: article.content }}
           />
 
           {(article?.tags?.length || 0) > 0 && (
@@ -211,6 +211,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       )}
 
       <ArticleFooter />
-    </div>
+    </ScrollableContainer>
   );
 }

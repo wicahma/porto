@@ -13,6 +13,11 @@ import {
   useCreateArticle,
   useUpdateArticle,
 } from "../queries/article.wrapper";
+import {
+  uploadFileToStorage,
+  uploadHtmlToStorage,
+} from "@/lib/bucket/storage.service";
+import toast from "react-hot-toast";
 
 export const useArticleFormHooks = (): UseArticleFormHooks => {
   const router = useRouter();
@@ -36,6 +41,10 @@ export const useArticleFormHooks = (): UseArticleFormHooks => {
   const [metaDescription, setMetaDescription] = useState("");
   const [metaKeywords, setMetaKeywords] = useState("");
   const [ogImage, setOgImage] = useState("");
+
+  // File upload states
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     if (existingArticle) {
@@ -64,37 +73,102 @@ export const useArticleFormHooks = (): UseArticleFormHooks => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const articleData = {
-      title,
-      slug,
-      excerpt,
-      content,
-      category,
-      image,
-      tags: tags
-        .split(",")
-        .map((t) => t.trim())
-        .filter(Boolean),
-      read_time: readTime,
-      meta_title: metaTitle || title,
-      meta_description: metaDescription || excerpt,
-      meta_keywords: metaKeywords
-        .split(",")
-        .map((k) => k.trim())
-        .filter(Boolean),
-      og_image: ogImage || image,
-    };
+
+    setIsUploading(true);
+
     try {
+      // First, save the article to the database
+      const articleData = {
+        title,
+        slug,
+        excerpt,
+        content,
+        category,
+        image, // Temporary, will be updated after upload
+        tags: tags
+          .split(",")
+          .map((t) => t.trim())
+          .filter(Boolean),
+        read_time: readTime,
+        meta_title: metaTitle || title,
+        meta_description: metaDescription || excerpt,
+        meta_keywords: metaKeywords
+          .split(",")
+          .map((k) => k.trim())
+          .filter(Boolean),
+        og_image: ogImage || image,
+      };
+
+      let savedArticleId = articleId;
+
       if (isEdit && articleId) {
         await updateArticle.mutateAsync({ id: articleId, ...articleData });
       } else {
-        await createArticle.mutateAsync(articleData);
+        const result = await createArticle.mutateAsync(articleData);
+        savedArticleId = result?.id || null;
       }
+
+      // After successful database save, upload files if any
+      let updatedImagePath = image;
+      let updatedContentPath = content;
+
+      if (imageFile && savedArticleId) {
+        toast.loading("Uploading image...");
+        const uploadResult = await uploadFileToStorage(
+          imageFile,
+          "images",
+          `article_${savedArticleId}`,
+        );
+
+        console.log("Image upload result:", uploadResult);
+
+        if (uploadResult.success && uploadResult.filePath) {
+          updatedImagePath = uploadResult.filePath;
+        } else {
+          toast.error("Failed to upload image");
+        }
+      }
+
+      // Upload HTML content to storage
+      if (content && savedArticleId) {
+        toast.loading("Saving content...");
+        const htmlUploadResult = await uploadHtmlToStorage(
+          content,
+          `article_${savedArticleId}_content`,
+          "articles",
+        );
+        console.log("HTML upload result:", htmlUploadResult);
+
+        if (htmlUploadResult.success && htmlUploadResult.filePath) {
+          updatedContentPath = htmlUploadResult.filePath;
+        } else {
+          toast.error("Failed to save content");
+        }
+      }
+
+      // Update article with file paths if files were uploaded
+      if (
+        (imageFile || content) &&
+        savedArticleId &&
+        (updatedImagePath !== image || updatedContentPath !== content)
+      ) {
+        await updateArticle.mutateAsync({
+          id: savedArticleId,
+          ...articleData,
+          image: updatedImagePath,
+          content: updatedContentPath,
+        });
+      }
+
+      toast.dismiss();
+      toast.success(isEdit ? "Article updated!" : "Article created!");
       router.push("/admin/articles");
     } catch (error) {
-      // handle error (could set error state)
-      // eslint-disable-next-line no-console
+      toast.dismiss();
+      toast.error("Failed to save article");
       console.error("Failed to save article:", error);
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -128,6 +202,9 @@ export const useArticleFormHooks = (): UseArticleFormHooks => {
     setMetaDescription,
     setMetaKeywords,
     setOgImage,
+    imageFile,
+    setImageFile,
+    isUploading,
   };
 
   const handlers: ArticleFormHandlers = {

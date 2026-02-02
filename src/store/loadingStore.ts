@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { loadingMessages } from "@/constants/loadingMessages";
+import { loadingMessages } from "@/constants/loading";
 
 interface LoadingState {
   isLoading: boolean;

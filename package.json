@@ -9,6 +9,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.972.0",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-dropdown-menu": "^2.1.16",
@@ -44,6 +45,7 @@
     "lowlight": "^3.3.0",
     "lucide-react": "^0.562.0",
     "motion": "^12.26.2",
+    "nanoid": "^5.1.6",
     "next": "16.1.2",
     "next-view-transitions": "^0.3.5",
     "nextjs-toploader": "^3.9.17",
@@ -52,6 +54,7 @@
     "react-dom": "^19.2.3",
     "react-hook-form": "^7.71.1",
     "react-hot-toast": "^2.6.0",
+    "sharp": "^0.34.5",
     "tailwind-merge": "^3.4.0",
     "zod": "^4.3.5",
     "zustand": "^5.0.10"

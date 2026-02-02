@@ -260,3 +260,6 @@ export const loadingMessages = [
   "Ensuring Gnomes are still short.",
   "Baking ice cream...",
 ];
+
+export const loadingImageDataUri =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mPUrQcAAN8ArguAKQcAAAAASUVORK5CYII=";

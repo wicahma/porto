@@ -4,8 +4,9 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 export default function ArticleHeader() {
+  // border-b border-neutral-800/50 bg-neutral-950/80
   return (
-    <header className="sticky top-0 z-50 border-b border-neutral-800/50 bg-neutral-950/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50  backdrop-blur-md">
       <div className="max-w-350 mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <Link

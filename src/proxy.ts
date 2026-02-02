@@ -6,10 +6,11 @@ export default async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
   });
+  const resolvedVal = await vals();
 
   const supabase = createServerClient(
-    vals.supabase.url,
-    vals.supabase.anonKey,
+    resolvedVal.supabase.url,
+    resolvedVal.supabase.anonKey,
     {
       cookies: {
         getAll() {
@@ -37,7 +38,7 @@ export default async function proxy(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith("/admin")) {
     if (request.nextUrl.pathname === "/admin/login") {
       const key = request.nextUrl.searchParams.get("key");
-      if (key !== vals.adminSecretKey) {
+      if (key !== resolvedVal.adminSecretKey) {
         return NextResponse.redirect(new URL("/not-found", request.url));
       }
 

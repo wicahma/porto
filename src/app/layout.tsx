@@ -3,6 +3,7 @@ import { Open_Sans } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/organisms/wrapper/Providers";
 import { ViewTransitions } from "next-view-transitions";
+import { vals } from "@/constants/val";
 
 const openSans = Open_Sans({
   variable: "--font-open-sans",
@@ -63,16 +64,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const resolvedVal: Partial<Awaited<ReturnType<typeof vals>>> = await vals();
+
+  delete resolvedVal.supabase;
+  delete resolvedVal.email;
+
   return (
     <ViewTransitions>
       <html lang="en" className="dark">
         <body className={`${openSans.variable} antialiased`}>
-          <Providers>{children}</Providers>
+          <Providers resolvedVal={resolvedVal}>{children}</Providers>
         </body>
       </html>
     </ViewTransitions>

@@ -7,12 +7,15 @@ import { useRouter } from "next/navigation";
 import { vals } from "@/constants/val";
 import { QueryProvider } from "./QueryProvider";
 
-const Providers: React.FC<{ readonly children: React.ReactNode }> = ({
-  children,
-}) => {
+const Providers: React.FC<{
+  readonly children: React.ReactNode;
+  resolvedVal: Partial<Awaited<ReturnType<typeof vals>>>;
+}> = ({ children, resolvedVal }) => {
   const router = useRouter();
-  useSecretHotkeys(vals.hotkeys, (hotkey) => {
-    router.push(`${vals.redirectPage}?key=${vals.adminSecretKey}`);
+  useSecretHotkeys(resolvedVal?.hotkeys || "", (hotkey) => {
+    router.push(
+      `${resolvedVal?.redirectPage}?key=${resolvedVal?.adminSecretKey}`,
+    );
   });
 
   return (

@@ -9,6 +9,7 @@ import {
 import { Input } from "@/components/atoms/inputs/input";
 import { Label } from "@/components/atoms/inputs/label";
 import { Textarea } from "@/components/atoms/inputs/textarea";
+import { FileUpload } from "@/components/atoms/inputs/file-upload";
 import { useProjectFormHooks } from "@/hooks/pages/project-form.hook";
 import { handleTernary } from "@/utils/helper/render-if";
 import { ArrowLeft, Save } from "lucide-react";
@@ -33,6 +34,9 @@ const ProjectForm: React.FC<ReturnType<typeof useProjectFormHooks>> = ({
     setLink,
     isEdit,
     isLoading,
+    imageFile,
+    setImageFile,
+    isUploading,
   } = state;
   const { handleSubmit, createProject, updateProject } = handlers;
 
@@ -137,19 +141,16 @@ const ProjectForm: React.FC<ReturnType<typeof useProjectFormHooks>> = ({
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="image" className="text-neutral-200">
-                  Image URL *
-                </Label>
-                <Input
-                  id="image"
-                  value={image}
-                  onChange={(e) => setImage(e.target.value)}
-                  required
-                  className="bg-neutral-800 border-neutral-700 text-white"
-                  placeholder="https://example.com/image.jpg"
-                />
-              </div>
+              <FileUpload
+                id="image"
+                label="Project Image"
+                value={imageFile || image}
+                onChange={setImageFile}
+                accept="image/*"
+                maxSize={5}
+                required={!image}
+                description="Upload a project image (max 5MB)"
+              />
 
               <div className="space-y-2">
                 <Label htmlFor="tags" className="text-neutral-200">
@@ -221,12 +222,18 @@ const ProjectForm: React.FC<ReturnType<typeof useProjectFormHooks>> = ({
             <Button
               type="submit"
               className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
-              disabled={createProject.isPending || updateProject.isPending}
+              disabled={
+                createProject.isPending ||
+                updateProject.isPending ||
+                isUploading
+              }
             >
               <Save className="mr-2 h-4 w-4" />
               {handleTernary(
-                createProject.isPending || updateProject.isPending,
-                "Saving...",
+                createProject.isPending ||
+                  updateProject.isPending ||
+                  isUploading,
+                isUploading ? "Uploading..." : "Saving...",
                 handleTernary(
                   Boolean(isEdit),
                   "Update Project",

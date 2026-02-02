@@ -8,8 +8,9 @@ const page = async ({
   searchParams: Promise<{ key?: string }>;
 }) => {
   const sp = await searchParams;
+  const resolvedVal = await vals();
 
-  if (sp.key !== vals.adminSecretKey) {
+  if (sp.key !== resolvedVal.adminSecretKey) {
     return notFound();
   }
 

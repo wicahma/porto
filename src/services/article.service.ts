@@ -1,9 +1,9 @@
-import { createClient } from "@/lib/supabase/server";
 import {
   Article,
   CreateArticleInput,
   UpdateArticleInput,
 } from "@/interface/entities/article.interface";
+import { createClient } from "@/lib/supabase/server";
 
 export class ArticleService {
   static generateSlug(title: string): string {
@@ -17,7 +17,7 @@ export class ArticleService {
 
   static async getAllArticles(
     page: number = 1,
-    limit: number = 10
+    limit: number = 10,
   ): Promise<{ data: Article[]; count: number }> {
     const supabase = await createClient();
     const from = (page - 1) * limit;
@@ -67,7 +67,7 @@ export class ArticleService {
   static async getRelatedArticles(
     articleId: string,
     category: string,
-    limit: number = 5
+    limit: number = 5,
   ): Promise<Article[]> {
     const supabase = await createClient();
 
@@ -89,7 +89,12 @@ export class ArticleService {
 
     const slug = input.slug || this.generateSlug(input.title);
 
-    const existing = await this.getArticleBySlug(slug);
+    const { data: existing } = await supabase
+      .from("articles")
+      .select("id")
+      .eq("slug", slug)
+      .maybeSingle();
+
     if (existing) {
       throw new Error(`Article with slug "${slug}" already exists`);
     }
@@ -115,7 +120,13 @@ export class ArticleService {
     const supabase = await createClient();
 
     if (input.slug) {
-      const existing = await this.getArticleBySlug(input.slug);
+      // Check if slug already exists for a different article
+      const { data: existing } = await supabase
+        .from("articles")
+        .select("id")
+        .eq("slug", input.slug)
+        .maybeSingle();
+
       if (existing && existing.id !== input.id) {
         throw new Error(`Article with slug "${input.slug}" already exists`);
       }

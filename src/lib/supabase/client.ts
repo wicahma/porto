@@ -2,9 +2,10 @@ import { createBrowserClient } from "@supabase/ssr";
 import { vals } from "@/constants/val";
 import { Database } from "@/interface/entities/database.interface";
 
-export function createClient() {
+export async function createClient() {
+  const resolvedVal = await vals();
   return createBrowserClient<Database>(
-    vals.supabase.url,
-    vals.supabase.anonKey,
+    resolvedVal.supabase.url,
+    resolvedVal.supabase.anonKey,
   );
 }

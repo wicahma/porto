@@ -7,6 +7,7 @@ import { ProjectFormData } from "@/interface/pages/project-form.interface";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { uploadFileToStorage } from "@/lib/bucket/storage.service";
 
 export const useProjectFormHooks = () => {
   const router = useRouter();
@@ -26,6 +27,8 @@ export const useProjectFormHooks = () => {
   const [tags, setTags] = useState("");
   const [year, setYear] = useState("");
   const [link, setLink] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     if (existingProject) {
@@ -63,30 +66,73 @@ export const useProjectFormHooks = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
-    const projectData: ProjectFormData = {
-      title,
-      description,
-      problem,
-      solution,
-      image,
-      tags: tags
-        .split(",")
-        .map((t) => t.trim())
-        .filter(Boolean),
-      year,
-      link: link || undefined,
-    };
+
+    setIsUploading(true);
+
     try {
+      const projectData: ProjectFormData = {
+        title,
+        description,
+        problem,
+        solution,
+        image, // Temporary, will be updated after upload
+        tags: tags
+          .split(",")
+          .map((t) => t.trim())
+          .filter(Boolean),
+        year,
+        link: link || undefined,
+      };
+
+      let savedProjectId = projectId;
+
       if (isEdit && projectId) {
         await updateProject.mutateAsync({ id: projectId, ...projectData });
-        toast.success("Project updated successfully!");
       } else {
-        await createProject.mutateAsync(projectData);
-        toast.success("Project created successfully!");
+        const result = await createProject.mutateAsync(projectData);
+        savedProjectId = result?.id || null;
       }
+
+      // After successful database save, upload image if any
+      let updatedImagePath = image;
+
+      if (imageFile && savedProjectId) {
+        toast.loading("Uploading image...");
+        const uploadResult = await uploadFileToStorage(
+          imageFile,
+          "images",
+          `project_${savedProjectId}`,
+        );
+
+        if (uploadResult.success && uploadResult.filePath) {
+          updatedImagePath = uploadResult.filePath;
+        } else {
+          toast.error("Failed to upload image");
+        }
+      }
+
+      // Update project with file path if file was uploaded
+      if (imageFile && savedProjectId && updatedImagePath !== image) {
+        await updateProject.mutateAsync({
+          id: savedProjectId,
+          ...projectData,
+          image: updatedImagePath,
+        });
+      }
+
+      toast.dismiss();
+      toast.success(
+        isEdit
+          ? "Project updated successfully!"
+          : "Project created successfully!",
+      );
       router.push("/admin/projects");
     } catch (error) {
+      console.error("Failed to save project:", error);
+      toast.dismiss();
       toast.error("Failed to save project");
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -112,6 +158,9 @@ export const useProjectFormHooks = () => {
       setLink,
       isEdit,
       isLoading,
+      imageFile,
+      setImageFile,
+      isUploading,
     },
     handlers: {
       createProject,

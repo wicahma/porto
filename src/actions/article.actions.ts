@@ -47,13 +47,13 @@ export async function getArticleBySlugAction(slug: string) {
 export async function getRelatedArticlesAction(
   articleId: string,
   category: string,
-  limit: number = 5
+  limit: number = 5,
 ) {
   try {
     const articles = await ArticleService.getRelatedArticles(
       articleId,
       category,
-      limit
+      limit,
     );
     return { success: true, data: articles };
   } catch (error) {
@@ -69,11 +69,13 @@ export async function getRelatedArticlesAction(
 
 export async function createArticleAction(input: CreateArticleInput) {
   try {
+    console.log("Creating article with input:", input);
     const article = await ArticleService.createArticle(input);
     revalidatePath("/admin/articles");
     revalidatePath("/article");
     return { success: true, data: article };
   } catch (error) {
+    console.log(error);
     return {
       success: false,
       error:

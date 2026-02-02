@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Card,
   CardContent,
@@ -9,6 +11,7 @@ import { Button } from "@/components/atoms/buttons/button";
 import { Input } from "@/components/atoms/inputs/input";
 import { Label } from "@/components/atoms/inputs/label";
 import { Textarea } from "@/components/atoms/inputs/textarea";
+import { FileUpload } from "@/components/atoms/inputs/file-upload";
 import {
   Tabs,
   TabsContent,
@@ -51,6 +54,9 @@ export const ArticleFormPage = () => {
     setMetaDescription,
     setMetaKeywords,
     setOgImage,
+    imageFile,
+    setImageFile,
+    isUploading,
   } = hooks.state;
   const { handleTitleChange, handleSubmit, createArticle, updateArticle } =
     hooks.handlers;
@@ -192,19 +198,16 @@ export const ArticleFormPage = () => {
                       </div>
                     </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="image" className="text-neutral-200">
-                        Featured Image URL *
-                      </Label>
-                      <Input
-                        id="image"
-                        value={image}
-                        onChange={(e) => setImage(e.target.value)}
-                        required
-                        className="bg-neutral-800 border-neutral-700 text-white"
-                        placeholder="https://example.com/image.jpg"
-                      />
-                    </div>
+                    <FileUpload
+                      id="image"
+                      label="Featured Image"
+                      value={imageFile || image}
+                      onChange={setImageFile}
+                      accept="image/*"
+                      maxSize={5}
+                      required={!image}
+                      description="Upload a featured image for your article (max 5MB)"
+                    />
 
                     <div className="space-y-2">
                       <Label htmlFor="tags" className="text-neutral-200">
@@ -340,18 +343,27 @@ export const ArticleFormPage = () => {
               <Button
                 type="submit"
                 className="bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700"
-                disabled={createArticle.isPending || updateArticle.isPending}
+                disabled={
+                  createArticle.isPending ||
+                  updateArticle.isPending ||
+                  isUploading
+                }
               >
                 <Save className="mr-2 h-4 w-4" />
                 <RenderIf
-                  condition={createArticle.isPending || updateArticle.isPending}
+                  condition={
+                    createArticle.isPending ||
+                    updateArticle.isPending ||
+                    isUploading
+                  }
                 >
-                  Saving...
+                  {isUploading ? "Uploading..." : "Saving..."}
                 </RenderIf>
                 <RenderIf
                   condition={
                     !createArticle.isPending &&
                     !updateArticle.isPending &&
+                    !isUploading &&
                     isEdit
                   }
                 >
@@ -361,6 +373,7 @@ export const ArticleFormPage = () => {
                   condition={
                     !createArticle.isPending &&
                     !updateArticle.isPending &&
+                    !isUploading &&
                     !isEdit
                   }
                 >

@@ -1,8 +1,10 @@
 import { isMdUp } from "@/utils/helper/responsive";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 
-interface SmoothScrollOptions {
+export interface SmoothScrollOptions {
   disableOnMobile?: boolean;
+  disableOnPathname?: string[];
   speed?: number;
   smoothness?: number;
 }
@@ -11,11 +13,13 @@ export const useSmoothScroll = ({
   speed = 1,
   smoothness = 0.07,
   disableOnMobile = false,
+  disableOnPathname = [],
 }: SmoothScrollOptions = {}) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const currentScrollRef = useRef(0);
   const targetScrollRef = useRef(0);
   const animationFrameRef = useRef<number>(0);
+  const pathname = usePathname();
 
   useEffect(() => {
     const element = scrollRef.current;
@@ -33,7 +37,13 @@ export const useSmoothScroll = ({
         const hasOverflow = element.scrollHeight > element.clientHeight;
         const hasHeight = element.clientHeight > 0;
 
-        if (isDesktop && hasHeight && hasOverflow && !disableOnMobile) {
+        if (
+          isDesktop &&
+          hasHeight &&
+          hasOverflow &&
+          !disableOnMobile &&
+          !disableOnPathname.includes(pathname)
+        ) {
           enabled = true;
           return;
         }
@@ -53,7 +63,13 @@ export const useSmoothScroll = ({
       const hasOverflow = element.scrollHeight > element.clientHeight;
       const wasDisabled = !enabled;
 
-      if (isDesktop && hasOverflow && !disableOnMobile && wasDisabled) {
+      if (
+        isDesktop &&
+        hasOverflow &&
+        !disableOnMobile &&
+        wasDisabled &&
+        !disableOnPathname.includes(pathname)
+      ) {
         enabled = true;
         return;
       }
@@ -68,7 +84,8 @@ export const useSmoothScroll = ({
     });
 
     const handleResize = () => {
-      const shouldBeEnabled = isMdUp() && !disableOnMobile;
+      const shouldBeEnabled =
+        isMdUp() && !disableOnMobile && !disableOnPathname.includes(pathname);
       if (enabled !== shouldBeEnabled) {
         enabled = shouldBeEnabled;
       }
@@ -82,8 +99,8 @@ export const useSmoothScroll = ({
         0,
         Math.min(
           targetScrollRef.current,
-          element.scrollHeight - element.clientHeight
-        )
+          element.scrollHeight - element.clientHeight,
+        ),
       );
 
       if (!isScrolling) {
@@ -124,7 +141,7 @@ export const useSmoothScroll = ({
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [speed, smoothness, disableOnMobile]);
+  }, [speed, smoothness, disableOnMobile, disableOnPathname, pathname]);
 
   return scrollRef;
 };

@@ -1,8 +1,9 @@
 import Link from "next/link";
 
 export default function ArticleFooter() {
+  // border-t border-neutral-800/50 bg-neutral-950
   return (
-    <footer className="border-t border-neutral-800/50 bg-neutral-950 mt-20">
+    <footer className=" mt-20">
       <div className="max-w-170 mx-auto px-6 py-12">
         <div className="text-center space-y-4">
           <p className="text-neutral-400 text-sm">
