@@ -1,12 +1,13 @@
 import { createClient } from "@/lib/supabase/server";
 
 export class AuthService {
-  static async signIn(email: string, password: string) {
+  static async signIn(email: string, password: string, captchaToken?: string) {
     const supabase = await createClient();
 
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
+      options: captchaToken ? { captchaToken } : undefined,
     });
 
     if (error) throw error;

@@ -2,10 +2,7 @@ import { getUserAction, signInAction } from "@/actions/auth.actions";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import {
-  LoginFormState,
-  UseLoginFormReturn,
-} from "@/interface/pages/login-form.interface";
+import { UseLoginFormReturn } from "@/interface/pages/login-form.interface";
 
 export const useLoginFormHooks = (): UseLoginFormReturn => {
   const router = useRouter();
@@ -24,13 +21,13 @@ export const useLoginFormHooks = (): UseLoginFormReturn => {
     checkAuth();
   }, [router]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent, captchaToken?: string) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      const result = await signInAction(email, password);
+      const result = await signInAction(email, password, captchaToken);
 
       if (!result.success) {
         setError(result.error || "Failed to sign in");

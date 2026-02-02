@@ -1,11 +1,14 @@
 "use server";
 
 import { AuthService } from "@/services/auth.service";
-import { cookies } from "next/headers";
 
-export async function signInAction(email: string, password: string) {
+export async function signInAction(
+  email: string,
+  password: string,
+  captchaToken?: string,
+) {
   try {
-    const result = await AuthService.signIn(email, password);
+    const result = await AuthService.signIn(email, password, captchaToken);
     return { success: true, data: result };
   } catch (error) {
     return {
