@@ -1,13 +1,27 @@
 import { createClient } from "@/lib/supabase/server";
 
 export class AuthService {
-  static async signIn(email: string, password: string, captchaToken?: string) {
+  static async signInWithGithub(redirectTo?: string, captchaToken?: string) {
     const supabase = await createClient();
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-      options: captchaToken ? { captchaToken } : undefined,
+    const options: {
+      redirectTo: string;
+      queryParams?: { [key: string]: string };
+    } = {
+      redirectTo:
+        redirectTo || `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+    };
+
+    // Add captcha token as a query parameter if provided
+    if (captchaToken) {
+      options.queryParams = {
+        captcha_token: captchaToken,
+      };
+    }
+
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "github",
+      options,
     });
 
     if (error) throw error;
@@ -41,5 +55,11 @@ export class AuthService {
     if (error) throw error;
 
     return data.user;
+  }
+
+  static async validateAdminEmail(email: string): Promise<boolean> {
+    const allowedEmail =
+      process.env.ADMIN_EMAIL || process.env.NEXT_PUBLIC_EMAIL;
+    return email === allowedEmail;
   }
 }

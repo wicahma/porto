@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 const page = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ key?: string }>;
+  searchParams: Promise<{ key?: string; error?: string; message?: string }>;
 }) => {
   const sp = await searchParams;
   const resolvedVal = await vals();
@@ -14,7 +14,7 @@ const page = async ({
     return notFound();
   }
 
-  return <LoginPage />;
+  return <LoginPage error={sp.error} errorMessage={sp.message} />;
 };
 
 export default page;

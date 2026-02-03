@@ -1,46 +1,29 @@
-import { getUserAction, signInAction } from "@/actions/auth.actions";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { signInWithGithubAction } from "@/actions/auth.actions";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { UseLoginFormReturn } from "@/interface/pages/login-form.interface";
 
 export const useLoginFormHooks = (): UseLoginFormReturn => {
-  const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const result = await getUserAction();
-      if (result.success && result.data) {
-        router.replace("/admin/dashboard");
-      }
-    };
-    checkAuth();
-  }, [router]);
-
-  const handleSubmit = async (e: React.FormEvent, captchaToken?: string) => {
-    e.preventDefault();
+  const handleGithubSignIn = async (captchaToken?: string) => {
     setError("");
     setLoading(true);
 
     try {
-      const result = await signInAction(email, password, captchaToken);
+      const result = await signInWithGithubAction(undefined, captchaToken);
 
       if (!result.success) {
-        setError(result.error || "Failed to sign in");
-        toast.error(result.error || "Failed to sign in");
-        return;
+        setError(result.error || "Failed to sign in with GitHub");
+        toast.error(result.error || "Failed to sign in with GitHub");
       }
-
-      toast.success("Signed in successfully!");
-      router.push("/admin/dashboard");
     } catch (err) {
       const message = err instanceof Error ? err.message : "An error occurred";
-      setError(message);
-      toast.error(message);
+      if (!message.startsWith("NEXT_REDIRECT")) {
+        setError(message);
+        toast.error(message);
+      }
     } finally {
       setLoading(false);
     }
@@ -48,13 +31,9 @@ export const useLoginFormHooks = (): UseLoginFormReturn => {
 
   return {
     state: {
-      email,
-      password,
       loading,
       error,
     },
-    setEmail,
-    setPassword,
-    handleSubmit,
+    handleGithubSignIn,
   };
 };
