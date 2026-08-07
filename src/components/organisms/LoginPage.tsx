@@ -1,6 +1,6 @@
 "use client";
 
-import { useLoginFormHooks } from "@/hooks/pages/login-form.hook";
+import { useLoginPage } from "@/hooks/pages/use-login-page";
 import LoginForm from "@/components/molecules/forms/LoginForm";
 
 interface LoginPageProps {
@@ -9,7 +9,7 @@ interface LoginPageProps {
 }
 
 const LoginPage: React.FC<LoginPageProps> = ({ error, errorMessage }) => {
-  const hooks = useLoginFormHooks();
+  const hooks = useLoginPage();
   return (
     <LoginForm hooks={hooks} urlError={error} urlErrorMessage={errorMessage} />
   );

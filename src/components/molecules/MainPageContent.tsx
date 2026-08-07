@@ -6,10 +6,10 @@ import LeftCard from "../atoms/cards/LeftCard";
 import RightCard from "../atoms/cards/RightCard";
 import ProjectDetail from "./ProjectDetail";
 import Container from "../organisms/wrapper/Container";
-import { useMainPageHooks } from "@/hooks/pages/main-page.hook";
+import { useMainPage } from "@/hooks/pages/use-main-page";
 
 const MainPageContent = () => {
-  const { pathname, isInitialLoad } = useMainPageHooks();
+  const { pathname, isInitialLoad } = useMainPage();
 
   const getDetailComponent = () => {
     const skipAnimation = isInitialLoad;

@@ -19,13 +19,13 @@ import {
 } from "@/components/atoms/popups/dialog";
 import { RenderIf } from "@/utils/helper/render-if";
 import { ExperiencesTable } from "@/components/molecules/tables/ExperiencesTable";
-import { useExperiencesPageHook } from "@/hooks/pages/experiences-page.hook";
+import { useExperiencesPage } from "@/hooks/pages/use-experiences-page";
 
 const ExperiencesPageContent = () => {
   const {
     data: { experiences, count, isLoading, deleteId },
     handlers: { setDeleteId, handleDelete },
-  } = useExperiencesPageHook();
+  } = useExperiencesPage();
 
   return (
     <div className="min-h-screen bg-linear-to-br from-neutral-950 via-neutral-900 to-neutral-950 p-8">

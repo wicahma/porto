@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { useMemo } from "react";
 
 export const useArticlePage = (
   article: Record<string, any> | null,
@@ -11,12 +11,12 @@ export const useArticlePage = (
           month: "long",
           day: "numeric",
         })
-      : ""
+      : "";
 
     return {
       article,
       relatedArticles: related || [],
       formattedDate,
-    }
-  }, [article, related])
-}
+    };
+  }, [article, related]);
+};

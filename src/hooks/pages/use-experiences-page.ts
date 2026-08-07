@@ -5,7 +5,7 @@ import {
 import { useState } from "react";
 import { ExperiencesPageHook } from "@/interface/pages/experiences-page.interface";
 
-export const useExperiencesPageHook = (): ExperiencesPageHook => {
+export const useExperiencesPage = (): ExperiencesPageHook => {
   const { data, isLoading } = useExperiences(1, 100);
   const deleteExperience = useDeleteExperience();
   const [deleteId, setDeleteId] = useState<string | null>(null);

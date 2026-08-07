@@ -3,7 +3,7 @@ import { useProjects, useDeleteProject } from "@/hooks/queries/project.wrapper";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-export const useProjectsPageHooks = () => {
+export const useProjectsPage = () => {
   const { data, isLoading } = useProjects(1, 100);
   const deleteProject = useDeleteProject();
   const [deleteId, setDeleteId] = useState<string | null>(null);

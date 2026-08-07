@@ -29,11 +29,11 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { formatDateRange } from "@/utils/helper/date.utils";
-import { RenderIf, handleTernary } from "@/utils/helper/render-if";
-import { useExperienceFormHooks } from "@/hooks/pages/experience-form.hook";
+import { RenderIf } from "@/utils/helper/render-if";
+import { useExperienceFormPage } from "@/hooks/pages/use-experience-form-page";
 
 const ExperienceFormPageContent = () => {
-  const hooks = useExperienceFormHooks();
+  const hooks = useExperienceFormPage();
 
   const { collapsedJobs, company, jobs, location, tags } = hooks.data;
   const { isEdit, isLoading, setCompany, setLocation, setTags } = hooks.state;
@@ -70,14 +70,12 @@ const ExperienceFormPageContent = () => {
           </Link>
           <div>
             <h1 className="text-4xl font-bold text-white">
-              {handleTernary(!!isEdit, "Edit Experience", "Add Experience")}
+              {isEdit ? "Edit Experience" : "Add Experience"}
             </h1>
             <p className="text-neutral-400">
-              {handleTernary(
-                !!isEdit,
-                "Update work experience with multiple positions",
-                "Add a new work experience with multiple positions",
-              )}
+              {isEdit
+                ? "Update work experience with multiple positions"
+                : "Add a new work experience with multiple positions"}
             </p>
           </div>
         </div>
@@ -358,20 +356,13 @@ const ExperienceFormPageContent = () => {
               }
             >
               <Save className="mr-2 h-4 w-4" />
-              {handleTernary(
-                createExperience.isPending || updateExperience.isPending,
-                "Saving...",
-                undefined,
-              )}
-              {handleTernary(
-                Boolean(
-                  (!createExperience.isPending &&
-                    !updateExperience.isPending) ||
-                  isEdit,
-                ),
-                "Update Experience",
-                "Create Experience",
-              )}
+              {createExperience.isPending || updateExperience.isPending
+                ? "Saving..."
+                : !createExperience.isPending &&
+                    !updateExperience.isPending &&
+                    isEdit
+                  ? "Update Experience"
+                  : "Create Experience"}
             </Button>
           </div>
         </form>

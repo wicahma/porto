@@ -1,10 +1,10 @@
 "use client";
 
 import ProjectForm from "@/components/molecules/forms/ProjectForm";
-import { useProjectFormHooks } from "@/hooks/pages/project-form.hook";
+import { useProjectFormPage } from "@/hooks/pages/use-project-form-page";
 
 const ProjectFormPageContent = () => {
-  const hooks = useProjectFormHooks();
+  const hooks = useProjectFormPage();
   return (
     <ProjectForm
       data={hooks.data}

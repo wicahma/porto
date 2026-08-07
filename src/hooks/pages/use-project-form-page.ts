@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { apiUploadFile } from "@/lib/api/storage.api";
 
-export const useProjectFormHooks = () => {
+export const useProjectFormPage = () => {
   const router = useRouter();
   const params = useParams();
   const isEdit = params?.id && params.id !== "new";

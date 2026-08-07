@@ -20,12 +20,12 @@ import {
 } from "@/components/atoms/tabs";
 import Link from "next/link";
 import { Save, ArrowLeft } from "lucide-react";
-import { useArticleFormHooks } from "@/hooks/pages/article-form.hook";
+import { useArticleFormPage } from "@/hooks/pages/use-article-form-page";
 import { RenderIf } from "@/utils/helper/render-if";
 import WysiwygEditor from "../molecules/WysiwygEditor";
 
 export const ArticleFormPage = () => {
-  const hooks = useArticleFormHooks();
+  const hooks = useArticleFormPage();
   const {
     title,
     slug,

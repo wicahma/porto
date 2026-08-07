@@ -1,7 +1,7 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 
-export const useMainPageHooks = () => {
+export const useMainPage = () => {
   const pathname = usePathname();
   const lastDetailPageRef = useRef<string | null>(null);
   const isFirstRender = useRef(true);

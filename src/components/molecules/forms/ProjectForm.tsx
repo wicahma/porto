@@ -10,13 +10,12 @@ import { Input } from "@/components/atoms/inputs/input";
 import { Label } from "@/components/atoms/inputs/label";
 import { Textarea } from "@/components/atoms/inputs/textarea";
 import { FileUpload } from "@/components/atoms/inputs/file-upload";
-import { useProjectFormHooks } from "@/hooks/pages/project-form.hook";
-import { handleTernary } from "@/utils/helper/render-if";
+import { useProjectFormPage } from "@/hooks/pages/use-project-form-page";
 import { ArrowLeft, Save } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
-const ProjectForm: React.FC<ReturnType<typeof useProjectFormHooks>> = ({
+const ProjectForm: React.FC<ReturnType<typeof useProjectFormPage>> = ({
   data,
   state,
   handlers,
@@ -63,14 +62,12 @@ const ProjectForm: React.FC<ReturnType<typeof useProjectFormHooks>> = ({
           </Link>
           <div>
             <h1 className="text-4xl font-bold text-white">
-              {handleTernary(Boolean(isEdit), "Edit Project", "Create Project")}
+              {isEdit ? "Edit Project" : "Create Project"}
             </h1>
             <p className="text-neutral-400">
-              {handleTernary(
-                Boolean(isEdit),
-                "Update your project",
-                "Add a new project to your portfolio",
-              )}
+              {isEdit
+                ? "Update your project"
+                : "Add a new project to your portfolio"}
             </p>
           </div>
         </div>
@@ -229,17 +226,13 @@ const ProjectForm: React.FC<ReturnType<typeof useProjectFormHooks>> = ({
               }
             >
               <Save className="mr-2 h-4 w-4" />
-              {handleTernary(
-                createProject.isPending ||
-                  updateProject.isPending ||
-                  isUploading,
-                isUploading ? "Uploading..." : "Saving...",
-                handleTernary(
-                  Boolean(isEdit),
-                  "Update Project",
-                  "Create Project",
-                ),
-              )}
+              {createProject.isPending || updateProject.isPending || isUploading
+                ? isUploading
+                  ? "Uploading..."
+                  : "Saving..."
+                : isEdit
+                  ? "Update Project"
+                  : "Create Project"}
             </Button>
           </div>
         </form>

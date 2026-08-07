@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/atoms/buttons/button";
 import Link from "next/link";
 import { Eye } from "lucide-react";
-import { useDashboardPage } from "@/hooks/pages/dashboard-page.hook";
+import { useDashboardPage } from "@/hooks/pages/use-dashboard-page";
 import { RenderIf } from "@/utils/helper/render-if";
 
 const DashboardPage = () => {

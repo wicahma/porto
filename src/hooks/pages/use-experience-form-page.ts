@@ -11,7 +11,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-export const useExperienceFormHooks = () => {
+export const useExperienceFormPage = () => {
   const router = useRouter();
   const params = useParams();
   const isEdit = params?.id && params.id !== "new";

@@ -24,12 +24,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/atoms/popups/dialog";
-import { RenderIf, handleTernary } from "@/utils/helper/render-if";
-import { useProjectsPageHooks } from "@/hooks/pages/projects-page.hook";
+import { RenderIf } from "@/utils/helper/render-if";
+import { useProjectsPage } from "@/hooks/pages/use-projects-page";
 import { ProjectRow } from "@/components/molecules/tables/ProjectRow";
 
 const ProjectsPageContent = () => {
-  const hooks = useProjectsPageHooks();
+  const hooks = useProjectsPage();
   const { projects, count, isLoading, deleteId } = hooks.data;
   const { setDeleteId } = hooks.state;
   const { handleDelete, deleteProject } = hooks.handlers;
@@ -124,11 +124,7 @@ const ProjectsPageContent = () => {
                 className="bg-red-600 hover:bg-red-700"
                 disabled={deleteProject.isPending}
               >
-                {handleTernary(
-                  deleteProject.isPending,
-                  "Deleting...",
-                  "Delete",
-                )}
+                {deleteProject.isPending ? "Deleting..." : "Delete"}
               </Button>
             </DialogFooter>
           </DialogContent>

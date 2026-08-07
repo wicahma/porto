@@ -4,7 +4,7 @@ import { UseLoginFormReturn } from "@/interface/pages/login-form.interface";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
-export const useLoginFormHooks = (): UseLoginFormReturn => {
+export const useLoginPage = (): UseLoginFormReturn => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
