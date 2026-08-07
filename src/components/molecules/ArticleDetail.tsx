@@ -41,6 +41,8 @@ interface ArticleDetailProps {
 const ArticleDetail = ({ skipAnimation = false }: ArticleDetailProps) => {
   const scrollRef = useSmoothScroll();
   const { data, isLoading, isError } = useArticles(1, 100);
+  const articles = data as any;
+  const articlesList = articles?.articles || [];
 
   return (
     <m.div
@@ -55,12 +57,12 @@ const ArticleDetail = ({ skipAnimation = false }: ArticleDetailProps) => {
         <ArticleDetailSkeleton />
       </RenderIf>
 
-      <RenderIf condition={!isLoading && Boolean(isError && data?.data)}>
+      <RenderIf condition={!isLoading && Boolean(isError && articlesList)}>
         <p className="text-neutral-400 text-center">Failed to load articles</p>
       </RenderIf>
 
       <RenderIf
-        condition={!isLoading && Boolean(!isError && data?.data.length === 0)}
+        condition={!isLoading && Boolean(!isError && articlesList.length === 0)}
       >
         <p className="text-neutral-400 text-center mt-5">
           Hi, for now there is no article created yet, but please stay tuned for
@@ -68,10 +70,10 @@ const ArticleDetail = ({ skipAnimation = false }: ArticleDetailProps) => {
         </p>
       </RenderIf>
 
-      <RenderIf condition={Boolean(!isLoading && !isError && data?.data)}>
+      <RenderIf condition={Boolean(!isLoading && !isError && articlesList)}>
         <div className="space-y-0">
           <AnimatePresence mode="popLayout">
-            {data?.data?.map((article, index) => (
+            {articlesList.map((article: any, index: number) => (
               <Link key={article.id} href={`/article/${article.slug}`}>
                 <m.article
                   initial={{ opacity: 0, y: 20 }}
@@ -110,7 +112,7 @@ const ArticleDetail = ({ skipAnimation = false }: ArticleDetailProps) => {
                   </p>
 
                   <div className="flex flex-wrap gap-3 mb-4">
-                    {article?.tags?.slice(0, 3).map((tag) => (
+                    {(article as any)?.tags?.slice(0, 3).map((tag: string) => (
                       <span
                         key={tag}
                         className="text-sm text-neutral-500 hover:text-neutral-300 transition-colors cursor-pointer"

@@ -7,7 +7,7 @@ import { ProjectFormData } from "@/interface/pages/project-form.interface";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { uploadFileToStorage } from "@/lib/bucket/storage.service";
+import { apiUploadFile } from "@/lib/api/storage.api";
 
 export const useProjectFormHooks = () => {
   const router = useRouter();
@@ -15,7 +15,9 @@ export const useProjectFormHooks = () => {
   const isEdit = params?.id && params.id !== "new";
   const projectId = isEdit ? (params.id as string) : null;
 
-  const { data: existingProject, isLoading } = useProject(projectId || "");
+  const { data: existingProject, isLoading } = useProject(
+    projectId || "",
+  ) as any;
   const createProject = useCreateProject();
   const updateProject = useUpdateProject();
 
@@ -89,8 +91,8 @@ export const useProjectFormHooks = () => {
       if (isEdit && projectId) {
         await updateProject.mutateAsync({ id: projectId, ...projectData });
       } else {
-        const result = await createProject.mutateAsync(projectData);
-        savedProjectId = result?.id || null;
+        const result = (await createProject.mutateAsync(projectData)) as any;
+        savedProjectId = result?.data?.id || null;
       }
 
       // After successful database save, upload image if any
@@ -98,14 +100,10 @@ export const useProjectFormHooks = () => {
 
       if (imageFile && savedProjectId) {
         toast.loading("Uploading image...");
-        const uploadResult = await uploadFileToStorage(
-          imageFile,
-          "images",
-          `project_${savedProjectId}`,
-        );
+        const uploadResult = await apiUploadFile("images", imageFile);
 
-        if (uploadResult.success && uploadResult.filePath) {
-          updatedImagePath = uploadResult.filePath;
+        if (uploadResult.data?.path) {
+          updatedImagePath = uploadResult.data.path;
         } else {
           toast.error("Failed to upload image");
         }

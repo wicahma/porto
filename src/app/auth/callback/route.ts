@@ -1,61 +1,40 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
-
-async function validateUserEmail(supabase: any): Promise<boolean> {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user?.email) return false;
-
-  const allowedEmail = process.env.ADMIN_EMAIL;
-  return user.email === allowedEmail;
-}
-
-function buildRedirectUrl(
-  request: Request,
-  origin: string,
-  next: string,
-): string {
-  const forwardedHost = request.headers.get("x-forwarded-host");
-  const isLocalEnv = process.env.NODE_ENV === "development";
-
-  if (isLocalEnv) {
-    return `${origin}${next}`;
-  }
-
-  if (forwardedHost) {
-    return `https://${forwardedHost}${next}`;
-  }
-
-  return `${origin}${next}`;
-}
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
-  const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? "/admin/dashboard";
-
-  if (!code) {
-    return NextResponse.redirect(`${origin}/login?error=auth_failed`);
-  }
-
-  const supabase = await createClient();
-  const { error } = await supabase.auth.exchangeCodeForSession(code);
+  const accessToken = searchParams.get("access_token");
+  const refreshToken = searchParams.get("refresh_token");
+  const error = searchParams.get("error");
 
   if (error) {
-    return NextResponse.redirect(`${origin}/login?error=auth_failed`);
+    const url = new URL("/admin/login", origin);
+    url.searchParams.set("error", error);
+    return NextResponse.redirect(url);
   }
 
-  const isValidEmail = await validateUserEmail(supabase);
-
-  if (!isValidEmail) {
-    await supabase.auth.signOut();
+  if (!accessToken || !refreshToken) {
     return NextResponse.redirect(
-      `${origin}/login?error=unauthorized&message=Your GitHub email is not authorized to access this admin panel`,
+      new URL("/admin/login?error=no_token", origin),
     );
   }
 
-  const redirectUrl = buildRedirectUrl(request, origin, next);
-  return NextResponse.redirect(redirectUrl);
+  const response = NextResponse.redirect(new URL("/admin/dashboard", origin));
+  const secure = process.env.NODE_ENV === "production";
+
+  response.cookies.set("porto_access_token", accessToken, {
+    path: "/",
+    maxAge: 900,
+    httpOnly: false,
+    sameSite: "lax",
+    secure,
+  });
+  response.cookies.set("porto_refresh_token", refreshToken, {
+    path: "/",
+    maxAge: 7 * 24 * 3600,
+    httpOnly: true,
+    sameSite: "lax",
+    secure,
+  });
+
+  return response;
 }

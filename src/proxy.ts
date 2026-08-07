@@ -1,60 +1,30 @@
-import { createServerClient } from "@supabase/ssr";
 import { NextResponse, ProxyConfig, type NextRequest } from "next/server";
-import { vals } from "@/constants/val";
 
 export default async function proxy(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
-    request,
-  });
-  const resolvedVal = await vals();
-
-  const supabase = createServerClient(
-    resolvedVal.supabase.url,
-    resolvedVal.supabase.anonKey,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            request.cookies.set(name, value),
-          );
-          supabaseResponse = NextResponse.next({
-            request,
-          });
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options),
-          );
-        },
-      },
-    },
-  );
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const adminSecretKey = process.env.NEXT_PUBLIC_ADMIN_SECRET_KEY;
 
   if (request.nextUrl.pathname.startsWith("/admin")) {
     if (request.nextUrl.pathname === "/admin/login") {
       const key = request.nextUrl.searchParams.get("key");
-      if (key !== resolvedVal.adminSecretKey) {
+      if (!key || key !== adminSecretKey) {
         return NextResponse.redirect(new URL("/not-found", request.url));
       }
 
-      if (user) {
+      const token = request.cookies.get("porto_access_token")?.value;
+      if (token) {
         return NextResponse.redirect(new URL("/admin/dashboard", request.url));
       }
 
-      return supabaseResponse;
+      return NextResponse.next();
     }
 
-    if (!user) {
+    const token = request.cookies.get("porto_access_token")?.value;
+    if (!token) {
       return NextResponse.redirect(new URL("/not-found", request.url));
     }
   }
 
-  return supabaseResponse;
+  return NextResponse.next();
 }
 
 export const config: ProxyConfig = {

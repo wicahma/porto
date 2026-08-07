@@ -17,8 +17,8 @@ const ButtonsLeft = () => {
     try {
       setIsGenerating(true);
 
-      const experiences = experiencesData?.data || [];
-      const projects = projectsData?.data || [];
+      const experiences = (experiencesData as any)?.experiences || [];
+      const projects = (projectsData as any)?.projects || [];
 
       const { pdf } = await import("@react-pdf/renderer");
       const CVDocument = (await import("@/components/molecules/pdf/CVDocument"))

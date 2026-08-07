@@ -1,20 +1,31 @@
 import { MetadataRoute } from "next";
-import { ArticleService } from "@/services/article.service";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+
+async function getArticles() {
+  const res = await fetch(`${API_BASE_URL}/api/articles?page=1&limit=1000`, {
+    headers: { "X-API-Key": process.env.API_KEY || "" },
+  });
+  const body = await res.json();
+  return body.data?.articles || [];
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
   try {
-    const { data: articles } = await ArticleService.getAllArticles(1, 1000);
+    const articles = await getArticles();
 
-    const articleEntries: MetadataRoute.Sitemap = articles.map((article) => ({
-      url: `${baseUrl}/article/${article.slug}`,
-      lastModified: new Date(
-        article.updated_at || article.created_at || new Date(),
-      ),
-      changeFrequency: "weekly",
-      priority: 0.7,
-    }));
+    const articleEntries: MetadataRoute.Sitemap = (articles as any[]).map(
+      (article: any) => ({
+        url: `${baseUrl}/article/${article.slug}`,
+        lastModified: new Date(
+          article.updated_at || article.created_at || new Date(),
+        ),
+        changeFrequency: "weekly",
+        priority: 0.7,
+      }),
+    );
 
     const staticPages: MetadataRoute.Sitemap = [
       {

@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { ArticleService } from "@/services/article.service";
 import {
   ArticleFormState,
   ArticleFormHandlers,
@@ -13,10 +12,7 @@ import {
   useCreateArticle,
   useUpdateArticle,
 } from "../queries/article.wrapper";
-import {
-  uploadFileToStorage,
-  uploadHtmlToStorage,
-} from "@/lib/bucket/storage.service";
+import { apiUploadFile } from "@/lib/api/storage.api";
 import toast from "react-hot-toast";
 
 export const useArticleFormHooks = (): UseArticleFormHooks => {
@@ -25,7 +21,9 @@ export const useArticleFormHooks = (): UseArticleFormHooks => {
   const isEdit = params?.id && params.id !== "new";
   const articleId = isEdit ? (params.id as string) : null;
 
-  const { data: existingArticle, isLoading } = useArticle(articleId || "");
+  const { data: existingArticle, isLoading } = useArticle(
+    articleId || "",
+  ) as any;
   const createArticle = useCreateArticle();
   const updateArticle = useUpdateArticle();
 
@@ -66,7 +64,7 @@ export const useArticleFormHooks = (): UseArticleFormHooks => {
   const handleTitleChange = (value: string) => {
     setTitle(value);
     if (!isEdit) {
-      const generatedSlug = ArticleService.generateSlug(value);
+      const generatedSlug = generateSlug(value);
       setSlug(generatedSlug);
     }
   };
@@ -104,8 +102,8 @@ export const useArticleFormHooks = (): UseArticleFormHooks => {
       if (isEdit && articleId) {
         await updateArticle.mutateAsync({ id: articleId, ...articleData });
       } else {
-        const result = await createArticle.mutateAsync(articleData);
-        savedArticleId = result?.id || null;
+        const result = (await createArticle.mutateAsync(articleData)) as any;
+        savedArticleId = result?.data?.id || null;
       }
 
       // After successful database save, upload files if any
@@ -114,16 +112,10 @@ export const useArticleFormHooks = (): UseArticleFormHooks => {
 
       if (imageFile && savedArticleId) {
         toast.loading("Uploading image...");
-        const uploadResult = await uploadFileToStorage(
-          imageFile,
-          "images",
-          `article_${savedArticleId}`,
-        );
+        const uploadResult = await apiUploadFile("images", imageFile);
 
-        console.log("Image upload result:", uploadResult);
-
-        if (uploadResult.success && uploadResult.filePath) {
-          updatedImagePath = uploadResult.filePath;
+        if (uploadResult.data?.path) {
+          updatedImagePath = uploadResult.data.path;
         } else {
           toast.error("Failed to upload image");
         }
@@ -132,15 +124,16 @@ export const useArticleFormHooks = (): UseArticleFormHooks => {
       // Upload HTML content to storage
       if (content && savedArticleId) {
         toast.loading("Saving content...");
-        const htmlUploadResult = await uploadHtmlToStorage(
-          content,
-          `article_${savedArticleId}_content`,
-          "articles",
+        const htmlBlob = new Blob([content], { type: "text/html" });
+        const htmlFile = new File(
+          [htmlBlob],
+          `article_${savedArticleId}_content.html`,
+          { type: "text/html" },
         );
-        console.log("HTML upload result:", htmlUploadResult);
+        const htmlUploadResult = await apiUploadFile("articles", htmlFile);
 
-        if (htmlUploadResult.success && htmlUploadResult.filePath) {
-          updatedContentPath = htmlUploadResult.filePath;
+        if (htmlUploadResult.data?.path) {
+          updatedContentPath = htmlUploadResult.data.path;
         } else {
           toast.error("Failed to save content");
         }
@@ -216,3 +209,15 @@ export const useArticleFormHooks = (): UseArticleFormHooks => {
 
   return { data, state, handlers };
 };
+
+function generateSlug(title: string): string {
+  return (
+    title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .trim()
+      .replace(/^-|-$/g, "") || "untitled"
+  );
+}

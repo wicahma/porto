@@ -51,7 +51,8 @@ const ArticlesPageContent = () => {
       );
     }
 
-    if (data?.data && data.data.length > 0) {
+    const articlesList = (data as any)?.articles || [];
+    if (articlesList.length > 0) {
       return (
         <Table>
           <TableHeader>
@@ -66,7 +67,7 @@ const ArticlesPageContent = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.data.map((article) => (
+            {articlesList.map((article: any) => (
               <TableRow
                 key={article.id}
                 className="border-neutral-800 hover:bg-neutral-800/50"
@@ -157,7 +158,7 @@ const ArticlesPageContent = () => {
           <CardHeader>
             <CardTitle className="text-white">All Articles</CardTitle>
             <CardDescription className="text-neutral-400">
-              {data?.count ?? 0} articles total
+              {(data as any)?.count ?? 0} articles total
             </CardDescription>
           </CardHeader>
           <CardContent>{renderTableContent()}</CardContent>

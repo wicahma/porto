@@ -2,18 +2,18 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  getProjectsAction,
-  getProjectByIdAction,
-  createProjectAction,
-  updateProjectAction,
-  deleteProjectAction,
-  getProjectCountAction,
-} from "@/actions/project.actions";
+  apiGetProjects,
+  apiGetProjectById,
+  apiCreateProject,
+  apiUpdateProject,
+  apiDeleteProject,
+  apiGetProjectCount,
+} from "@/lib/api/project.api";
 import {
   CreateProjectInput,
   UpdateProjectInput,
 } from "@/interface/entities/project.interface";
-import toast from "react-hot-toast";
+import { errorWrapper } from "@/utils/error.util";
 
 export const projectKeys = {
   all: ["projects"] as const,
@@ -29,8 +29,7 @@ export function useProjects(page: number = 1, limit: number = 10) {
   return useQuery({
     queryKey: projectKeys.list(page, limit),
     queryFn: async () => {
-      const result = await getProjectsAction(page, limit);
-      if (!result.success) throw new Error(result.error);
+      const result = await errorWrapper(apiGetProjects(page, limit));
       return result.data;
     },
   });
@@ -40,8 +39,7 @@ export function useProject(id: string) {
   return useQuery({
     queryKey: projectKeys.detail(id),
     queryFn: async () => {
-      const result = await getProjectByIdAction(id);
-      if (!result.success) throw new Error(result.error);
+      const result = await errorWrapper(apiGetProjectById(id), false);
       return result.data;
     },
     enabled: !!id,
@@ -52,9 +50,8 @@ export function useProjectCount() {
   return useQuery({
     queryKey: projectKeys.count(),
     queryFn: async () => {
-      const result = await getProjectCountAction();
-      if (!result.success) throw new Error(result.error);
-      return result.data;
+      const result = await errorWrapper(apiGetProjectCount(), false);
+      return result.data?.count ?? 0;
     },
   });
 }
@@ -63,18 +60,12 @@ export function useCreateProject() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (input: CreateProjectInput) => {
-      const result = await createProjectAction(input);
-      if (!result.success) throw new Error(result.error);
-      return result.data;
-    },
+    mutationKey: ["create project"],
+    mutationFn: (input: CreateProjectInput) =>
+      errorWrapper(apiCreateProject(input)),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: projectKeys.lists() });
       queryClient.invalidateQueries({ queryKey: projectKeys.count() });
-      toast.success("Project created successfully!");
-    },
-    onError: (error: Error) => {
-      toast.error(error.message || "Failed to create project");
     },
   });
 }
@@ -83,22 +74,16 @@ export function useUpdateProject() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (input: UpdateProjectInput) => {
-      const result = await updateProjectAction(input);
-      if (!result.success) throw new Error(result.error);
-      return result.data;
-    },
-    onSuccess: (data) => {
+    mutationKey: ["update project"],
+    mutationFn: (input: UpdateProjectInput) =>
+      errorWrapper(apiUpdateProject(input.id, input)),
+    onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: projectKeys.lists() });
-      if (data) {
+      if (data?.data?.id) {
         queryClient.invalidateQueries({
-          queryKey: projectKeys.detail(data.id),
+          queryKey: projectKeys.detail(data.data.id),
         });
       }
-      toast.success("Project updated successfully!");
-    },
-    onError: (error: Error) => {
-      toast.error(error.message || "Failed to update project");
     },
   });
 }
@@ -107,17 +92,11 @@ export function useDeleteProject() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (id: string) => {
-      const result = await deleteProjectAction(id);
-      if (!result.success) throw new Error(result.error);
-    },
+    mutationKey: ["delete project"],
+    mutationFn: (id: string) => errorWrapper(apiDeleteProject(id)),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: projectKeys.lists() });
       queryClient.invalidateQueries({ queryKey: projectKeys.count() });
-      toast.success("Project deleted successfully!");
-    },
-    onError: (error: Error) => {
-      toast.error(error.message || "Failed to delete project");
     },
   });
 }

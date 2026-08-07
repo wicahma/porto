@@ -53,14 +53,17 @@ const ExperienceDetail = ({ skipAnimation = false }: ExperienceDetailProps) => {
         <ExperienceDetailSkeleton />
       </RenderIf>
 
-      <RenderIf condition={!isLoading && Boolean(isError && data?.data)}>
+      <RenderIf condition={!isLoading && Boolean(isError && (data as any)?.experiences)}>
         <p className="text-neutral-400 text-center">
           Failed to load experiences
         </p>
       </RenderIf>
 
       <RenderIf
-        condition={!isLoading && Boolean(!isError && data?.data.length === 0)}
+        condition={
+          !isLoading &&
+          Boolean(!isError && (data as any)?.experiences?.length === 0)
+        }
       >
         <p className="text-neutral-400 text-center mt-5">
           There is no way to gain experience without experience, but stay tuned
@@ -68,10 +71,10 @@ const ExperienceDetail = ({ skipAnimation = false }: ExperienceDetailProps) => {
         </p>
       </RenderIf>
 
-      <RenderIf condition={Boolean(!isLoading && !isError && data?.data)}>
+      <RenderIf condition={Boolean(!isLoading && !isError && (data as any)?.experiences)}>
         <div className="space-y-0">
           <AnimatePresence mode="popLayout">
-            {data?.data?.map((exp, index) => (
+            {(data as any)?.experiences?.map((exp: any, index: number) => (
               <div key={exp.id}>
                 <CompanyExperienceGroup experience={exp} index={index} />
                 <Br />

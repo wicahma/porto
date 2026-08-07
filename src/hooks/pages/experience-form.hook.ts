@@ -17,9 +17,8 @@ export const useExperienceFormHooks = () => {
   const isEdit = params?.id && params.id !== "new";
   const experienceId = isEdit ? (params.id as string) : null;
 
-  const { data: existingExperience, isLoading } = useExperience(
-    experienceId || "",
-  );
+  const { data: rawExperience, isLoading } = useExperience(experienceId || "");
+  const existingExperience = rawExperience as any;
   const createExperience = useCreateExperience();
   const updateExperience = useUpdateExperience();
 
@@ -48,16 +47,18 @@ export const useExperienceFormHooks = () => {
       setTags((existingExperience?.tags ?? []).join(", "));
 
       if ((existingExperience?.jobs ?? []).length > 0) {
-        const loadedJobs = (existingExperience?.jobs ?? []).map((job) => ({
-          id: job.id,
-          position: job.position,
-          employment_type: job.employment_type,
-          competency: job.competency.join(", "),
-          description: job.description,
-          start_date: job.start_date,
-          end_date: job.end_date || "",
-          is_current: job.is_current,
-        }));
+        const loadedJobs = ((existingExperience?.jobs ?? []) as any[]).map(
+          (job: any) => ({
+            id: job.id,
+            position: job.position,
+            employment_type: job.employment_type,
+            competency: job.competency.join(", "),
+            description: job.description,
+            start_date: job.start_date,
+            end_date: job.end_date || "",
+            is_current: job.is_current,
+          }),
+        );
         setJobs(loadedJobs);
       }
     }
@@ -207,8 +208,8 @@ export const useExperienceFormHooks = () => {
       isLoading,
     },
     handlers: {
-        createExperience,
-        updateExperience,
+      createExperience,
+      updateExperience,
       handleSubmit,
       validateForm,
       toggleCollapse,

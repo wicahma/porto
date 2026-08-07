@@ -9,7 +9,7 @@ export const useProjectsPageHooks = () => {
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
   // Map year to number for ProjectTableRow
-  const projects = (data?.data || []).map((project) => ({
+  const projects = ((data as any)?.projects || []).map((project: any) => ({
     ...project,
     year:
       typeof project.year === "string"
@@ -34,7 +34,7 @@ export const useProjectsPageHooks = () => {
   return {
     data: {
       projects,
-      count: data?.count || 0,
+      count: (data as any)?.total || 0,
       isLoading,
       deleteId,
     },

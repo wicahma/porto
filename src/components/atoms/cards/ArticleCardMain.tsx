@@ -12,8 +12,9 @@ const ArticleCard = () => {
   const { data: articlesData, isLoading } = useArticles(1, 5);
   const pathname = usePathname();
   const router = useRouter();
-  const articles = articlesData?.data;
-  const mappedArticles = articles?.map(mapArticleToCard) || [];
+  const articles = articlesData as any;
+  const mappedArticles =
+    (((articles as any)?.articles || []) as any[]).map(mapArticleToCard) || [];
   console.log("mappedArticles:", mappedArticles);
 
   const handleSetPage = () => {
@@ -93,7 +94,7 @@ const ArticleCard = () => {
                 ))}
               </div>
             ) : mappedArticles.length > 0 ? (
-              mappedArticles.map((article) => (
+              mappedArticles.map((article: any) => (
                 <MainCard key={article.id} article={article} />
               ))
             ) : (

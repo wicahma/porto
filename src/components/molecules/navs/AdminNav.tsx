@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/atoms/buttons/button";
 import {
   FileText,
@@ -9,14 +9,13 @@ import {
   LayoutDashboard,
   LogOut,
 } from "lucide-react";
-import { signOutAction } from "@/actions/auth.actions";
+import { clearTokens } from "@/lib/auth/token";
 import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
 import { Link } from "next-view-transitions";
 
 export function AdminNav() {
   const pathname = usePathname();
-  const router = useRouter();
 
   const navItems = [
     {
@@ -42,13 +41,9 @@ export function AdminNav() {
   ];
 
   const handleSignOut = async () => {
-    const result = await signOutAction();
-    if (result.success) {
-      toast.success("Signed out successfully");
-      router.push("/");
-    } else {
-      toast.error(result.error || "Failed to sign out");
-    }
+    clearTokens();
+    toast.success("Signed out successfully");
+    window.location.href = "/admin/login";
   };
 
   return (

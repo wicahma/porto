@@ -19,8 +19,8 @@ export const useExperiencesPageHook = (): ExperiencesPageHook => {
 
   return {
     data: {
-      experiences: data?.data || [],
-      count: data?.count || 0,
+      experiences: (data as any)?.experiences || [],
+      count: (data as any)?.total || 0,
       isLoading,
       deleteId,
     },

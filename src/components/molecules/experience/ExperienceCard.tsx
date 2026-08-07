@@ -13,7 +13,7 @@ import { RenderIf } from "@/utils/helper/render-if";
 const ExperienceCard = () => {
   const router = useRouter();
   const { data: experiencesData, isLoading } = useExperiences(1, 5);
-  const experiences = experiencesData?.data;
+  const experiences = (experiencesData as any)?.experiences;
 
   const handleSetPage = () => {
     globalThis.history.replaceState(null, "", `/experience`);

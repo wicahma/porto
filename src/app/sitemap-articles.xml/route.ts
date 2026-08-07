@@ -1,15 +1,24 @@
 import { NextResponse } from "next/server";
-import { ArticleService } from "@/services/article.service";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 export const dynamic = "force-dynamic";
-export const revalidate = 3600; // Revalidate every hour
+export const revalidate = 3600;
+
+async function getArticles() {
+  const res = await fetch(`${API_BASE_URL}/api/articles?page=1&limit=1000`, {
+    headers: { "X-API-Key": process.env.API_KEY || "" },
+  });
+  const body = await res.json();
+  return body.data?.articles || [];
+}
 
 export async function GET() {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
   try {
     // Get all published articles
-    const { data: articles } = await ArticleService.getAllArticles(1, 1000);
+    const articles = await getArticles();
 
     // Build XML sitemap for articles
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -17,9 +26,9 @@ export async function GET() {
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-${articles
+${(articles as any[])
   .map(
-    (article) => `  <url>
+    (article: any) => `  <url>
     <loc>${baseUrl}/article/${article.slug}</loc>
     <lastmod>${new Date(article.updated_at || article.created_at || new Date()).toISOString()}</lastmod>
     <changefreq>weekly</changefreq>

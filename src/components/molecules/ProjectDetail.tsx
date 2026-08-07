@@ -55,12 +55,18 @@ const ProjectDetail = ({ skipAnimation = false }: ProjectDetailProps) => {
         <ProjectDetailSkeleton />
       </RenderIf>
 
-      <RenderIf condition={!isLoading && Boolean(isError && data?.data)}>
+      <RenderIf condition={!isLoading && Boolean(isError && (data as any))}>
         <p className="text-neutral-400 text-center">Failed to load articles</p>
       </RenderIf>
 
       <RenderIf
-        condition={!isLoading && Boolean(!isError && data?.data.length === 0)}
+        condition={
+          !isLoading &&
+          Boolean(
+            (!isError && (data as any)?.projects?.data?.length) ||
+            (data as any)?.length === 0,
+          )
+        }
       >
         <p className="text-neutral-400 text-center mt-5">
           Hi, for now there is no project created yet, but this man is working
@@ -68,61 +74,63 @@ const ProjectDetail = ({ skipAnimation = false }: ProjectDetailProps) => {
         </p>
       </RenderIf>
 
-      <RenderIf condition={Boolean(!isLoading && !isError && data?.data)}>
+      <RenderIf condition={Boolean(!isLoading && !isError && (data as any))}>
         <div className="space-y-0">
           <AnimatePresence mode="popLayout">
-            {data?.data.map((project, index) => (
-              <m.div
-                key={project.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{
-                  delay: index * 0.08,
-                  duration: 0.5,
-                  ease: [0.4, 0, 0.2, 1],
-                }}
-                className="mt-4"
-              >
-                <p className="text-sm text-neutral-500 mb-4">
-                  {project.year} - {project.title}
-                </p>
+            {((data as any)?.projects || []).map(
+              (project: any, index: number) => (
+                <m.div
+                  key={project.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{
+                    delay: index * 0.08,
+                    duration: 0.5,
+                    ease: [0.4, 0, 0.2, 1],
+                  }}
+                  className="mt-4"
+                >
+                  <p className="text-sm text-neutral-500 mb-4">
+                    {project.year} - {project.title}
+                  </p>
 
-                {project.problem && (
-                  <div className="mb-6">
-                    <h3 className="text-lg font-semibold text-orange-400 mb-2">
-                      The problem
-                    </h3>
-                    <p className="text-neutral-400 leading-relaxed">
-                      {project.problem}
-                    </p>
+                  {project.problem && (
+                    <div className="mb-6">
+                      <h3 className="text-lg font-semibold text-orange-400 mb-2">
+                        The problem
+                      </h3>
+                      <p className="text-neutral-400 leading-relaxed">
+                        {project.problem}
+                      </p>
+                    </div>
+                  )}
+
+                  {project.solution && (
+                    <div className="mb-6">
+                      <h3 className="text-lg font-semibold text-teal-400 mb-2">
+                        Solution
+                      </h3>
+                      <p className="text-neutral-400 leading-relaxed">
+                        {project.solution}
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="flex flex-wrap gap-3 mb-4">
+                    {(project as any)?.tags?.map((tag: string) => (
+                      <span
+                        key={tag}
+                        className="text-sm text-neutral-500 hover:text-neutral-300 transition-colors cursor-pointer"
+                      >
+                        {tag}
+                      </span>
+                    ))}
                   </div>
-                )}
-
-                {project.solution && (
-                  <div className="mb-6">
-                    <h3 className="text-lg font-semibold text-teal-400 mb-2">
-                      Solution
-                    </h3>
-                    <p className="text-neutral-400 leading-relaxed">
-                      {project.solution}
-                    </p>
-                  </div>
-                )}
-
-                <div className="flex flex-wrap gap-3 mb-4">
-                  {project?.tags?.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-sm text-neutral-500 hover:text-neutral-300 transition-colors cursor-pointer"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <Br />
-              </m.div>
-            ))}
+                  <Br />
+                </m.div>
+              ),
+            )}
           </AnimatePresence>
         </div>
       </RenderIf>

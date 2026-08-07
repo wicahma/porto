@@ -75,7 +75,8 @@ export default function Globe() {
       markerColor: [0.1, 0.8, 1],
       glowColor: [1, 1, 1],
       markers: [{ location: [userLocation.lat, userLocation.lng], size: 0.1 }],
-      onRender: (state) => {
+      // @ts-expect-error - onRender exists at runtime but not in COBEOptions type
+      onRender: (state: any) => {
         if (!pointerInteracting.current) {
           if (isFocusing.current) {
             const [focusPhi, focusTheta] = focusRef.current;

@@ -77,7 +77,7 @@ const ProjectsPageContent = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {projects.map((project) => (
+                  {projects.map((project: any) => (
                     <ProjectRow
                       key={project.id}
                       project={project}

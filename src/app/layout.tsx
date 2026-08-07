@@ -71,7 +71,7 @@ export default async function RootLayout({
 }>) {
   const resolvedVal: Partial<Awaited<ReturnType<typeof vals>>> = await vals();
 
-  delete resolvedVal.supabase;
+  // resolvedVal is now from the Go API; no Supabase cleanup needed
   delete resolvedVal.email;
 
   return (

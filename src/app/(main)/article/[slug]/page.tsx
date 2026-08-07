@@ -1,7 +1,7 @@
 import {
-  getArticleBySlugAction,
-  getRelatedArticlesAction,
-} from "@/actions/article.actions";
+  apiGetArticleBySlug,
+  apiGetRelatedArticles,
+} from "@/lib/api/article.api";
 import { Badge } from "@/components/atoms/chips/badge";
 import { StorageHtmlContent } from "@/components/atoms/content/StorageHtmlContent";
 import { StorageImg } from "@/components/atoms/images/StorageImage";
@@ -19,59 +19,73 @@ interface ArticlePageProps {
   }>;
 }
 
-// Generate metadata for SEO
 export async function generateMetadata({
   params,
 }: ArticlePageProps): Promise<Metadata> {
   const { slug } = await params;
-  const result = await getArticleBySlugAction(slug);
-
-  if (!result.success || !result.data) {
+  try {
+    const result = await apiGetArticleBySlug(slug);
+    if (result.status === "error" || !result.data) {
+      return { title: "Article" };
+    }
+    const article = result.data as Record<string, any>;
     return {
-      title: "Article Not Found",
+      title: article.meta_title || article.title,
+      description: article.meta_description || article.excerpt,
+      keywords: article.meta_keywords,
+      openGraph: {
+        title: article.meta_title || article.title,
+        description: article.meta_description || article.excerpt || undefined,
+        images: article.og_image ? [article.og_image] : [article.image],
+        type: "article",
+        publishedTime: article.created_at || undefined,
+        modifiedTime: article.updated_at || undefined,
+        tags: article.tags,
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: article.meta_title || article.title,
+        description: article.meta_description || article.excerpt || undefined,
+        images: article.og_image ? [article.og_image] : [article.image],
+      },
     };
+  } catch {
+    return { title: "Article" };
   }
-
-  const article = result.data;
-
-  return {
-    title: article.meta_title || article.title,
-    description: article.meta_description || article.excerpt,
-    keywords: article.meta_keywords,
-    openGraph: {
-      title: article.meta_title || article.title,
-      description: article.meta_description || article.excerpt || undefined,
-      images: article.og_image ? [article.og_image] : [article.image],
-      type: "article",
-      publishedTime: article.created_at || undefined,
-      modifiedTime: article.updated_at || undefined,
-      tags: article.tags,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: article.meta_title || article.title,
-      description: article.meta_description || article.excerpt || undefined,
-      images: article.og_image ? [article.og_image] : [article.image],
-    },
-  };
 }
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { slug } = await params;
-  const result = await getArticleBySlugAction(slug);
+  let article: Record<string, any> | null = null;
 
-  if (!result.success || !result.data) {
+  try {
+    const result = await apiGetArticleBySlug(slug);
+    if (result.status !== "error" && result.data) {
+      article = result.data as Record<string, any>;
+    }
+  } catch {
+    article = null;
+  }
+
+  if (!article) {
     notFound();
   }
 
-  const article = result.data;
-
-  const relatedResult = await getRelatedArticlesAction(
-    article.id,
-    article.category,
-    3,
-  );
-  const relatedArticles = relatedResult.success ? relatedResult.data : [];
+  const relatedArticles: any[] = [];
+  try {
+    const relatedResult = await apiGetRelatedArticles(
+      article.id,
+      article.category,
+      3,
+    );
+    relatedArticles.push(
+      ...(relatedResult.status === "error"
+        ? []
+        : ((relatedResult.data || []) as any[])),
+    );
+  } catch {
+    // related articles are optional
+  }
 
   return (
     <ScrollableContainer className="h-screen relative rounded-2xl overflow-y-auto">
@@ -151,7 +165,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           {(article?.tags?.length || 0) > 0 && (
             <div className="mt-16 pt-8 border-t border-neutral-800/50">
               <div className="flex flex-wrap gap-2">
-                {article?.tags?.map((tag) => (
+                {article?.tags?.map((tag: string) => (
                   <span
                     key={tag}
                     className="px-4 py-2 bg-neutral-800 text-neutral-300 rounded-full text-sm font-medium hover:bg-neutral-700 transition-colors cursor-pointer"
@@ -173,7 +187,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-300 mx-auto">
-            {relatedArticles.map((related) => (
+            {relatedArticles.map((related: any) => (
               <Link
                 key={related.id}
                 href={`/article/${related.slug}`}

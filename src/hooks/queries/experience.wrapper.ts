@@ -2,18 +2,18 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  getExperiencesAction,
-  getExperienceByIdAction,
-  createExperienceAction,
-  updateExperienceAction,
-  deleteExperienceAction,
-  getExperienceCountAction,
-} from "@/actions/experience.actions";
+  apiGetExperiences,
+  apiGetExperienceById,
+  apiCreateExperience,
+  apiUpdateExperience,
+  apiDeleteExperience,
+  apiGetExperienceCount,
+} from "@/lib/api/experience.api";
 import {
   CreateExperienceInput,
   UpdateExperienceInput,
 } from "@/interface/entities/experience.interface";
-import toast from "react-hot-toast";
+import { errorWrapper } from "@/utils/error.util";
 
 export const experienceKeys = {
   all: ["experiences"] as const,
@@ -29,8 +29,7 @@ export function useExperiences(page: number = 1, limit: number = 50) {
   return useQuery({
     queryKey: experienceKeys.list(page, limit),
     queryFn: async () => {
-      const result = await getExperiencesAction(page, limit);
-      if (!result.success) throw new Error(result.error);
+      const result = await errorWrapper(apiGetExperiences(page, limit));
       return result.data;
     },
   });
@@ -40,8 +39,7 @@ export function useExperience(id: string) {
   return useQuery({
     queryKey: experienceKeys.detail(id),
     queryFn: async () => {
-      const result = await getExperienceByIdAction(id);
-      if (!result.success) throw new Error(result.error);
+      const result = await errorWrapper(apiGetExperienceById(id), false);
       return result.data;
     },
     enabled: !!id,
@@ -52,9 +50,8 @@ export function useExperienceCount() {
   return useQuery({
     queryKey: experienceKeys.count(),
     queryFn: async () => {
-      const result = await getExperienceCountAction();
-      if (!result.success) throw new Error(result.error);
-      return result.data;
+      const result = await errorWrapper(apiGetExperienceCount(), false);
+      return result.data?.count ?? 0;
     },
   });
 }
@@ -63,18 +60,12 @@ export function useCreateExperience() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (input: CreateExperienceInput) => {
-      const result = await createExperienceAction(input);
-      if (!result.success) throw new Error(result.error);
-      return result.data;
-    },
+    mutationKey: ["create experience"],
+    mutationFn: (input: CreateExperienceInput) =>
+      errorWrapper(apiCreateExperience(input)),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: experienceKeys.lists() });
       queryClient.invalidateQueries({ queryKey: experienceKeys.count() });
-      toast.success("Experience created successfully!");
-    },
-    onError: (error: Error) => {
-      toast.error(error.message || "Failed to create experience");
     },
   });
 }
@@ -83,22 +74,16 @@ export function useUpdateExperience() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (input: UpdateExperienceInput) => {
-      const result = await updateExperienceAction(input);
-      if (!result.success) throw new Error(result.error);
-      return result.data;
-    },
-    onSuccess: (data) => {
+    mutationKey: ["update experience"],
+    mutationFn: (input: UpdateExperienceInput) =>
+      errorWrapper(apiUpdateExperience(input.id, input)),
+    onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: experienceKeys.lists() });
-      if (data) {
+      if (data?.data?.id) {
         queryClient.invalidateQueries({
-          queryKey: experienceKeys.detail(data.id),
+          queryKey: experienceKeys.detail(data.data.id),
         });
       }
-      toast.success("Experience updated successfully!");
-    },
-    onError: (error: Error) => {
-      toast.error(error.message || "Failed to update experience");
     },
   });
 }
@@ -107,17 +92,11 @@ export function useDeleteExperience() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (id: string) => {
-      const result = await deleteExperienceAction(id);
-      if (!result.success) throw new Error(result.error);
-    },
+    mutationKey: ["delete experience"],
+    mutationFn: (id: string) => errorWrapper(apiDeleteExperience(id)),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: experienceKeys.lists() });
       queryClient.invalidateQueries({ queryKey: experienceKeys.count() });
-      toast.success("Experience deleted successfully!");
-    },
-    onError: (error: Error) => {
-      toast.error(error.message || "Failed to delete experience");
     },
   });
 }
