@@ -21,11 +21,8 @@ const GLOW_DIAMETER = 160;
 const MeCard = () => {
   const cardRef = useRef<HTMLDivElement>(null);
 
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const xSpring = useSpring(x);
-  const ySpring = useSpring(y);
+  const xSpring = useSpring(0);
+  const ySpring = useSpring(0);
 
   const xGlow = useSpring(20);
   const yGlow = useSpring(100);
@@ -58,15 +55,15 @@ const MeCard = () => {
     const xGlowPos = e.clientX - rect.left - GLOW_DIAMETER / 2;
     const yGlowPos = e.clientY - rect.top - GLOW_DIAMETER / 2;
 
-    x.set(rX);
-    y.set(rY);
+    xSpring.set(rX);
+    ySpring.set(rY);
     xGlow.set(xGlowPos);
     yGlow.set(yGlowPos);
   };
 
   const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
+    xSpring.set(0);
+    ySpring.set(0);
 
     xGlow.set(20);
     yGlow.set(100);

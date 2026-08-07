@@ -74,59 +74,70 @@ export default function Globe() {
       baseColor: [0.3, 0.3, 0.3],
       markerColor: [0.1, 0.8, 1],
       glowColor: [1, 1, 1],
-      markers: [{ location: [userLocation.lat, userLocation.lng], size: 0.1 }],
-      // @ts-expect-error - onRender exists at runtime but not in COBEOptions type
-      onRender: (state: any) => {
-        if (!pointerInteracting.current) {
-          if (isFocusing.current) {
-            const [focusPhi, focusTheta] = focusRef.current;
-            const distPositive =
-              (focusPhi - currentPhiRef.current + doublePi) % doublePi;
-            const distNegative =
-              (currentPhiRef.current - focusPhi + doublePi) % doublePi;
-
-            if (distPositive < distNegative) {
-              currentPhiRef.current += distPositive * 0.03;
-            } else {
-              currentPhiRef.current -= distNegative * 0.03;
-            }
-            currentThetaRef.current =
-              currentThetaRef.current * 0.97 + focusTheta * 0.03;
-
-            if (Math.abs(focusPhi - currentPhiRef.current) < 0.01) {
-              isFocusing.current = false;
-              phiRef.current = currentPhiRef.current;
-            }
-
-            currentScaleRef.current =
-              currentScaleRef.current * 0.97 + targetScaleRef.current * 0.03;
-          }
-          if (autoRotate) {
-            phiRef.current += 0.005;
-            currentPhiRef.current = phiRef.current;
-          }
-        }
-
-        state.phi =
-          currentPhiRef.current + pointerInteractionMovement.current.x;
-        state.theta =
-          currentThetaRef.current + pointerInteractionMovement.current.y;
-        state.width = width * 2;
-        state.height = width * 2;
-
-        state.markers = [
-          {
-            location: [userLocation.lat, userLocation.lng],
-            size: 0.1,
-            color: [1, 0.56, 0.75],
-          },
-        ];
-
-        if (canvas) {
-          canvas.style.transform = `scale(${currentScaleRef.current})`;
-        }
-      },
+      markers: [
+        {
+          id: "location",
+          location: [userLocation.lat, userLocation.lng],
+          size: 0.05,
+        },
+      ],
     });
+
+    let lastSize = width * 2;
+    let animationId = 0;
+    const render = () => {
+      if (!pointerInteracting.current) {
+        if (isFocusing.current) {
+          const [focusPhi, focusTheta] = focusRef.current;
+          const distPositive =
+            (focusPhi - currentPhiRef.current + doublePi) % doublePi;
+          const distNegative =
+            (currentPhiRef.current - focusPhi + doublePi) % doublePi;
+
+          if (distPositive < distNegative) {
+            currentPhiRef.current += distPositive * 0.03;
+          } else {
+            currentPhiRef.current -= distNegative * 0.03;
+          }
+          currentThetaRef.current =
+            currentThetaRef.current * 0.97 + focusTheta * 0.03;
+
+          if (Math.abs(focusPhi - currentPhiRef.current) < 0.01) {
+            isFocusing.current = false;
+            phiRef.current = currentPhiRef.current;
+          }
+
+          currentScaleRef.current =
+            currentScaleRef.current * 0.97 + targetScaleRef.current * 0.03;
+        }
+        if (autoRotate) {
+          phiRef.current += 0.005;
+          currentPhiRef.current = phiRef.current;
+        }
+      }
+
+      const size = width * 2;
+      globe.update({
+        phi: currentPhiRef.current + pointerInteractionMovement.current.x,
+        theta: currentThetaRef.current + pointerInteractionMovement.current.y,
+        ...(size !== lastSize ? { width: size, height: size } : {}),
+        markers: [
+          {
+            id: "location",
+            location: [userLocation.lat, userLocation.lng],
+            size: 0.05,
+            color: [1, 1, 1],
+          },
+        ],
+      });
+      lastSize = size;
+
+      if (canvas) {
+        canvas.style.transform = `scale(${currentScaleRef.current})`;
+      }
+      animationId = requestAnimationFrame(render);
+    };
+    render();
 
     setTimeout(() => {
       if (canvas) {
@@ -135,6 +146,7 @@ export default function Globe() {
     });
 
     return () => {
+      cancelAnimationFrame(animationId);
       globe.destroy();
       canvas.removeEventListener("wheel", handleWheel);
       window.removeEventListener("resize", onResize);
@@ -209,6 +221,29 @@ export default function Globe() {
           transition: "opacity 1s ease",
         }}
       />
+
+      <svg
+        className="absolute z-10 pointer-events-none"
+        style={{
+          positionAnchor: "--cobe-location",
+          bottom: "anchor(top)",
+          left: "anchor(center)",
+          translate: "-50% 0",
+          opacity: "var(--cobe-visible-location, 0)",
+          transition: "opacity 0.5s",
+        }}
+        width="28"
+        height="28"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M12 1.5C7.31 1.5 3.5 5.31 3.5 10c0 6.25 8.5 12.5 8.5 12.5s8.5-6.25 8.5-12.5C20.5 5.31 16.69 1.5 12 1.5z"
+          fill="#ffffff"
+          stroke="rgba(0,0,0,0.4)"
+          strokeWidth="1.4"
+        />
+        <circle cx="12" cy="9.5" r="3.1" fill="#02C380" />
+      </svg>
     </div>
   );
 }

@@ -32,8 +32,6 @@ export const GlobCursor: React.FC = () => {
   const [unhoverable, setUnhoverable] = useState(false);
   const [cursor, setCursor] = useState("");
 
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
   const cursorX = useMotionValue(0);
   const cursorY = useMotionValue(0);
   const width = useSpring(40, { stiffness: 300, damping: 30 });
@@ -46,8 +44,8 @@ export const GlobCursor: React.FC = () => {
   const bf = useSpring(0, springOpt);
   const backdropFilter = useMotionTemplate`blur(${bf}px)`;
   const clipPath = useMotionTemplate`polygon(0% 0%, 0% 100%, ${left}px 100%, ${left}px ${top}px, ${right}px ${top}px, ${right}px ${bottom}px, ${left}px ${bottom}px, ${left}px 100%, 100% 100%, 100% 0%)`;
-  const smoothX = useSpring(x, springOpt);
-  const smoothY = useSpring(y, springOpt);
+  const smoothX = useSpring(0, springOpt);
+  const smoothY = useSpring(0, springOpt);
 
   useEffect(() => {
     if (!enabled) return;
@@ -72,8 +70,8 @@ export const GlobCursor: React.FC = () => {
 
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
-      x.set(e.clientX);
-      y.set(e.clientY);
+      smoothX.set(e.clientX);
+      smoothY.set(e.clientY);
 
       if (hoverTarget) {
         const padding = 10;
@@ -90,8 +88,8 @@ export const GlobCursor: React.FC = () => {
 
         width.set(paddedWidth);
         height.set(paddedHeight);
-        x.set(rect.left + rect.width / 2);
-        y.set(rect.top + rect.height / 2);
+        smoothX.set(rect.left + rect.width / 2);
+        smoothY.set(rect.top + rect.height / 2);
         bf.set(15);
 
         setHoverable(true);
@@ -148,8 +146,6 @@ export const GlobCursor: React.FC = () => {
   // Clean up motion values on unmount
   useEffect(() => {
     return () => {
-      x.destroy();
-      y.destroy();
       cursorX.destroy();
       cursorY.destroy();
       width.destroy();

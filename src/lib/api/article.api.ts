@@ -39,7 +39,7 @@ export const apiGetRelatedArticles = async (
   category: string,
   limit = 5,
 ): Promise<APIBaseResponse<any[]>> => {
-  const res = await satellite.get(`${BASE_PATH}/${id}/related?limit=${limit}`, {
+  const res = await satellite.get(`${BASE_PATH}/related/${id}?limit=${limit}`, {
     params: { category },
   });
   return res.data;
