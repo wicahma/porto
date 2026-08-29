@@ -1,0 +1,22 @@
+clone:
+  git:
+    image: bash
+    settings:
+      lfs: false
+
+labels:
+  backend: local
+
+steps:
+  - name: build-and-restart
+    image: bash
+    commands:
+      - export PATH="/home/diama/.nvm/versions/node/v24.16.0/bin:$PATH"
+      - npm install --legacy-peer-deps
+      - npm run build
+      - systemctl --user restart porto.service
+      - echo "Porto frontend successfully built and restarted on port 3001"
+
+when:
+  event: push
+  branch: [main, main-v2]
