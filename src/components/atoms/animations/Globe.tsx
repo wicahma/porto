@@ -231,7 +231,7 @@ export default function Globe() {
           translate: "-50% 0",
           opacity: "var(--cobe-visible-location, 0)",
           transition: "opacity 0.5s",
-        }}
+        } as React.CSSProperties}
         width="28"
         height="28"
         viewBox="0 0 24 24"
