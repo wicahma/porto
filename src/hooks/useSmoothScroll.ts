@@ -11,7 +11,7 @@ export interface SmoothScrollOptions {
 
 export const useSmoothScroll = ({
   speed = 1,
-  smoothness = 0.07,
+  smoothness = 0.1,
   disableOnMobile = false,
   disableOnPathname = [],
 }: SmoothScrollOptions = {}) => {

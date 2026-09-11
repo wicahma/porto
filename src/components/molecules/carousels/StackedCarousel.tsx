@@ -53,7 +53,7 @@ const StackedCarousel = <T,>({
         x: relativePosition * overlapSpace,
       };
     },
-    [blurIntensity, overlapSpace]
+    [blurIntensity, overlapSpace],
   );
 
   const navigate = useCallback(
@@ -66,7 +66,7 @@ const StackedCarousel = <T,>({
         }
       });
     },
-    [items.length]
+    [items.length],
   );
 
   useEffect(() => {
@@ -123,13 +123,13 @@ const StackedCarousel = <T,>({
             <ChevronRight className="w-6 h-6 transition-transform group-hover:scale-110" />
           </button>
         </div>
-        <AnimatePresence initial={true} mode="wait">
+        <AnimatePresence initial={true} mode="sync">
           {visibleItems.map(
             ({ item, originalIndex, relativePosition }, index) => {
               const style = getCardStyle(relativePosition);
               return (
                 <m.div
-                  key={`${originalIndex}`}
+                  key={`${originalIndex}${index}`}
                   className="absolute select-none"
                   style={{
                     zIndex: style.zIndex,
@@ -160,7 +160,7 @@ const StackedCarousel = <T,>({
                   {renderCard(item, originalIndex, relativePosition === 0)}
                 </m.div>
               );
-            }
+            },
           )}
         </AnimatePresence>
       </section>

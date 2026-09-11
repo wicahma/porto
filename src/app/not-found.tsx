@@ -10,7 +10,7 @@ export default function NotFound() {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 1 }}
-        className="fixed inset-0 flex items-center justify-center bg-black/10 backdrop-blur-xl z-[9999]"
+        className="fixed inset-0 flex items-center justify-center bg-black/10 backdrop-blur-xl z-9999"
       >
         <div className="absolute inset-0 overflow-hidden">
           <NotFoundWaterAnimation />

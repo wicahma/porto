@@ -58,8 +58,8 @@ export const useProjectFormPage = () => {
       toast.error("Year is required");
       return false;
     }
-    if (!image.trim()) {
-      toast.error("Image URL is required");
+    if (!image.trim() && !imageFile) {
+      toast.error("Project image is required");
       return false;
     }
     return true;

@@ -1,12 +1,15 @@
 "use client";
 import BreadcrumbArrow from "@/components/atoms/breadcrumbs/BreadcrumbArrow";
+import { useViewModeStore } from "@/store/viewModeStore";
 import { cn } from "@/utils/helper/cn";
+import { m } from "motion/react";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Breadcrumb() {
   const pathname = usePathname();
   const router = useRouter();
+  const isSimpleMode = useViewModeStore((state) => state.isSimpleMode);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const getBreadcrumbs = () => {
@@ -44,8 +47,15 @@ export default function Breadcrumb() {
   const lastIndex = breadcrumbs.length - 1;
 
   return (
-    <div className="w-1/2">
-      <div className="flex items-center gap-2">
+    <m.div
+      layout="position"
+      transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+      className={cn(
+        "w-full flex items-center justify-between gap-3 overflow-hidden",
+        !isSimpleMode && "md:w-1/2",
+      )}
+    >
+      <div className="flex items-center gap-2 flex-wrap">
         {breadcrumbs.map((crumb, index) => {
           const isActive =
             hoveredIndex === null
@@ -77,6 +87,6 @@ export default function Breadcrumb() {
           );
         })}
       </div>
-    </div>
+    </m.div>
   );
 }

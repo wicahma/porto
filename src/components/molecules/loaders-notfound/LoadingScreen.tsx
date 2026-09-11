@@ -103,7 +103,7 @@ function WaterFillAnimation({ progress }: Readonly<{ progress: number }>) {
         0,
         waterLevel - 50,
         0,
-        waterLevel + 50
+        waterLevel + 50,
       );
       shineGradient.addColorStop(0, "rgba(255, 255, 255, 0)");
       shineGradient.addColorStop(0.5, "rgba(255, 255, 255, 0.15)");
@@ -155,7 +155,7 @@ export default function LoadingScreen() {
   const { isLoading, message, progress } = useLoadingStore();
 
   return (
-    <AnimatePresence>
+    <AnimatePresence initial={false} mode="popLayout">
       {isLoading && (
         <m.div
           initial={{
@@ -165,52 +165,54 @@ export default function LoadingScreen() {
             clipPath: "circle(150% at 50% 50%)",
           }}
           exit={{
-            clipPath: "circle(0px at 50% 50%)",
+            clipPath: "circle(0% at 50% 50%)",
           }}
           transition={{
             duration: 2,
             ease: [0.19, 1, 0.22, 1],
           }}
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/5 backdrop-blur-xl"
+          className="fixed inset-0 z-9999 will-change-transform w-screen h-screen"
         >
-          <div className="md:hidden absolute inset-0 overflow-hidden">
-            <WaterFillAnimation progress={progress} />
-          </div>
+          <div className="absolute z-9999 backdrop-blur-xl w-screen h-screen bg-black/40 flex items-center justify-center">
+            <div className="md:hidden absolute inset-0 overflow-hidden">
+              <WaterFillAnimation progress={progress} />
+            </div>
 
-          <div className="text-center space-y-6 px-4 max-w-xl w-full relative z-10">
-            <div className="space-y-3 hidden md:block">
-              <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
-                <m.div
-                  className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"
-                  initial={{ width: "0%" }}
-                  animate={{ width: `${progress}%` }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                />
+            <div className="text-center space-y-6 px-4 max-w-xl w-full relative">
+              <div className="space-y-3 hidden md:block">
+                <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
+                  <m.div
+                    className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"
+                    initial={{ width: "0%" }}
+                    animate={{ width: `${progress}%` }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                  />
+                </div>
+
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-gray-400">Loading...</span>
+                  <span className="text-white font-mono font-bold text-lg">
+                    {progress}%
+                  </span>
+                </div>
               </div>
 
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-400">Loading...</span>
-                <span className="text-white font-mono font-bold text-lg">
+              <div className="md:hidden">
+                <span className="text-white font-mono font-bold text-3xl drop-shadow-lg">
                   {progress}%
                 </span>
               </div>
-            </div>
 
-            <div className="md:hidden">
-              <span className="text-white font-mono font-bold text-3xl drop-shadow-lg">
-                {progress}%
-              </span>
+              <m.p
+                key={message}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="text-gray-300 text-base font-medium drop-shadow-md"
+              >
+                {message}
+              </m.p>
             </div>
-
-            <m.p
-              key={message}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="text-gray-300 text-base font-medium drop-shadow-md"
-            >
-              {message}
-            </m.p>
           </div>
         </m.div>
       )}

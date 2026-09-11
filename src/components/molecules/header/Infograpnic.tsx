@@ -3,17 +3,30 @@ import { MapPin } from "lucide-react";
 import { useEffect, useState } from "react";
 import Globe from "@/components/atoms/animations/Globe";
 import Tooltip from "@/components/atoms/popups/Tooltip";
+import ViewModeToggle from "@/components/atoms/buttons/ViewModeToggle";
+import { isMdUp } from "@/utils/helper/responsive";
+import { useViewModeStore } from "@/store/viewModeStore";
+import { m } from "motion/react";
 
 export default function Infographic() {
+  const isSimpleMode = useViewModeStore((state) => state.isSimpleMode);
   const [currentTime, setCurrentTime] = useState<Date | undefined>(undefined);
+  const [isMd, setIsMd] = useState(false);
 
   useEffect(() => {
     if (window === undefined) return;
+    const check = () => setIsMd(isMdUp());
+    check();
+    window.addEventListener("resize", check);
+
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
 
-    return () => clearInterval(timer);
+    return () => {
+      window.removeEventListener("resize", check);
+      clearInterval(timer);
+    };
   }, []);
 
   const formatTime = () => {
@@ -37,20 +50,31 @@ export default function Infographic() {
     );
   };
 
+  const targetWidth = isSimpleMode ? "100%" : isMd ? "50%" : "100%";
+
   return (
-    <div className="flex justify-between items-center md:w-1/2 w-full">
-      <div>
-        <h3 className="text-nowrap truncate max-w-[200px] text-xl font-semibold text-[#02C380]">
-          {getDayName()}
-        </h3>
-        <p className="text-sm font-semibold text-nowrap">
-          {formatTime()} GMT+7
-        </p>
+    <m.div
+      layout="position"
+      initial={{ width: "100%", opacity: 0 }}
+      animate={{ width: targetWidth, opacity: 1 }}
+      transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+      className="flex justify-between items-center overflow-hidden"
+    >
+      <div className="flex gap-2">
+        <ViewModeToggle />
+        <div>
+          <h3 className="text-nowrap truncate max-w-50 text-xl font-semibold text-[#02C380]">
+            {getDayName()}
+          </h3>
+          <p className="text-sm font-semibold text-nowrap">
+            {formatTime()} GMT+7
+          </p>
+        </div>
       </div>
       <Tooltip
         position="bottom"
         content={
-          <div className="p-4 w-[400px] h-[400px]">
+          <div className="p-4 w-100 h-100">
             <Globe />
           </div>
         }
@@ -60,6 +84,6 @@ export default function Infographic() {
           <span className="text-lg font-semibold">Indonesia</span>
         </div>
       </Tooltip>
-    </div>
+    </m.div>
   );
 }

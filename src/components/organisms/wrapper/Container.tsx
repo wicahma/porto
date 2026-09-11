@@ -1,13 +1,17 @@
 "use client";
 import { IContainerProps } from "@/interface/organisms/container";
 import { useLoadingStore } from "@/store/loadingStore";
+import { useViewModeStore } from "@/store/viewModeStore";
 import { cn } from "@/utils/helper/cn";
+import { RenderIf } from "@/utils/helper/render-if";
 import { isMdUp } from "@/utils/helper/responsive";
 import { AnimatePresence, m } from "motion/react";
+import { usePathname } from "next/navigation";
 import { FC } from "react";
 import Breadcrumb from "../../molecules/header/Breadcrumb";
 import Infographic from "../../molecules/header/Infograpnic";
-import { usePathname } from "next/navigation";
+import SimpleModeView from "./SimpleModeView";
+import ViewModeToggle from "@/components/atoms/buttons/ViewModeToggle";
 
 const Container: FC<IContainerProps> = ({
   left,
@@ -21,6 +25,7 @@ const Container: FC<IContainerProps> = ({
 }) => {
   const pathname = usePathname();
   const { isLoading } = useLoadingStore((state) => state);
+  const isSimpleMode = useViewModeStore((state) => state.isSimpleMode);
 
   return (
     <m.div
@@ -32,87 +37,102 @@ const Container: FC<IContainerProps> = ({
       }
       exit={{ opacity: 0 }}
     >
-      <div
+      <m.div
+        initial={{ opacity: 0, y: -15 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -15 }}
+        transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
         className={cn(
           className,
-          "flex md:flex-nowrap flex-wrap-reverse md:gap-20 gap-5 container shrink-0 mx-auto w-full items-center md:mb-0 mb-5 md:px-0 px-5",
+          isSimpleMode
+            ? "flex-col-reverse flex gap-3"
+            : "flex md:flex-nowrap flex-wrap-reverse md:gap-20 gap-5 container shrink-0 mx-auto w-full items-center md:mb-0 mb-5 md:px-0 px-5",
         )}
       >
         <Breadcrumb />
         <Infographic />
-      </div>
-      <div
-        className={cn(
-          "flex gap-20 container md:flex-nowrap md:px-0 px-5 flex-wrap shrink-0 mx-auto w-full relative",
-          className,
-        )}
-      >
-        <AnimatePresence mode="wait">
-          {pathname === "/" && (
-            <m.div
-              key="left-panel"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 1 }}
-              transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-              className={cn("md:w-1/2 md:pr-10 w-full", classNameLeft)}
-            >
-              {left}
-            </m.div>
-          )}
-        </AnimatePresence>
+      </m.div>
 
-        <m.div
-          animate={{
-            right: pathname !== "/" ? "50%" : "0%",
-            ...(isMdUp()
-              ? {
-                  paddingRight: pathname !== "/" ? "2.5rem" : "0rem",
-                  paddingLeft: pathname !== "/" ? "0rem" : "2.5rem",
-                }
-              : {}),
-          }}
-          transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+      <RenderIf condition={isSimpleMode}>
+        <div className={cn("container mx-auto px-5 md:px-0", className)}>
+          <SimpleModeView detail={detail} />
+        </div>
+      </RenderIf>
+
+      <RenderIf condition={!isSimpleMode}>
+        <div
           className={cn(
-            "md:overflow-hidden md:w-1/2 w-full md:absolute",
-            classNameRight,
+            "flex gap-20 container md:flex-nowrap md:px-0 px-5 flex-wrap shrink-0 mx-auto w-full relative",
+            className,
           )}
         >
-          {right}
-        </m.div>
+          <AnimatePresence mode="wait">
+            {pathname === "/" && (
+              <m.div
+                key="left-panel"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 1 }}
+                transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                className={cn("md:w-1/2 md:pr-10 w-full", classNameLeft)}
+              >
+                {left}
+              </m.div>
+            )}
+          </AnimatePresence>
 
-        <AnimatePresence mode="wait">
-          {pathname !== "/" && (
-            <m.div
-              key="detail-panel"
-              initial={
-                isInitialLoad
-                  ? false
-                  : {
-                      opacity: 0,
-                      right: "-20%",
-                      scale: 0.75,
-                      zIndex: -100,
-                    }
-              }
-              animate={{ opacity: 1, right: "0%", zIndex: 0, scale: 1 }}
-              exit={{
-                opacity: 0,
-                right: "-20%",
-                scale: 0.75,
-                zIndex: -100,
-              }}
-              transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-              className={cn(
-                "overflow-hidden md:absolute md:w-1/2 md:pl-10 w-full",
-                classNameDetail,
-              )}
-            >
-              {detail}
-            </m.div>
-          )}
-        </AnimatePresence>
-      </div>
+          <m.div
+            animate={{
+              right: pathname !== "/" ? "50%" : "0%",
+              ...(isMdUp()
+                ? {
+                    paddingRight: pathname !== "/" ? "2.5rem" : "0rem",
+                    paddingLeft: pathname !== "/" ? "0rem" : "2.5rem",
+                  }
+                : {}),
+            }}
+            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+            className={cn(
+              "md:overflow-hidden md:w-1/2 w-full md:absolute",
+              classNameRight,
+            )}
+          >
+            {right}
+          </m.div>
+
+          <AnimatePresence mode="wait">
+            {pathname !== "/" && (
+              <m.div
+                key="detail-panel"
+                initial={
+                  isInitialLoad
+                    ? false
+                    : {
+                        opacity: 0,
+                        right: "-20%",
+                        scale: 0.75,
+                        zIndex: -100,
+                      }
+                }
+                animate={{ opacity: 1, right: "0%", zIndex: 0, scale: 1 }}
+                exit={{
+                  opacity: 0,
+                  right: "-20%",
+                  scale: 0.75,
+                  zIndex: -100,
+                }}
+                transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                className={cn(
+                  "overflow-hidden md:absolute md:w-1/2 md:pl-10 w-full",
+                  classNameDetail,
+                )}
+              >
+                {detail}
+              </m.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </RenderIf>
     </m.div>
   );
 };

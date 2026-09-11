@@ -1,3 +1,4 @@
+import { useViewModeStore } from "@/store/viewModeStore";
 import { cn } from "@/utils/helper/cn";
 import {
   domMax,
@@ -12,6 +13,7 @@ import React, { useEffect, useState } from "react";
 
 export const GlobCursor: React.FC = () => {
   const [enabled, setEnabled] = useState(false);
+  const isSimpleMode = useViewModeStore((state) => state.isSimpleMode);
 
   useEffect(() => {
     const handleResize = () => {
@@ -163,7 +165,7 @@ export const GlobCursor: React.FC = () => {
     };
   }, []);
 
-  if (!enabled) return null;
+  if (!enabled || isSimpleMode) return null;
 
   return (
     <LazyMotion features={domMax} strict>
