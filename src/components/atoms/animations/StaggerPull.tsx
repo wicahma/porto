@@ -1,5 +1,6 @@
 "use client";
 import { IStaggerProps } from "@/interface/atoms/animation";
+import { cn } from "@/utils/helper/cn";
 import { HTMLMotionProps, m, useInView, Variants } from "motion/react";
 import * as React from "react";
 
@@ -7,6 +8,7 @@ export const StaggerPull: React.FC<IStaggerProps> = ({
   direction = "to-top",
   children,
   className = "",
+  itemClassName,
   staggerChildren = 0.1,
 }) => {
   const show: Variants = {
@@ -73,7 +75,7 @@ export const StaggerPull: React.FC<IStaggerProps> = ({
 
         return (
           <m.div
-            className="grow"
+            className={cn(itemClassName ? itemClassName : "grow")}
             variants={{
               ...show,
               ...hidden,

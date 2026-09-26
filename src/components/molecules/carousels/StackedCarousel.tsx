@@ -3,7 +3,7 @@
 import {
   CarouselCardStyle,
   StackedCarouselProps,
-} from "@/interface/atoms/stackedCarousel";
+} from "@/interface/atoms/stacked-carousel";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { AnimatePresence, m } from "motion/react";
 import { useCallback, useEffect, useState } from "react";

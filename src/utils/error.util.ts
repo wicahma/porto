@@ -1,5 +1,5 @@
 import { toast } from "react-hot-toast";
-import { APIBaseResponse } from "@/interface/api.interface";
+import { APIBaseResponse } from "@/interface/global/api.interface";
 
 export const errorWrapper = async <T>(
   res: Promise<APIBaseResponse<T>>,

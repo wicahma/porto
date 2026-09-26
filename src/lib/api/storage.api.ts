@@ -1,6 +1,6 @@
 "use server";
 
-import { APIBaseResponse } from "@/interface/api.interface";
+import { APIBaseResponse } from "@/interface/global/api.interface";
 import { satellite } from "@/config/api.config";
 
 export const apiUploadFile = async (

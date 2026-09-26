@@ -4,10 +4,15 @@ import ButtonBig from "@/components/atoms/buttons/ButtonBig";
 import { vals } from "@/constants/val";
 import { useExperiences } from "@/hooks/queries/experience.wrapper";
 import { useProjects } from "@/hooks/queries/project.wrapper";
+import { cn } from "@/utils/helper/cn";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-const ButtonsLeft = () => {
+const ButtonsLeft = ({
+  simpleView = false,
+}: Readonly<{
+  simpleView?: boolean;
+}>) => {
   const [isGenerating, setIsGenerating] = useState(false);
 
   const { data: experiencesData } = useExperiences(1, 100);
@@ -50,7 +55,12 @@ const ButtonsLeft = () => {
   };
 
   return (
-    <div className="md:px-3.5 gap-2 flex justify-between mt-5">
+    <div
+      className={cn(
+        simpleView ? "gap-5" : "md:px-3.5 mt-5 gap-2 ",
+        "flex justify-between",
+      )}
+    >
       <ButtonBig
         onClick={handleRedirectToEmail}
         className="hoverable bg-red-600 flex gap-3 justify-center items-center"

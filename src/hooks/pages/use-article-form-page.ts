@@ -6,7 +6,7 @@ import {
   ArticleFormHandlers,
   ArticleFormData,
   UseArticleFormHooks,
-} from "@/interface/article-form.interface";
+} from "@/interface/molecules/article-form";
 import {
   useArticle,
   useCreateArticle,
