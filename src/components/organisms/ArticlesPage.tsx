@@ -1,6 +1,5 @@
 "use client";
 
-import { useArticles, useDeleteArticle } from "@/hooks/queries/article.wrapper";
 import { Button } from "@/components/atoms/buttons/button";
 import {
   Card,
@@ -18,9 +17,9 @@ import {
   TableRow,
 } from "@/components/atoms/table";
 import { Badge } from "@/components/atoms/chips/badge";
+import { Pagination } from "@/components/atoms/pagination/Pagination";
 import { Plus, Pencil, Trash2, Eye } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -29,18 +28,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/atoms/popups/dialog";
+import { useArticlesPage } from "@/hooks/pages/use-articles-page";
 
 const ArticlesPageContent = () => {
-  const { data, isLoading } = useArticles(1, 100);
-  const deleteArticle = useDeleteArticle();
-  const [deleteId, setDeleteId] = useState<string | null>(null);
-
-  const handleDelete = async () => {
-    if (deleteId) {
-      await deleteArticle.mutateAsync(deleteId);
-      setDeleteId(null);
-    }
-  };
+  const {
+    data: { articles, count, page, totalPages, isLoading, deleteId },
+    handlers: { setPage, setDeleteId, handleDelete },
+    state: { isDeleting },
+  } = useArticlesPage();
 
   const renderTableContent = () => {
     if (isLoading) {
@@ -51,77 +46,83 @@ const ArticlesPageContent = () => {
       );
     }
 
-    const articlesList = (data as any)?.articles || [];
-    if (articlesList.length > 0) {
+    if (articles.length > 0) {
       return (
-        <Table>
-          <TableHeader>
-            <TableRow className="border-neutral-800 hover:bg-neutral-800/50">
-              <TableHead className="text-neutral-300">Title</TableHead>
-              <TableHead className="text-neutral-300">Category</TableHead>
-              <TableHead className="text-neutral-300">Slug</TableHead>
-              <TableHead className="text-neutral-300">Created</TableHead>
-              <TableHead className="text-neutral-300 text-right">
-                Actions
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {articlesList.map((article: any) => (
-              <TableRow
-                key={article.id}
-                className="border-neutral-800 hover:bg-neutral-800/50"
-              >
-                <TableCell className="font-medium text-white">
-                  {article.title}
-                </TableCell>
-                <TableCell>
-                  <Badge className="bg-pink-500/20 text-pink-400 border-pink-500/30">
-                    {article.category}
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-neutral-400 font-mono text-sm">
-                  /{article.slug}
-                </TableCell>
-                <TableCell className="text-neutral-400">
-                  {article.created_at
-                    ? new Date(article.created_at).toLocaleDateString()
-                    : "N/A"}
-                </TableCell>
-                <TableCell className="text-right">
-                  <div className="flex items-center justify-end gap-2">
-                    <Link href={`/article/${article.slug}`} target="_blank">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-neutral-400 hover:text-white"
-                      >
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                    </Link>
-                    <Link href={`/admin/articles/${article.id}`}>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-neutral-400 hover:text-white"
-                      >
-                        <Pencil className="h-4 w-4" />
-                      </Button>
-                    </Link>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-red-400 hover:text-red-300 hover:bg-red-950/30"
-                      onClick={() => setDeleteId(article.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </TableCell>
+        <>
+          <Table>
+            <TableHeader>
+              <TableRow className="border-neutral-800 hover:bg-neutral-800/50">
+                <TableHead className="text-neutral-300">Title</TableHead>
+                <TableHead className="text-neutral-300">Category</TableHead>
+                <TableHead className="text-neutral-300">Slug</TableHead>
+                <TableHead className="text-neutral-300">Created</TableHead>
+                <TableHead className="text-neutral-300 text-right">
+                  Actions
+                </TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {articles.map((article: any) => (
+                <TableRow
+                  key={article.id}
+                  className="border-neutral-800 hover:bg-neutral-800/50"
+                >
+                  <TableCell className="font-medium text-white">
+                    {article.title}
+                  </TableCell>
+                  <TableCell>
+                    <Badge className="bg-pink-500/20 text-pink-400 border-pink-500/30">
+                      {article.category}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-neutral-400 font-mono text-sm">
+                    /{article.slug}
+                  </TableCell>
+                  <TableCell className="text-neutral-400">
+                    {article.created_at
+                      ? new Date(article.created_at).toLocaleDateString()
+                      : "N/A"}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <Link href={`/article/${article.slug}`} target="_blank">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-neutral-400 hover:text-white"
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                      </Link>
+                      <Link href={`/admin/articles/${article.id}`}>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-neutral-400 hover:text-white"
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                      </Link>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-red-400 hover:text-red-300 hover:bg-red-950/30"
+                        onClick={() => setDeleteId(article.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            onPageChange={setPage}
+          />
+        </>
       );
     }
 
@@ -139,7 +140,7 @@ const ArticlesPageContent = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950 p-8">
+    <div className="min-h-screen bg-linear-to-br from-neutral-950 via-neutral-900 to-neutral-950 p-8">
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="flex items-center justify-between">
           <div>
@@ -147,7 +148,7 @@ const ArticlesPageContent = () => {
             <p className="text-neutral-400">Manage your blog articles</p>
           </div>
           <Link href="/admin/articles/new">
-            <Button className="bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700">
+            <Button className="bg-linear-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700">
               <Plus className="mr-2 h-4 w-4" />
               Create Article
             </Button>
@@ -158,7 +159,7 @@ const ArticlesPageContent = () => {
           <CardHeader>
             <CardTitle className="text-white">All Articles</CardTitle>
             <CardDescription className="text-neutral-400">
-              {(data as any)?.count ?? 0} articles total
+              {count} articles total
             </CardDescription>
           </CardHeader>
           <CardContent>{renderTableContent()}</CardContent>
@@ -184,9 +185,9 @@ const ArticlesPageContent = () => {
               <Button
                 onClick={handleDelete}
                 className="bg-red-600 hover:bg-red-700"
-                disabled={deleteArticle.isPending}
+                disabled={isDeleting}
               >
-                {deleteArticle.isPending ? "Deleting..." : "Delete"}
+                {isDeleting ? "Deleting..." : "Delete"}
               </Button>
             </DialogFooter>
           </DialogContent>

@@ -20,11 +20,12 @@ import {
 import { RenderIf } from "@/utils/helper/render-if";
 import { ExperiencesTable } from "@/components/molecules/tables/ExperiencesTable";
 import { useExperiencesPage } from "@/hooks/pages/use-experiences-page";
+import { Pagination } from "@/components/atoms/pagination/Pagination";
 
 const ExperiencesPageContent = () => {
   const {
-    data: { experiences, count, isLoading, deleteId },
-    handlers: { setDeleteId, handleDelete },
+    data: { experiences, count, page, totalPages, isLoading, deleteId },
+    handlers: { setDeleteId, setPage, handleDelete },
   } = useExperiencesPage();
 
   return (
@@ -74,6 +75,11 @@ const ExperiencesPageContent = () => {
                 </Link>
               </div>
             </RenderIf>
+            <Pagination
+              page={page}
+              totalPages={totalPages}
+              onPageChange={setPage}
+            />
           </CardContent>
         </Card>
 

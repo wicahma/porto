@@ -9,12 +9,15 @@ export interface ProjectTableRow {
 export interface ProjectsPageData {
   projects: ProjectTableRow[];
   count: number;
+  page: number;
+  totalPages: number;
   isLoading: boolean;
   deleteId: string | null;
 }
 
 export interface ProjectsPageState {
   setDeleteId: (id: string | null) => void;
+  setPage: (page: number) => void;
 }
 
 export interface ProjectsPageHandlers {

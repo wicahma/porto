@@ -12,7 +12,12 @@ import {
   useCreateArticle,
   useUpdateArticle,
 } from "../queries/article.wrapper";
-import { apiUploadFile } from "@/lib/api/storage.api";
+import { apiUploadFile, apiDeleteFiles } from "@/lib/api/storage.api";
+import {
+  collectStorageKeys,
+  getStorageFileUrl,
+  isStorageKey,
+} from "@/utils/helper/storage";
 import toast from "react-hot-toast";
 
 export const useArticleFormPage = (): UseArticleFormHooks => {
@@ -49,7 +54,6 @@ export const useArticleFormPage = (): UseArticleFormHooks => {
       setTitle(existingArticle.title);
       setSlug(existingArticle.slug);
       setExcerpt(existingArticle.excerpt || "");
-      setContent(existingArticle.content);
       setCategory(existingArticle.category);
       setImage(existingArticle.image);
       setTags(existingArticle?.tags?.join(", ") || "");
@@ -58,6 +62,33 @@ export const useArticleFormPage = (): UseArticleFormHooks => {
       setMetaDescription(existingArticle.meta_description || "");
       setMetaKeywords(existingArticle.meta_keywords?.join(", ") || "");
       setOgImage(existingArticle.og_image || "");
+
+      // Content is stored as an S3 key once uploaded. Load the real HTML so the
+      // editor never shows (and re-saves) the raw key, which would destroy it.
+      const raw = existingArticle.content || "";
+      if (isStorageKey(raw)) {
+        let cancelled = false;
+        fetch(getStorageFileUrl(raw))
+          .then((res) => (res.ok ? res.text() : ""))
+          .then((html) => {
+            if (cancelled) return;
+            if (html) setContent(html);
+            else {
+              // Keep the key so the stored HTML is never overwritten with junk.
+              setContent(raw);
+              toast.error("Could not load article content");
+            }
+          })
+          .catch(() => {
+            if (cancelled) return;
+            setContent(raw);
+            toast.error("Could not load article content");
+          });
+        return () => {
+          cancelled = true;
+        };
+      }
+      setContent(raw);
     }
   }, [existingArticle]);
 
@@ -98,6 +129,13 @@ export const useArticleFormPage = (): UseArticleFormHooks => {
       };
 
       let savedArticleId = articleId;
+      const previousKeys = isEdit
+        ? collectStorageKeys(
+            existingArticle?.image,
+            existingArticle?.content,
+            existingArticle?.og_image,
+          )
+        : [];
 
       if (isEdit && articleId) {
         await updateArticle.mutateAsync({ id: articleId, ...articleData });
@@ -141,7 +179,6 @@ export const useArticleFormPage = (): UseArticleFormHooks => {
 
       // Update article with file paths if files were uploaded
       if (
-        (imageFile || content) &&
         savedArticleId &&
         (updatedImagePath !== image || updatedContentPath !== content)
       ) {
@@ -152,6 +189,15 @@ export const useArticleFormPage = (): UseArticleFormHooks => {
           content: updatedContentPath,
         });
       }
+
+      // Replaced uploads are now unreferenced: remove them so files don't pile up.
+      const stale = previousKeys.filter(
+        (key) =>
+          key !== updatedImagePath &&
+          key !== updatedContentPath &&
+          key !== (ogImage || updatedImagePath),
+      );
+      if (stale.length) await apiDeleteFiles(stale).catch(() => {});
 
       toast.dismiss();
       toast.success(isEdit ? "Article updated!" : "Article created!");

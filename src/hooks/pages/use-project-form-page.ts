@@ -7,7 +7,8 @@ import { ProjectFormData } from "@/interface/pages/project-form.interface";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { apiUploadFile } from "@/lib/api/storage.api";
+import { apiUploadFile, apiDeleteFiles } from "@/lib/api/storage.api";
+import { collectStorageKeys } from "@/utils/helper/storage";
 
 export const useProjectFormPage = () => {
   const router = useRouter();
@@ -87,6 +88,9 @@ export const useProjectFormPage = () => {
       };
 
       let savedProjectId = projectId;
+      const previousKeys = isEdit
+        ? collectStorageKeys(existingProject?.image)
+        : [];
 
       if (isEdit && projectId) {
         await updateProject.mutateAsync({ id: projectId, ...projectData });
@@ -117,6 +121,10 @@ export const useProjectFormPage = () => {
           image: updatedImagePath,
         });
       }
+
+      // Replaced image is now unreferenced: remove it so files don't pile up.
+      const stale = previousKeys.filter((key) => key !== updatedImagePath);
+      if (stale.length) await apiDeleteFiles(stale).catch(() => {});
 
       toast.dismiss();
       toast.success(

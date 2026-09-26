@@ -27,11 +27,12 @@ import {
 import { RenderIf } from "@/utils/helper/render-if";
 import { useProjectsPage } from "@/hooks/pages/use-projects-page";
 import { ProjectRow } from "@/components/molecules/tables/ProjectRow";
+import { Pagination } from "@/components/atoms/pagination/Pagination";
 
 const ProjectsPageContent = () => {
   const hooks = useProjectsPage();
-  const { projects, count, isLoading, deleteId } = hooks.data;
-  const { setDeleteId } = hooks.state;
+  const { projects, count, page, totalPages, isLoading, deleteId } = hooks.data;
+  const { setDeleteId, setPage } = hooks.state;
   const { handleDelete, deleteProject } = hooks.handlers;
 
   return (
@@ -99,6 +100,11 @@ const ProjectsPageContent = () => {
                 </Link>
               </div>
             </RenderIf>
+            <Pagination
+              page={page}
+              totalPages={totalPages}
+              onPageChange={setPage}
+            />
           </CardContent>
         </Card>
 

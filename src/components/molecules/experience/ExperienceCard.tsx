@@ -33,9 +33,9 @@ const ExperienceCard = () => {
         className="flex items-center justify-center gap-3 cursor-pointer w-full"
         onClick={handleSetPage}
       >
-        <Sun />
+        <Sun className="text-[#8D41FF]" />
         <h3 className="text-3xl font-semibold">Work Experience</h3>
-        <Sun />
+        <Sun className="text-[#8D41FF]" />
       </button>
 
       <RenderIf condition={isLoading}>
