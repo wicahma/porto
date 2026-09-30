@@ -8,15 +8,27 @@ labels:
   backend: local
 
 steps:
-  - name: build-and-restart
+  - name: build
     image: bash
     commands:
-      - export PATH="/home/diama/.nvm/versions/node/v24.16.0/bin:$PATH"
+      - export PATH="/home/diama/ci-tools/bin:/home/diama/.nvm/versions/node/v24.16.0/bin:/home/diama/.local/bin:$PATH"
+      - export NODE_OPTIONS="--max-old-space-size=1536"
+      - set -a; . /home/diama/repos/personal-porto/porto/.env.local; set +a
       - npm install --legacy-peer-deps
       - npm run build
-      - systemctl --user restart porto.service
-      - echo "Porto frontend successfully built and restarted on port 3001"
+
+  - name: deploy-homelab
+    image: bash
+    commands:
+      - export PATH="/home/diama/ci-tools/bin:/home/diama/.nvm/versions/node/v24.16.0/bin:/home/diama/.local/bin:$PATH"
+      - /usr/bin/sudo -n -u diama /home/diama/bin/porto-ci-deploy "$CI_WORKSPACE"
+
+  - name: verify
+    image: bash
+    commands:
+      - sleep 5
+      - curl -fsS -o /dev/null -w 'http=%{http_code}\n' --user-agent 'Mozilla/5.0' http://127.0.0.1:3001/
 
 when:
-  event: push
-  branch: [main, main-v2]
+  - event: [push, manual]
+    branch: [main-v2]
