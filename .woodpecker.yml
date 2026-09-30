@@ -21,17 +21,17 @@ steps:
     image: bash
     commands:
       - export PATH="/home/diama/ci-tools/bin:/home/diama/.nvm/versions/node/v24.16.0/bin:/home/diama/.local/bin:$PATH"
-      - rm -rf /tmp/porto-stage && mkdir -p /tmp/porto-stage
-      - cp -r .next /tmp/porto-stage/.next
-      - cp -r public /tmp/porto-stage/public
-      - chmod -R a+rX /tmp/porto-stage
-      - /usr/bin/sudo -n -u diama /home/diama/bin/porto-ci-deploy /tmp/porto-stage
+      - WS="${CI_WORKSPACE:-$PWD}"
+      - chmod a+x "$WS" "$(dirname "$WS")"
+      - chmod -R a+rX "$WS/.next" "$WS/public"
+      - /usr/bin/sudo -n -u diama /home/diama/bin/porto-ci-deploy "$WS"
 
   - name: verify
     image: bash
     commands:
       - sleep 5
-      - curl -fsS -o /dev/null -w 'http=%{http_code}\n' --user-agent 'Mozilla/5.0' http://127.0.0.1:3001/
+      - curl -fsS -o /dev/null -w 'local=%{http_code}\n' --user-agent 'Mozilla/5.0' http://127.0.0.1:3001/
+      - curl -fsS -o /dev/null -w 'public=%{http_code}\n' --user-agent 'Mozilla/5.0' https://diama.dev/
 
 when:
   - event: [push, manual]
