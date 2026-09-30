@@ -1,5 +1,6 @@
 clone:
   git:
+    image: bash
     settings:
       lfs: false
 
