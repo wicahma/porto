@@ -125,11 +125,11 @@ const StackedCarousel = <T,>({
         </div>
         <AnimatePresence initial={true} mode="sync">
           {visibleItems.map(
-            ({ item, originalIndex, relativePosition }, index) => {
+            ({ item, originalIndex, relativePosition }) => {
               const style = getCardStyle(relativePosition);
               return (
                 <m.div
-                  key={`${originalIndex}${index}`}
+                  key={originalIndex}
                   className="absolute select-none"
                   style={{
                     zIndex: style.zIndex,
