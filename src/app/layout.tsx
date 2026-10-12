@@ -83,7 +83,7 @@ export default async function RootLayout({
           <Script
             defer
             data-domain="diama.dev"
-            src="https://analytics.diama.dev/js/script.file-downloads.outbound-links.js"
+            src="https://analytics.diama.dev/js/script.file-downloads.outbound-links.tagged-events.js"
           />
         </head>
         <body className={`${openSans.variable} antialiased`}>
