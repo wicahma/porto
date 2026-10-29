@@ -10,6 +10,7 @@ import {
   apiUpdateArticle,
   apiDeleteArticle,
   apiGetArticleCount,
+  apiGetArticleCategories,
 } from "@/lib/api/article.api";
 import {
   CreateArticleInput,
@@ -21,8 +22,13 @@ import toast from "react-hot-toast";
 export const articleKeys = {
   all: ["articles"] as const,
   lists: () => [...articleKeys.all, "list"] as const,
-  list: (page: number, limit: number) =>
-    [...articleKeys.lists(), { page, limit }] as const,
+  list: (
+    page: number,
+    limit: number,
+    search: string = "",
+    category: string = "",
+  ) => [...articleKeys.lists(), { page, limit, search, category }] as const,
+  categories: () => [...articleKeys.all, "categories"] as const,
   details: () => [...articleKeys.all, "detail"] as const,
   detail: (id: string) => [...articleKeys.details(), id] as const,
   slug: (slug: string) => [...articleKeys.all, "slug", slug] as const,
@@ -30,13 +36,29 @@ export const articleKeys = {
     [...articleKeys.all, "related", articleId, category] as const,
   count: () => [...articleKeys.all, "count"] as const,
 };
-
-export function useArticles(page: number = 1, limit: number = 10) {
+export function useArticles(
+  page: number = 1,
+  limit: number = 10,
+  search: string = "",
+  category: string = "",
+) {
   return useQuery({
-    queryKey: articleKeys.list(page, limit),
+    queryKey: articleKeys.list(page, limit, search, category),
     queryFn: async () => {
-      const result = await errorWrapper(apiGetArticles(page, limit));
+      const result = await errorWrapper(
+        apiGetArticles(page, limit, search, category),
+      );
       return result.data;
+    },
+  });
+}
+
+export function useArticleCategories() {
+  return useQuery({
+    queryKey: articleKeys.categories(),
+    queryFn: async () => {
+      const result = await errorWrapper(apiGetArticleCategories(), false);
+      return result.data ?? [];
     },
   });
 }

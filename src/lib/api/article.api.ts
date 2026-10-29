@@ -15,8 +15,21 @@ export interface IArticleListResponse {
 export const apiGetArticles = async (
   page = 1,
   limit = 20,
+  search = "",
+  category = "",
 ): Promise<APIBaseResponse<IArticleListResponse>> => {
-  const res = await satellite.get(`${BASE_PATH}?page=${page}&limit=${limit}`);
+  const params: Record<string, string | number> = { page, limit };
+  if (search) params.search = search;
+  if (category && category !== "All") params.category = category;
+
+  const res = await satellite.get(BASE_PATH, { params });
+  return res.data;
+};
+
+export const apiGetArticleCategories = async (): Promise<
+  APIBaseResponse<string[]>
+> => {
+  const res = await satellite.get(`${BASE_PATH}/categories`);
   return res.data;
 };
 

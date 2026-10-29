@@ -33,7 +33,6 @@ const ArticleCard = () => {
           exit={{ opacity: 0, y: -30, scale: 0.98 }}
           transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
         >
-          <div className="absolute -z-10 rounded-full top-0 right-10 -translate-y-1/2 translate-x-1/2 w-full aspect-square bg-[#FF8FC0]" />
 
           <div className="flex justify-between items-center mb-5">
             <div className="flex items-center gap-3">
@@ -69,7 +68,6 @@ const ArticleCard = () => {
           exit={{ opacity: 0, y: -30, scale: 0.98 }}
           transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
         >
-          <div className="absolute -z-10 rounded-full top-0 right-10 -translate-y-1/2 translate-x-1/2 w-full aspect-square bg-[#FF8FC0]" />
           <button
             onClick={handleSetPage}
             className="flex justify-between items-center cursor-pointer w-full"
