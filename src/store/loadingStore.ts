@@ -26,3 +26,11 @@ export const useLoadingStore = create<LoadingState>((set) => ({
   setProgress: (progress) => set({ progress }),
   resetProgress: () => set({ progress: 0 }),
 }));
+declare global {
+  interface Window {
+    __loadingStore?: typeof useLoadingStore;
+  }
+}
+if (typeof window !== "undefined") {
+  window.__loadingStore = useLoadingStore;
+}

@@ -1,5 +1,6 @@
 "use client";
 import { Chat } from "@/assets/svg/chat";
+import { Download } from "@/assets/svg/download";
 import ButtonBig from "@/components/atoms/buttons/ButtonBig";
 import { vals } from "@/constants/val";
 import { useExperiences } from "@/hooks/queries/experience.wrapper";
@@ -54,13 +55,32 @@ const ButtonsLeft = ({
     window.open(`mailto:${(await vals()).email}`, "_blank");
   };
 
+  if (simpleView) {
+    return (
+      <div className="flex items-center gap-4 mt-6">
+        <button
+          type="button"
+          onClick={handleRedirectToEmail}
+          className="cursor-pointer bg-[#FF3714] hover:bg-[#ff4e2e] text-white flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full text-sm font-semibold transition-transform hover:scale-105"
+        >
+          <Chat className="w-5 h-4" />
+          <span>Open to discuss</span>
+        </button>
+        <button
+          type="button"
+          onClick={handleDownloadCV}
+          disabled={isGenerating}
+          className="cursor-pointer bg-[#191919] hover:bg-[#252525] border border-neutral-700/60 text-white flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full text-sm font-semibold transition-transform hover:scale-105"
+        >
+          <Download className="w-4 h-4" />
+          <span>{isGenerating ? "Generating..." : "Download CV"}</span>
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div
-      className={cn(
-        simpleView ? "gap-5" : "md:px-3.5 mt-5 gap-2 ",
-        "flex justify-between",
-      )}
-    >
+    <div className="md:px-3.5 mt-5 gap-2 flex justify-between">
       <ButtonBig
         onClick={handleRedirectToEmail}
         className="hoverable bg-red-600 flex gap-3 justify-center items-center"

@@ -50,7 +50,7 @@ export const StorageImage: React.FC<ImageProps> = ({
 
 export const StorageImg: React.FC<
   React.ImgHTMLAttributes<HTMLImageElement> & { src: string; alt: string }
-> = async ({ src, alt, ...props }) => {
+> = ({ src, alt, ...props }) => {
   const imageUrl = getStorageFileUrl(src);
 
   return <img src={imageUrl} alt={alt} {...props} />;

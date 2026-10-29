@@ -1,5 +1,5 @@
 "use client";
-import { domAnimation, LazyMotion } from "motion/react";
+import { domMax, LazyMotion } from "motion/react";
 import React from "react";
 import { GlobCursor } from "../../atoms/animations/GlobCursor";
 import { useSecretHotkeys } from "@/hooks/secret-hotkeys.hook";
@@ -20,7 +20,7 @@ const Providers: React.FC<{
 
   return (
     <QueryProvider>
-      <LazyMotion features={domAnimation} strict>
+      <LazyMotion features={domMax} strict>
         <GlobCursor />
         {children}
       </LazyMotion>

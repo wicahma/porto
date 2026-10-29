@@ -7,8 +7,12 @@ import ViewModeToggle from "@/components/atoms/buttons/ViewModeToggle";
 import { isMdUp } from "@/utils/helper/responsive";
 import { useViewModeStore } from "@/store/viewModeStore";
 import { m } from "motion/react";
-
-export default function Infographic() {
+import { usePathname } from "next/navigation";
+export default function Infographic({
+  showToggle = true,
+}: {
+  showToggle?: boolean;
+} = {}) {
   const isSimpleMode = useViewModeStore((state) => state.isSimpleMode);
   const [currentTime, setCurrentTime] = useState<Date | undefined>(undefined);
   const [isMd, setIsMd] = useState(false);
@@ -50,8 +54,10 @@ export default function Infographic() {
     );
   };
 
-  const targetWidth = isSimpleMode ? "100%" : isMd ? "50%" : "100%";
-
+  const pathname = usePathname();
+  const isArticlePage = pathname.startsWith("/article");
+  const shouldShowToggle = showToggle && !isArticlePage;
+  const targetWidth = isSimpleMode || isArticlePage ? "100%" : isMd ? "50%" : "100%";
   return (
     <m.div
       layout="position"
@@ -60,8 +66,8 @@ export default function Infographic() {
       transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
       className="flex justify-between items-center overflow-hidden"
     >
-      <div className="flex gap-2">
-        <ViewModeToggle />
+      <div className="flex gap-2 items-center">
+        {shouldShowToggle && <ViewModeToggle />}
         <div>
           <h3 className="text-nowrap truncate max-w-50 text-xl font-semibold text-[#02C380]">
             {getDayName()}

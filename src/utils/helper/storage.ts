@@ -14,7 +14,21 @@ export const getStorageFileUrl = (
 
 export const isStorageFile = (path: string | null | undefined): boolean => {
   if (!path) return false;
-  return !path.startsWith("http://") && !path.startsWith("https://");
+  const trimmed = path.trim();
+  if (
+    trimmed.startsWith("<") ||
+    trimmed.includes("</") ||
+    trimmed.includes("\n")
+  ) {
+    return false;
+  }
+  if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+    return false;
+  }
+  return (
+    isStorageKey(trimmed) ||
+    /^[a-zA-Z0-9_\-./]+\.[a-zA-Z0-9]+$/.test(trimmed)
+  );
 };
 
 // Upload keys look like `<folder>/<ts>_<nano>_<name>.<ext>` (see backend generateFilePath).
@@ -23,7 +37,8 @@ const STORAGE_KEY_PATTERN = /^(images|articles|projects)\/[^/]+\.[A-Za-z0-9]+$/;
 
 export const isStorageKey = (
   value: string | null | undefined,
-): value is string => typeof value === "string" && STORAGE_KEY_PATTERN.test(value);
+): value is string =>
+  typeof value === "string" && STORAGE_KEY_PATTERN.test(value);
 
 // De-duped list of real storage keys among the given fields, skipping
 // empty values, external URLs, and content that was never uploaded.

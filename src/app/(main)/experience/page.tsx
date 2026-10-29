@@ -1,5 +1,5 @@
-import MainPage from "@/components/organisms/MainPage";
+import { redirect } from "next/navigation";
 
-const page = () => <MainPage />;
-
-export default page;
+export default function ExperiencePage() {
+  redirect("/");
+}

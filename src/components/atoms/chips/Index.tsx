@@ -85,7 +85,7 @@ const Chip: React.FC<IChipProps> = ({
       <div
         className={cn(
           "relative z-10 pointer-events-none duration-300 transition-colors",
-          active ? "text-black" : "text-neutral-600",
+          active ? "text-black" : "text-neutral-400",
           childClassName
         )}
       >

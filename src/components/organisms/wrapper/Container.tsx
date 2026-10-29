@@ -24,7 +24,7 @@ const Container: FC<IContainerProps> = ({
   isInitialLoad = false,
 }) => {
   const pathname = usePathname();
-  const { isLoading } = useLoadingStore((state) => state);
+  const isLoading = useLoadingStore((state) => state.isLoading);
   const isSimpleMode = useViewModeStore((state) => state.isSimpleMode);
 
   return (
@@ -37,7 +37,9 @@ const Container: FC<IContainerProps> = ({
       }
       exit={{ opacity: 0 }}
     >
+
       <m.div
+        layoutId="page-top-header"
         initial={{ opacity: 0, y: -15 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -15 }}
@@ -45,7 +47,7 @@ const Container: FC<IContainerProps> = ({
         className={cn(
           className,
           isSimpleMode
-            ? "flex-col-reverse flex gap-3"
+            ? "flex-col-reverse flex gap-3 container shrink-0 mx-auto w-full md:mb-0 mb-5 md:px-0 px-5"
             : "flex md:flex-nowrap flex-wrap-reverse md:gap-20 gap-5 container shrink-0 mx-auto w-full items-center md:mb-0 mb-5 md:px-0 px-5",
         )}
       >

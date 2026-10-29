@@ -8,13 +8,12 @@ import {
   useMotionTemplate,
   useMotionValue,
   useSpring,
-} from "framer-motion";
+} from "motion/react";
 import React, { useEffect, useState } from "react";
 
 export const GlobCursor: React.FC = () => {
   const [enabled, setEnabled] = useState(false);
   const isSimpleMode = useViewModeStore((state) => state.isSimpleMode);
-
   useEffect(() => {
     const handleResize = () => {
       setEnabled(globalThis.innerWidth >= 768);
@@ -53,8 +52,9 @@ export const GlobCursor: React.FC = () => {
     if (!enabled) return;
 
     const handleMouseMove = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const unhoverTarget = target.closest(".unhoverable") as HTMLElement;
+      const target = e.target as HTMLElement | null;
+      if (!target || typeof target.closest !== "function") return;
+      const unhoverTarget = target.closest(".unhoverable") as HTMLElement | null;
       if (unhoverTarget) {
         setHoverable(false);
         setUnhoverable(true);
@@ -64,7 +64,7 @@ export const GlobCursor: React.FC = () => {
         return;
       }
 
-      const hoverTarget = target.closest(".hoverable") as HTMLElement;
+      const hoverTarget = target.closest(".hoverable") as HTMLElement | null;
 
       const tCursor = globalThis.getComputedStyle(target)["cursor"];
       setUnhoverable(false);

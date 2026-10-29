@@ -5,13 +5,11 @@ import { isMdUp } from "@/utils/helper/responsive";
 import { useEffect } from "react";
 
 export function usePageLoading() {
-  const {
-    startLoading,
-    stopLoading,
-    setRandomMessage,
-    setProgress,
-    resetProgress,
-  } = useLoadingStore();
+  const startLoading = useLoadingStore((s) => s.startLoading);
+  const stopLoading = useLoadingStore((s) => s.stopLoading);
+  const setRandomMessage = useLoadingStore((s) => s.setRandomMessage);
+  const setProgress = useLoadingStore((s) => s.setProgress);
+  const resetProgress = useLoadingStore((s) => s.resetProgress);
 
   useEffect(() => {
     setRandomMessage();
@@ -42,5 +40,5 @@ export function usePageLoading() {
       clearTimeout(timer);
       clearInterval(progressInterval);
     };
-  }, [startLoading, stopLoading, setRandomMessage, setProgress, resetProgress]);
+  }, []);
 }

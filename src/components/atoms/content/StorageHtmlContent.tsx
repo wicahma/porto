@@ -38,7 +38,12 @@ export const StorageHtmlContent: React.FC<StorageHtmlContentProps> = ({
           setHtmlContent(html);
         } catch (err) {
           console.error("Error loading HTML content:", err);
-          setError("Failed to load content");
+          if (content) {
+            setHtmlContent(content);
+            setError(null);
+          } else {
+            setError("Failed to load content");
+          }
         } finally {
           setIsLoading(false);
         }

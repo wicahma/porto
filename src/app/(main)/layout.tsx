@@ -49,7 +49,11 @@ const Layout: React.FC<ILayoutProps> = ({ children }) => {
         className={cn(
           "w-screen overflow-visible min-h-screen",
           isSimpleMode ? "md:h-auto pb-24" : "md:h-screen",
-          disableOnPathname.includes(pathname) ? "" : "md:pt-28 pt-12",
+          disableOnPathname.includes(pathname)
+            ? ""
+            : pathname === "/" && !isSimpleMode
+              ? "md:pt-[4.5rem] pt-12"
+              : "md:pt-28 pt-12",
         )}
       >
         <div

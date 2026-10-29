@@ -152,26 +152,18 @@ function WaterFillAnimation({ progress }: Readonly<{ progress: number }>) {
 }
 
 export default function LoadingScreen() {
-  const { isLoading, message, progress } = useLoadingStore();
-
+  const isLoading = useLoadingStore((s) => s.isLoading);
+  const message = useLoadingStore((s) => s.message);
+  const progress = useLoadingStore((s) => s.progress);
   return (
     <AnimatePresence initial={false} mode="popLayout">
       {isLoading && (
         <m.div
-          initial={{
-            clipPath: "circle(150% at 50% 50%)",
-          }}
-          animate={{
-            clipPath: "circle(150% at 50% 50%)",
-          }}
-          exit={{
-            clipPath: "circle(0% at 50% 50%)",
-          }}
-          transition={{
-            duration: 2,
-            ease: [0.19, 1, 0.22, 1],
-          }}
-          className="fixed inset-0 z-9999 will-change-transform w-screen h-screen"
+          initial={{ opacity: 1 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.4 }}
+          className="fixed inset-0 z-9999 will-change-transform w-screen h-screen pointer-events-none"
         >
           <div className="absolute z-9999 backdrop-blur-xl w-screen h-screen bg-black/40 flex items-center justify-center">
             <div className="md:hidden absolute inset-0 overflow-hidden">
