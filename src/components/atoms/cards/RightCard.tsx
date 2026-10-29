@@ -42,23 +42,11 @@ const RightCard = () => {
       )}
     >
       <AnimatePresence mode="wait">
-        {pathname !== "/" ? (
-          <m.div key={`${pathname}-card`} layout className="space-y-10">
-            {pathname === "/project" && (
-              <m.div layout layoutId="project-card">
-                <ProjectCard />
-              </m.div>
-            )}
-            {pathname === "/experience" && (
-              <m.div layout layoutId="experience-card">
-                <ExperienceCard />
-              </m.div>
-            )}
-            {pathname === "/article" && (
-              <m.div layout layoutId="article-card">
-                <ArticleCard />
-              </m.div>
-            )}
+        {pathname === "/article" ? (
+          <m.div key="article-detail-card" layout className="space-y-10">
+            <m.div layout layoutId="article-card">
+              <ArticleCard />
+            </m.div>
           </m.div>
         ) : (
           <m.div key="all-cards" layout className="md:space-y-10 space-y-16">

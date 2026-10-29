@@ -30,13 +30,15 @@ import {
 import Link from "next/link";
 import { formatDateRange } from "@/utils/helper/date.utils";
 import { RenderIf } from "@/utils/helper/render-if";
+import { ExperienceLogoField } from "@/components/molecules/experience/ExperienceLogoField";
 import { useExperienceFormPage } from "@/hooks/pages/use-experience-form-page";
 
 const ExperienceFormPageContent = () => {
   const hooks = useExperienceFormPage();
 
-  const { collapsedJobs, company, jobs, location, tags } = hooks.data;
-  const { isEdit, isLoading, setCompany, setLocation, setTags } = hooks.state;
+  const { collapsedJobs, company, jobs, location, tags, logo } = hooks.data;
+  const { isEdit, isLoading, setCompany, setLocation, setTags, setLogo } =
+    hooks.state;
   const {
     addJob,
     removeJob,
@@ -132,6 +134,12 @@ const ExperienceFormPageContent = () => {
                   placeholder="React, TypeScript, Next.js, Node.js"
                 />
               </div>
+
+              <ExperienceLogoField
+                company={company}
+                value={logo}
+                onChange={setLogo}
+              />
             </CardContent>
           </Card>
 

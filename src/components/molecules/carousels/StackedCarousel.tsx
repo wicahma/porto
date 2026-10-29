@@ -129,7 +129,7 @@ const StackedCarousel = <T,>({
               const style = getCardStyle(relativePosition);
               return (
                 <m.div
-                  key={`${originalIndex}${index}`}
+                  key={(item as { id?: string })?.id || `${originalIndex}`}
                   className="absolute select-none"
                   style={{
                     zIndex: style.zIndex,
@@ -148,7 +148,7 @@ const StackedCarousel = <T,>({
                     opacity: style.opacity,
                   }}
                   transition={{
-                    duration: 1,
+                    duration: 0.6,
                     ease: [0.32, 0.72, 0, 1],
                   }}
                   onClick={() => {

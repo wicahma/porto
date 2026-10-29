@@ -16,11 +16,22 @@ export interface CreateExperienceInput {
   company: string;
   location: string;
   tags: string[];
+  /** Inline logo (data URI) or an absolute URL. Empty clears the logo. */
+  logo?: string | null;
   jobs: Omit<ExperienceJob, "id">[];
 }
 
 export interface UpdateExperienceInput extends Partial<CreateExperienceInput> {
   id: string;
+}
+
+/** One position held at a company, flattened for display. */
+export interface ExperiencePositionSummary {
+  role: string;
+  period: string;
+  description: string;
+  competency: string[];
+  isCurrent?: boolean;
 }
 
 export interface JobFormData {

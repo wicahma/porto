@@ -25,6 +25,8 @@ export const useExperienceFormPage = () => {
   const [company, setCompany] = useState("");
   const [location, setLocation] = useState("");
   const [tags, setTags] = useState("");
+  /** Inline data URI or URL for the company mark; empty means "no logo". */
+  const [logo, setLogo] = useState("");
 
   const [jobs, setJobs] = useState<JobFormData[]>([
     {
@@ -45,6 +47,7 @@ export const useExperienceFormPage = () => {
       setCompany(existingExperience.company);
       setLocation(existingExperience.location);
       setTags((existingExperience?.tags ?? []).join(", "));
+      setLogo(existingExperience?.logo ?? "");
 
       if ((existingExperience?.jobs ?? []).length > 0) {
         const loadedJobs = ((existingExperience?.jobs ?? []) as any[]).map(
@@ -153,6 +156,7 @@ export const useExperienceFormPage = () => {
     const experienceData: CreateExperienceInput = {
       company,
       location,
+      logo: logo.trim() ? logo.trim() : null,
       tags: tags
         .split(",")
         .map((t) => t.trim())
@@ -196,6 +200,7 @@ export const useExperienceFormPage = () => {
       company,
       location,
       tags,
+      logo,
       jobs,
       collapsedJobs,
     },
@@ -203,6 +208,7 @@ export const useExperienceFormPage = () => {
       setCompany,
       setLocation,
       setTags,
+      setLogo,
       setCollapsedJobs,
       isEdit,
       isLoading,
