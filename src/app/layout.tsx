@@ -5,6 +5,8 @@ import Providers from "@/components/organisms/wrapper/Providers";
 import { ViewTransitions } from "next-view-transitions";
 import { vals } from "@/constants/val";
 
+import Script from "next/script";
+
 const openSans = Open_Sans({
   variable: "--font-open-sans",
   subsets: ["latin"],
@@ -77,6 +79,13 @@ export default async function RootLayout({
   return (
     <ViewTransitions>
       <html lang="en" className="dark">
+        <head>
+          <Script
+            defer
+            data-domain="diama.dev"
+            src="https://analytics.diama.dev/js/script.file-downloads.outbound-links.tagged-events.js"
+          />
+        </head>
         <body className={`${openSans.variable} antialiased`}>
           <Providers resolvedVal={resolvedVal}>{children}</Providers>
         </body>
