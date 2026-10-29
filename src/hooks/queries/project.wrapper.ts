@@ -25,9 +25,14 @@ export const projectKeys = {
   count: () => [...projectKeys.all, "count"] as const,
 };
 
-export function useProjects(page: number = 1, limit: number = 10) {
+export function useProjects(
+  page: number = 1,
+  limit: number = 10,
+  enabled: boolean = true,
+) {
   return useQuery({
     queryKey: projectKeys.list(page, limit),
+    enabled,
     queryFn: async () => {
       const result = await errorWrapper(apiGetProjects(page, limit));
       return result.data;
