@@ -26,86 +26,40 @@ export const useSmoothScroll = ({
     if (!element) return;
 
     let isScrolling = false;
-    let enabled = false;
-    let initFrameId: number;
-    let retryCount = 0;
-    const maxRetries = 10;
 
-    const initAfterReady = () => {
-      const checkAndInit = () => {
-        const isDesktop = isMdUp();
-        const hasOverflow = element.scrollHeight > element.clientHeight;
-        const hasHeight = element.clientHeight > 0;
-
-        if (
-          isDesktop &&
-          hasHeight &&
-          hasOverflow &&
-          !disableOnMobile &&
-          !disableOnPathname.includes(pathname)
-        ) {
-          enabled = true;
-          return;
-        }
-        if (retryCount < maxRetries && isDesktop && hasHeight && !hasOverflow) {
-          retryCount++;
-          initFrameId = requestAnimationFrame(checkAndInit);
-        }
-      };
-
-      initFrameId = requestAnimationFrame(checkAndInit);
-    };
-
-    initAfterReady();
-
-    const mutationObserver = new MutationObserver(() => {
-      const isDesktop = isMdUp();
-      const hasOverflow = element.scrollHeight > element.clientHeight;
-      const wasDisabled = !enabled;
-
-      if (
-        isDesktop &&
-        hasOverflow &&
-        !disableOnMobile &&
-        wasDisabled &&
-        !disableOnPathname.includes(pathname)
-      ) {
-        enabled = true;
-        return;
-      }
-      if (!hasOverflow && enabled) {
-        enabled = false;
-      }
-    });
-
-    mutationObserver.observe(element, {
-      childList: true,
-      subtree: true,
-    });
-
-    const handleResize = () => {
-      const shouldBeEnabled =
-        isMdUp() && !disableOnMobile && !disableOnPathname.includes(pathname);
-      if (enabled !== shouldBeEnabled) {
-        enabled = shouldBeEnabled;
-      }
-    };
-
-    const handleWheel = (e: WheelEvent) => {
-      if (!enabled) return;
-      e.preventDefault();
-      targetScrollRef.current += e.deltaY * speed;
-      targetScrollRef.current = Math.max(
-        0,
-        Math.min(
-          targetScrollRef.current,
-          element.scrollHeight - element.clientHeight,
-        ),
+    const checkIsElementScrollable = () => {
+      const cs = window.getComputedStyle(element);
+      return (
+        element.scrollHeight > element.clientHeight &&
+        cs.overflowY !== "visible" &&
+        cs.overflowY !== "hidden"
       );
+    };
 
-      if (!isScrolling) {
-        isScrolling = true;
-        animate();
+    let useElementScroll = checkIsElementScrollable();
+
+    const getMaxScroll = () => {
+      if (useElementScroll) {
+        return Math.max(0, element.scrollHeight - element.clientHeight);
+      }
+      return Math.max(
+        0,
+        document.documentElement.scrollHeight - window.innerHeight,
+      );
+    };
+
+    const getCurrentScroll = () => {
+      if (useElementScroll) {
+        return element.scrollTop;
+      }
+      return window.scrollY;
+    };
+
+    const performScroll = (val: number) => {
+      if (useElementScroll) {
+        element.scrollTop = val;
+      } else {
+        window.scrollTo(0, val);
       }
     };
 
@@ -115,28 +69,87 @@ export const useSmoothScroll = ({
 
       if (Math.abs(diff) > 0.5) {
         currentScrollRef.current += delta;
-        element.scrollTop = currentScrollRef.current;
+        performScroll(currentScrollRef.current);
         animationFrameRef.current = requestAnimationFrame(animate);
       } else {
         currentScrollRef.current = targetScrollRef.current;
-        element.scrollTop = currentScrollRef.current;
+        performScroll(currentScrollRef.current);
         isScrolling = false;
       }
     };
 
-    currentScrollRef.current = element.scrollTop;
-    targetScrollRef.current = element.scrollTop;
+    // True when the gesture starts inside a scrollable container that this hook
+    // does not drive: dialogs and dropdowns are portaled to <body>, so they are
+    // never descendants of `element` and `closest()` cannot see them. Walk the
+    // whole ancestor chain and stop as soon as we reach the driven element.
+    const isInsideNestedScroller = (target: EventTarget | null) => {
+      if (!(target instanceof Element)) return false;
 
-    window.addEventListener("resize", handleResize);
-    element.addEventListener("wheel", handleWheel, { passive: false });
+      for (
+        let node: Element | null = target;
+        node && node !== document.documentElement;
+        node = node.parentElement
+      ) {
+        if (node === element) return false;
+        if (node.scrollHeight <= node.clientHeight) continue;
+
+        const { overflowY } = window.getComputedStyle(node);
+        if (overflowY === "auto" || overflowY === "scroll") return true;
+      }
+
+      return false;
+    };
+
+    const handleWheel = (e: WheelEvent) => {
+      const isDesktop = disableOnMobile ? isMdUp() : true;
+      if (!isDesktop || disableOnPathname.includes(pathname)) return;
+
+      useElementScroll = checkIsElementScrollable();
+      const maxScroll = getMaxScroll();
+      if (maxScroll <= 0) return;
+
+      // Never hijack a gesture that belongs to a nested scroller.
+      if (isInsideNestedScroller(e.target)) return;
+
+      e.preventDefault();
+
+      // Sync before adding delta in case of manual scroll
+      if (!isScrolling) {
+        currentScrollRef.current = getCurrentScroll();
+        targetScrollRef.current = getCurrentScroll();
+      }
+
+      targetScrollRef.current += e.deltaY * speed;
+      targetScrollRef.current = Math.max(
+        0,
+        Math.min(targetScrollRef.current, maxScroll),
+      );
+
+      if (!isScrolling) {
+        isScrolling = true;
+        animate();
+      }
+    };
+
+    const handleNativeScroll = () => {
+      if (!isScrolling) {
+        const current = getCurrentScroll();
+        currentScrollRef.current = current;
+        targetScrollRef.current = current;
+      }
+    };
+
+    currentScrollRef.current = getCurrentScroll();
+    targetScrollRef.current = getCurrentScroll();
+
+    window.addEventListener("scroll", handleNativeScroll, { passive: true });
+    element.addEventListener("scroll", handleNativeScroll, { passive: true });
+    window.addEventListener("wheel", handleWheel, { passive: false });
 
     return () => {
-      if (initFrameId) {
-        cancelAnimationFrame(initFrameId);
-      }
-      mutationObserver.disconnect();
-      window.removeEventListener("resize", handleResize);
-      element.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("scroll", handleNativeScroll);
+      element.removeEventListener("scroll", handleNativeScroll);
+      window.removeEventListener("wheel", handleWheel);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
