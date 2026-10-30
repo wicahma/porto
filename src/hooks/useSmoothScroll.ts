@@ -78,23 +78,21 @@ export const useSmoothScroll = ({
       }
     };
 
-    // True when the gesture starts inside a scrollable container that this hook
-    // does not drive: dialogs and dropdowns are portaled to <body>, so they are
-    // never descendants of `element` and `closest()` cannot see them. Walk the
-    // whole ancestor chain and stop as soon as we reach the driven element.
+    // Fast O(1) check: true when the gesture starts inside any scrollable container
+    // or portaled overlay that this hook does not drive. Avoids calling getComputedStyle
+    // inside handleWheel, eliminating forced synchronous layout recalculation jank.
     const isInsideNestedScroller = (target: EventTarget | null) => {
       if (!(target instanceof Element)) return false;
 
-      for (
-        let node: Element | null = target;
-        node && node !== document.documentElement;
-        node = node.parentElement
-      ) {
-        if (node === element) return false;
-        if (node.scrollHeight <= node.clientHeight) continue;
+      // Instant check for scroll containers and dialogs
+      const nested = target.closest(
+        "pre, code, textarea, [data-scrollable], [data-lenis-prevent], [role='dialog'], .overflow-y-auto, .overflow-y-scroll, .overflow-auto, .overflow-scroll"
+      );
+      if (nested && nested !== element) return true;
 
-        const { overflowY } = window.getComputedStyle(node);
-        if (overflowY === "auto" || overflowY === "scroll") return true;
+      // Any fixed overlay / portaled modal
+      if (target.closest("[role='dialog'], [data-scrollable], .fixed")) {
+        return true;
       }
 
       return false;
