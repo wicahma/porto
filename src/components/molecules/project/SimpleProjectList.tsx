@@ -308,8 +308,8 @@ export const SimpleProjectList: React.FC = () => {
                   <div className="col-span-12 md:col-span-7 h-56 rounded-2xl bg-neutral-900/60 border border-neutral-800 animate-pulse" />
                 </div>
               ) : (
-                /* Tetris / Bento Grid (Image #1 layout: 7+5 on row 1, 5+7 on row 2) */
-                <div className="grid grid-cols-12 gap-5 items-stretch">
+                /* Tetris / Bento Grid (Image #1 layout: 7+5 on row 1, 5+7 on row 2, equal height on all cards) */
+                <div className="grid grid-cols-12 gap-5 items-stretch md:auto-rows-fr">
                   {projects.map((proj, idx) => {
                     // Alternating Tetris widths:
                     // 0: wide (7 cols), 1: compact (5 cols)
@@ -324,8 +324,8 @@ export const SimpleProjectList: React.FC = () => {
                         key={proj.id || idx}
                         className={
                           variant === "wide"
-                            ? "col-span-12 md:col-span-7 flex flex-col"
-                            : "col-span-12 md:col-span-5 flex flex-col"
+                            ? "col-span-12 md:col-span-7 flex flex-col h-full"
+                            : "col-span-12 md:col-span-5 flex flex-col h-full"
                         }
                         initial={{
                           opacity: 0,

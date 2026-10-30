@@ -4,6 +4,7 @@ import { m, AnimatePresence } from "motion/react";
 import { ArrowUpRight, ExternalLink, X } from "lucide-react";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
+import { DARK_PAPER_PATTERN } from "./ProjectPaperCard";
 
 export interface ProjectDetailData {
   id: string;
@@ -21,11 +22,6 @@ interface ProjectDetailDialogProps {
   isOpen: boolean;
   onClose: () => void;
 }
-
-const DARK_PAPER_PATTERN = `
-  url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E"),
-  url("data:image/svg+xml,%3Csvg width='36' height='36' viewBox='0 0 36 36' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M 36 0 L 0 0 0 36' fill='none' stroke='rgba(255,255,255,0.08)' stroke-width='1' stroke-dasharray='2 3'/%3E%3C/svg%3E")
-`;
 
 export const ProjectDetailDialog = ({
   project,
@@ -62,58 +58,62 @@ export const ProjectDetailDialog = ({
   return createPortal(
     <AnimatePresence mode="wait">
       {isOpen && project && (
-        <>
+        <div
+          className="fixed inset-0 z-[150] flex items-center justify-center p-4 md:p-6"
+          onWheel={(e) => e.stopPropagation()}
+        >
           {/* Backdrop blur overlay */}
           <m.div
-            className="fixed inset-0 bg-black/70 backdrop-blur-md"
+            className="fixed inset-0 bg-black/75 backdrop-blur-md"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            style={{ zIndex: 150 }}
             onClick={onClose}
-            onWheel={(e) => e.stopPropagation()}
           />
 
-          {/* Modal Card - Styled with dark grid + grain paper from Image #2 */}
-          <m.div
-            className="fixed top-1/2 left-1/2 flex max-h-[85vh] w-[95%] max-w-[680px] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden overscroll-contain rounded-2xl border border-neutral-700/80 shadow-2xl shadow-black/80 md:max-h-[80vh] md:w-[90%]"
-            initial={{ opacity: 0, scale: 0.94, y: "-46%" }}
-            animate={{ opacity: 1, scale: 1, y: "-50%" }}
-            exit={{ opacity: 0, scale: 0.94, y: "-46%" }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          {/* Underlying tilted paper card for modal (base background with grid & grain) */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute h-[70vh] max-h-[640px] w-[95%] max-w-[680px] rotate-1 rounded-2xl border border-neutral-700/60 shadow-2xl md:w-[90%]"
             style={{
-              zIndex: 200,
+              backgroundColor: "#0d0d0d",
+              backgroundImage: DARK_PAPER_PATTERN,
+            }}
+          />
+
+          {/* Modal Card - Flexbox centered horizontally and vertically */}
+          <m.div
+            className="relative z-10 flex max-h-[85vh] w-[95%] max-w-[680px] flex-col overflow-hidden overscroll-contain rounded-2xl border border-neutral-700/90 shadow-2xl shadow-black/90 md:max-h-[80vh] md:w-[90%]"
+            initial={{ opacity: 0, scale: 0.95, y: 16 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 16 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            style={{
               backgroundColor: "#131313",
               backgroundImage: DARK_PAPER_PATTERN,
             }}
           >
-            {/* Underlying stacked paper edge effect */}
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-x-2 -top-1 bottom-1 -z-10 rotate-1 rounded-2xl border border-neutral-700/50 bg-[#0c0c0c]"
-            />
-
             {/* Close Button */}
             <button
               type="button"
               onClick={onClose}
-              className="absolute top-3.5 right-3.5 md:top-4 md:right-4 z-20 p-2 rounded-full bg-white/5 hover:bg-white/10 active:bg-white/15 border border-white/10 text-neutral-300 hover:text-white transition-colors cursor-pointer"
+              className="absolute top-3.5 right-3.5 z-20 cursor-pointer rounded-full border border-white/10 bg-white/5 p-2 text-neutral-300 transition-colors hover:bg-white/10 hover:text-white active:bg-white/15 md:top-4 md:right-4"
               aria-label="Close dialog"
             >
-              <X className="w-4 h-4 md:w-5 md:h-5" />
+              <X className="h-4 w-4 md:h-5 md:w-5" />
             </button>
 
             {/* Scrollable Modal Content */}
             <div
               data-scrollable
-              className="min-h-0 flex-1 touch-pan-y overflow-y-auto overscroll-contain p-6 md:p-8 space-y-6"
+              className="min-h-0 flex-1 touch-pan-y space-y-6 overflow-y-auto overscroll-contain p-6 md:p-8"
             >
               {/* Header */}
               <div className="space-y-2 pr-10">
                 <div className="flex items-center gap-2.5">
                   {project.year && (
-                    <span className="font-mono text-xs text-neutral-400 bg-white/5 border border-white/10 px-2.5 py-0.5 rounded-full">
+                    <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 font-mono text-xs text-neutral-400">
                       {project.year}
                     </span>
                   )}
@@ -125,33 +125,35 @@ export const ProjectDetailDialog = ({
                       className="inline-flex items-center gap-1 font-mono text-[11px] text-[#02C380] hover:underline"
                     >
                       <span>
-                        {project.link.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+                        {project.link
+                          .replace(/^https?:\/\//, "")
+                          .replace(/\/$/, "")}
                       </span>
-                      <ArrowUpRight className="w-3 h-3" />
+                      <ArrowUpRight className="h-3 w-3" />
                     </a>
                   )}
                 </div>
 
-                <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight leading-tight">
+                <h2 className="text-2xl font-extrabold leading-tight tracking-tight text-white md:text-3xl">
                   {project.title}
                 </h2>
               </div>
 
               {/* Description */}
               {project.description && (
-                <div className="text-sm md:text-base text-neutral-300 leading-relaxed">
+                <div className="text-sm leading-relaxed text-neutral-300 md:text-base">
                   {project.description}
                 </div>
               )}
 
               {/* Problem Callout Box */}
               {project.problem && (
-                <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4 space-y-1.5">
-                  <div className="flex items-center gap-2 text-xs font-semibold text-amber-400 uppercase tracking-wider font-mono">
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                <div className="space-y-1.5 rounded-xl border border-amber-500/30 bg-amber-500/5 p-4">
+                  <div className="flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider text-amber-400">
+                    <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
                     Problem
                   </div>
-                  <p className="text-sm text-neutral-300 leading-relaxed">
+                  <p className="text-sm leading-relaxed text-neutral-300">
                     {project.problem}
                   </p>
                 </div>
@@ -159,12 +161,12 @@ export const ProjectDetailDialog = ({
 
               {/* Solution Callout Box */}
               {project.solution && (
-                <div className="rounded-xl border border-[#02C380]/30 bg-[#02C380]/5 p-4 space-y-1.5">
-                  <div className="flex items-center gap-2 text-xs font-semibold text-[#02C380] uppercase tracking-wider font-mono">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#02C380]" />
+                <div className="space-y-1.5 rounded-xl border border-[#02C380]/30 bg-[#02C380]/5 p-4">
+                  <div className="flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider text-[#02C380]">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#02C380]" />
                     Solution
                   </div>
-                  <p className="text-sm text-neutral-300 leading-relaxed">
+                  <p className="text-sm leading-relaxed text-neutral-300">
                     {project.solution}
                   </p>
                 </div>
@@ -172,15 +174,15 @@ export const ProjectDetailDialog = ({
 
               {/* Tech Stack Tags */}
               {project.tags && project.tags.length > 0 && (
-                <div className="space-y-2 pt-2 border-t border-neutral-800/70">
-                  <h4 className="text-xs font-mono uppercase tracking-wider text-neutral-400">
-                    Tech Stack & Tools
+                <div className="space-y-2 border-t border-neutral-800/70 pt-2">
+                  <h4 className="font-mono text-xs uppercase tracking-wider text-neutral-400">
+                    Tech Stack &amp; Tools
                   </h4>
                   <div className="flex flex-wrap gap-1.5">
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-2.5 py-1 rounded-md text-xs font-medium bg-neutral-800/90 text-neutral-200 border border-neutral-700/60 font-mono"
+                        className="rounded-md border border-neutral-700/60 bg-neutral-800/90 px-2.5 py-1 font-mono text-xs font-medium text-neutral-200"
                       >
                         {tag}
                       </span>
@@ -191,25 +193,25 @@ export const ProjectDetailDialog = ({
 
               {/* Action Button */}
               {project.link && (
-                <div className="pt-2 flex justify-end">
+                <div className="flex justify-end pt-2">
                   <a
                     href={project.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#02C380] hover:bg-emerald-400 text-neutral-950 font-bold text-sm transition-all shadow-lg shadow-emerald-950/40 hover:scale-[1.02] active:scale-[0.98]"
+                    className="inline-flex items-center gap-2 rounded-full bg-[#02C380] px-5 py-2.5 text-sm font-bold text-neutral-950 shadow-lg shadow-emerald-950/40 transition-all hover:scale-[1.02] hover:bg-emerald-400 active:scale-[0.98]"
                   >
                     <span>
                       {project.link.includes("github.com")
                         ? "View Repository"
                         : "Open Live Website"}
                     </span>
-                    <ExternalLink className="w-4 h-4" />
+                    <ExternalLink className="h-4 w-4" />
                   </a>
                 </div>
               )}
             </div>
           </m.div>
-        </>
+        </div>
       )}
     </AnimatePresence>,
     document.body,
