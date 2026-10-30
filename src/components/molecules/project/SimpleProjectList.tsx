@@ -5,54 +5,145 @@ import ProjectIcon from "@/assets/svg/project-icon";
 import { useProjectCount, useProjects } from "@/hooks/queries/project.wrapper";
 import { TProjectRow } from "@/interface/entities/project.interface";
 import { AnimatePresence, m } from "motion/react";
-import { ArrowUpRight, ChevronDown, ExternalLink } from "lucide-react";
-import React, { useState } from "react";
+import { ArrowUpRight, ChevronDown } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React, { useMemo, useState } from "react";
+import ProjectPaperCard from "./ProjectPaperCard";
+import ProjectDetailDialog, {
+  ProjectDetailData,
+} from "./ProjectDetailDialog";
 
-const FALLBACK_PROJECTS: Partial<TProjectRow>[] = [
+/** The exact 4 projects requested for the featured showcase */
+const FEATURED_FOUR_PROJECTS: Partial<TProjectRow>[] = [
   {
-    id: "proj-1",
-    title: "Distributed Cloud Telemetry Platform",
-    description: "Real-time infrastructure monitoring platform with high-throughput stream ingestion and distributed tracing.",
-    problem: "Existing monolithic APM tools struggled with memory pressure and high tail latencies during sudden traffic spikes.",
-    solution: "Designed event-driven ingestion workers with Go channels and Redis ring buffers, achieving 50,000 events/sec throughput.",
-    year: "2024",
-    tags: ["Go", "Redis", "Kafka", "TimescaleDB", "Docker"],
-    link: "https://github.com/wicahma",
+    id: "77777777-7777-7777-7777-777777777701",
+    title: "Onesist",
+    description:
+      "Full-stack desktop and web workspace for System Analysts: FSD documents, API specs, ERD schemas, test cases, task breakdowns, traceability matrices, and canvas sketches in one place, wired to local CLI AI agents.",
+    problem:
+      "System analysts produce FSDs, API specs, ERDs, SIT cases, and traceability matrices across scattered files, while AI CLI agents generate artifacts that have no unified viewer or review workflow.",
+    solution:
+      "Built a Tauri desktop app plus web dashboard with MDXEditor-based FSD analysis, an ERD studio (ReactFlow + Dagre over DBML), parsed OpenAPI spec viewer, sprint/phase task breakdown with Jira and Monday export, SIT case runner, BR-FR-DS-TC traceability with AI gap detection, Excalidraw canvas, and an embedded xterm.js agent terminal.",
+    year: "2026",
+    tags: [
+      "TypeScript",
+      "Rust",
+      "Tauri",
+      "React",
+      "ReactFlow",
+      "DBML",
+      "Excalidraw",
+      "LLM Agents",
+    ],
+    link: "https://onesist.rogasper.com",
   },
   {
-    id: "proj-2",
-    title: "NexCommerce Headless Storefront",
-    description: "Enterprise e-commerce platform built with a modular headless architecture for lightning-fast catalog navigation.",
-    problem: "Traditional server-rendered e-commerce pages suffered from sluggish time-to-interactive and slow layout recalculations.",
-    solution: "Leveraged Next.js Server Components with edge-cached GraphQL queries to attain sub-100ms LCP on product detail pages.",
-    year: "2023",
-    tags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "GraphQL"],
-    link: "https://github.com/wicahma",
+    id: "77777777-7777-7777-7777-777777777702",
+    title: "TypeScript Gateway",
+    description:
+      "Production-grade HTTP API gateway written in pure TypeScript on native node:http — zero runtime dependencies, one process, no frameworks.",
+    problem:
+      "Most gateways pull in a framework, router, HTTP client, metrics library, and dozens of transitive packages before proxying a single byte, inflating the audit surface and supply-chain risk.",
+    solution:
+      "Implemented every hot-path component — radix router, connection pool, circuit breaker, cache, compression — on the Node.js standard library, reaching sub-10ms P99 latency and 150k+ req/s throughput with a node_modules you can read in one sitting.",
+    year: "2026",
+    tags: [
+      "TypeScript",
+      "Node.js",
+      "API Gateway",
+      "Radix Router",
+      "Circuit Breaker",
+      "Zero Dependencies",
+    ],
+    link: "https://tsgate.diama.dev",
   },
   {
-    id: "proj-3",
-    title: "Enterprise Document AI Parser",
-    description: "Automated financial document processing pipeline utilizing OCR and LLM embeddings for structured verification.",
-    problem: "Manual verification of thousands of invoices and contracts daily led to costly processing delays and input errors.",
-    solution: "Engineered async task queues with vector similarity search in PostgreSQL via pgvector, reducing review times by 80%.",
-    year: "2023",
-    tags: ["Python", "FastAPI", "PostgreSQL", "pgvector", "LangChain"],
-    link: "https://github.com/wicahma",
+    id: "77777777-7777-7777-7777-777777777703",
+    title: "Patok",
+    description:
+      "Indonesian spatial boundaries and address cleansing platform covering 38 provinces down to RT/RW, roads, and POIs by combining Kemendagri and OpenStreetMap data.",
+    problem:
+      "Inconsistent regional boundary datasets and unstructured address data across Indonesia made geospatial queries, reverse geocoding, and jurisdiction lookups slow and inaccurate.",
+    solution:
+      "Engineered a spatial data platform on PostGIS with automated GeoJSON harvesting pipelines, geometry compression, hierarchical boundary explorer APIs via Hono, and an interactive MapLibre GL web client.",
+    year: "2026",
+    tags: [
+      "TypeScript",
+      "PostGIS",
+      "PostgreSQL",
+      "Hono",
+      "MapLibre GL",
+      "Python",
+      "GIS",
+    ],
+    link: "https://patok.diama.dev",
+  },
+  {
+    id: "77777777-7777-7777-7777-777777777705",
+    title: "Blindfold",
+    description:
+      "Secret redaction boundary for LLM agents: registers actual .env values and their transforms so they are masked before the model ever sees them.",
+    problem:
+      "Agent harnesses scan tool output for credential patterns such as sk- or xoxb-, so non-patterned secrets like SUDO_PASSWORD pass straight to the model, and base64/hex/reversed variants slip past the same scanner.",
+    solution:
+      "Took the opposite approach: register real values and their transforms into the harness exact-substring scrub boundary, so no pattern guessing is involved and a byte match is masked. Python standard library only.",
+    year: "2026",
+    tags: ["Python", "Security", "Secret Redaction", "LLM Agents"],
+    link: "https://github.com/wicahma/blindfold",
   },
 ];
 
+const TARGET_ORDER = ["Onesist", "TypeScript Gateway", "Patok", "Blindfold"];
+
 export const SimpleProjectList: React.FC = () => {
+  const router = useRouter();
   const [isExpanded, setIsExpanded] = useState(false);
+  const [selectedProject, setSelectedProject] =
+    useState<ProjectDetailData | null>(null);
+
   const { data: countData } = useProjectCount();
   const { data: projectData, isLoading: isProjectsLoading } = useProjects(
     1,
-    6,
+    20,
     isExpanded,
   );
-  const count = countData ?? 21;
+  const count = countData ?? 9;
 
-  const rawProjects = (projectData as { projects?: TProjectRow[] } | undefined)?.projects;
-  const projects = rawProjects && rawProjects.length > 0 ? rawProjects : FALLBACK_PROJECTS;
+  const rawProjects = (projectData as { projects?: TProjectRow[] } | undefined)
+    ?.projects;
+
+  // Filter and order the exact 4 projects: Onesist, TypeScript Gateway, Patok, Blindfold
+  const projects = useMemo<ProjectDetailData[]>(() => {
+    if (!rawProjects || rawProjects.length === 0) {
+      return FEATURED_FOUR_PROJECTS as ProjectDetailData[];
+    }
+
+    const matched = TARGET_ORDER.map((name) => {
+      const found = rawProjects.find((p) =>
+        p.title?.toLowerCase().includes(name.toLowerCase()),
+      );
+      if (found) {
+        // Enforce the requested destination links
+        let link = found.link || "";
+        if (name === "Onesist" && !link.includes("onesist.rogasper.com")) {
+          link = "https://onesist.rogasper.com";
+        } else if (
+          name === "TypeScript Gateway" &&
+          !link.includes("tsgate.diama.dev")
+        ) {
+          link = "https://tsgate.diama.dev";
+        }
+        return { ...found, link };
+      }
+      return FEATURED_FOUR_PROJECTS.find((f) =>
+        f.title?.toLowerCase().includes(name.toLowerCase()),
+      );
+    }).filter(Boolean) as ProjectDetailData[];
+
+    return matched.length === 4
+      ? matched
+      : (FEATURED_FOUR_PROJECTS as ProjectDetailData[]);
+  }, [rawProjects]);
 
   return (
     <div className="space-y-6">
@@ -62,7 +153,7 @@ export const SimpleProjectList: React.FC = () => {
           <button
             type="button"
             onClick={() => setIsExpanded((prev) => !prev)}
-            className="flex items-center justify-between w-full cursor-pointer group text-left"
+            className="flex items-center justify-between w-full cursor-pointer group text-left focus:outline-none"
           >
             <div className="flex items-center gap-3">
               <ProjectIcon className="w-8 h-8 rounded-sm shrink-0" />
@@ -80,9 +171,11 @@ export const SimpleProjectList: React.FC = () => {
             </div>
           </button>
 
+          {/* Folder Graphic Trigger */}
           <div
             onClick={() => setIsExpanded((prev) => !prev)}
-            className="cursor-pointer group transition-transform duration-300 hover:scale-[1.01]"
+            className="cursor-pointer group relative transition-transform duration-300 hover:scale-[1.01]"
+            title={isExpanded ? "Click to fold back" : "Click to unfold projects"}
           >
             <FolderIcon className="w-full max-w-[614px] aspect-[614/286] drop-shadow-xl" />
           </div>
@@ -91,8 +184,10 @@ export const SimpleProjectList: React.FC = () => {
         {/* Right: What i work with */}
         <div className="space-y-4">
           <div className="flex items-center gap-3">
-            {/* Petal icon */}
+            {/* 4-petal icon */}
             <svg
+              width="41"
+              height="41"
               viewBox="0 0 41 41"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -176,116 +271,114 @@ export const SimpleProjectList: React.FC = () => {
         </div>
       </div>
 
-      {/* Inline Project Details Expansion */}
+      {/* Unfolding Project Files Animation - Emerging out from folder opening */}
       <AnimatePresence initial={false}>
         {isExpanded && (
           <m.div
+            key="unfolding-project-files"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="overflow-hidden"
           >
-            <div className="pt-4 pb-2 space-y-4">
-              <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
-                <span className="text-xs font-mono uppercase tracking-wider text-neutral-400">
-                  Featured Project Previews
-                </span>
+            <div className="pt-6 pb-2 space-y-5">
+              {/* Top Bar matching Folder tab */}
+              <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
+                <div className="flex items-center gap-2">
+                  <span className="inline-block w-2 h-2 rounded-full bg-[#02C380] animate-pulse" />
+                  <span className="text-xs font-mono uppercase tracking-wider text-neutral-300">
+                    Unfolded Project Documents (04 / 04)
+                  </span>
+                </div>
                 <button
                   type="button"
                   onClick={() => setIsExpanded(false)}
-                  className="text-xs text-neutral-400 hover:text-white transition-colors cursor-pointer"
+                  className="text-xs font-mono text-neutral-400 hover:text-white transition-colors cursor-pointer"
                 >
-                  Close previews ✕
+                  Fold back ✕
                 </button>
               </div>
 
-              {isProjectsLoading ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {[1, 2].map((i) => (
-                    <div
-                      key={i}
-                      className="h-44 rounded-2xl bg-neutral-900/60 border border-neutral-800 animate-pulse"
-                    />
-                  ))}
+              {isProjectsLoading && (!rawProjects || rawProjects.length === 0) ? (
+                <div className="grid grid-cols-12 gap-5">
+                  <div className="col-span-12 md:col-span-7 h-56 rounded-2xl bg-neutral-900/60 border border-neutral-800 animate-pulse" />
+                  <div className="col-span-12 md:col-span-5 h-56 rounded-2xl bg-neutral-900/60 border border-neutral-800 animate-pulse" />
+                  <div className="col-span-12 md:col-span-5 h-56 rounded-2xl bg-neutral-900/60 border border-neutral-800 animate-pulse" />
+                  <div className="col-span-12 md:col-span-7 h-56 rounded-2xl bg-neutral-900/60 border border-neutral-800 animate-pulse" />
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {projects.map((proj) => (
-                    <div
-                      key={proj.id}
-                      className="rounded-2xl bg-[#161616] border border-neutral-800/80 hover:border-neutral-700 p-5 flex flex-col justify-between shadow-lg transition-all"
-                    >
-                      <div>
-                        <div className="flex items-start justify-between gap-3">
-                          <div>
-                            {proj.year && (
-                              <span className="text-[10px] font-mono text-neutral-500 block mb-0.5">
-                                {proj.year}
-                              </span>
-                            )}
-                            <h4 className="text-base font-bold text-white leading-snug">
-                              {proj.title}
-                            </h4>
-                          </div>
-                          {proj.link && (
-                            <a
-                              href={proj.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="p-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-400 hover:text-white transition-colors shrink-0"
-                            >
-                              <ExternalLink className="w-3.5 h-3.5" />
-                            </a>
-                          )}
-                        </div>
+                /* Tetris / Bento Grid (Image #1 layout: 7+5 on row 1, 5+7 on row 2) */
+                <div className="grid grid-cols-12 gap-5 items-stretch">
+                  {projects.map((proj, idx) => {
+                    // Alternating Tetris widths:
+                    // 0: wide (7 cols), 1: compact (5 cols)
+                    // 2: compact (5 cols), 3: wide (7 cols)
+                    const variant =
+                      idx === 0 || idx === 3 ? "wide" : "compact";
+                    const tilt =
+                      idx === 0 ? -1 : idx === 1 ? 1 : idx === 2 ? -0.8 : 0.8;
 
-                        <p className="text-xs text-neutral-300 leading-relaxed mt-2 line-clamp-2">
-                          {proj.description}
-                        </p>
-
-                        {(proj.problem || proj.solution) && (
-                          <div className="space-y-2 mt-3 pt-3 border-t border-neutral-800/60">
-                            {proj.problem && (
-                              <div className="text-[11px] text-neutral-400">
-                                <span className="font-semibold text-amber-400 mr-1.5">
-                                  Problem:
-                                </span>
-                                <span className="line-clamp-1">{proj.problem}</span>
-                              </div>
-                            )}
-                            {proj.solution && (
-                              <div className="text-[11px] text-neutral-400">
-                                <span className="font-semibold text-[#02C380] mr-1.5">
-                                  Solution:
-                                </span>
-                                <span className="line-clamp-1">{proj.solution}</span>
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </div>
-
-                      {proj.tags && proj.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-1.5 mt-3 pt-2.5 border-t border-neutral-800/50">
-                          {proj.tags.slice(0, 4).map((tag) => (
-                            <span
-                              key={tag}
-                              className="px-2 py-0.5 rounded text-[10px] font-medium bg-neutral-800/90 text-neutral-300 border border-neutral-700/50"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ))}
+                    return (
+                      <m.div
+                        key={proj.id || idx}
+                        className={
+                          variant === "wide"
+                            ? "col-span-12 md:col-span-7 flex flex-col"
+                            : "col-span-12 md:col-span-5 flex flex-col"
+                        }
+                        initial={{
+                          opacity: 0,
+                          y: -32,
+                          scale: 0.94,
+                          rotateX: 12,
+                        }}
+                        animate={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
+                        exit={{ opacity: 0, y: -20, scale: 0.96 }}
+                        transition={{
+                          delay: idx * 0.08,
+                          duration: 0.45,
+                          ease: [0.16, 1, 0.3, 1],
+                        }}
+                        style={{ transformOrigin: "top center" }}
+                      >
+                        <ProjectPaperCard
+                          project={proj}
+                          variant={variant}
+                          tilt={tilt}
+                          onClick={() => setSelectedProject(proj)}
+                        />
+                      </m.div>
+                    );
+                  })}
                 </div>
               )}
+
+              {/* Bottom Navigation footer */}
+              <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-neutral-800/60 text-xs font-mono text-neutral-400">
+                <span>
+                  4 selected systems • {count} total projects in database
+                </span>
+                <button
+                  type="button"
+                  onClick={() => router.push("/project")}
+                  className="inline-flex items-center gap-1.5 text-neutral-300 hover:text-[#02C380] transition-colors cursor-pointer"
+                >
+                  <span>Explore all projects archive</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
             </div>
           </m.div>
         )}
       </AnimatePresence>
+
+      {/* Project Detail Modal */}
+      <ProjectDetailDialog
+        project={selectedProject}
+        isOpen={Boolean(selectedProject)}
+        onClose={() => setSelectedProject(null)}
+      />
     </div>
   );
 };
