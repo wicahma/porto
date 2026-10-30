@@ -4,7 +4,6 @@ import { m, AnimatePresence } from "motion/react";
 import { ArrowUpRight, ExternalLink, X } from "lucide-react";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
-import { DARK_PAPER_PATTERN } from "./ProjectPaperCard";
 
 export interface ProjectDetailData {
   id: string;
@@ -82,24 +81,14 @@ export const ProjectDetailDialog = ({
             exit={{ opacity: 0, scale: 0.96 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
           >
-            {/* Underlying tilted paper card (animated together with modal) */}
+            {/* Underlying tilted paper card (clean sleek dark base) */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute inset-x-1.5 -top-1.5 bottom-1 -z-10 rotate-1 rounded-2xl border border-neutral-700/60 shadow-2xl"
-              style={{
-                backgroundColor: "#0d0d0d",
-                backgroundImage: DARK_PAPER_PATTERN,
-              }}
+              className="pointer-events-none absolute inset-x-1.5 -top-1.5 bottom-1 -z-10 rotate-1 rounded-2xl border border-neutral-800/70 bg-[#0c0c0c] shadow-2xl"
             />
 
-            {/* Main Modal Card */}
-            <div
-              className="relative flex max-h-[85vh] w-full flex-col overflow-hidden overscroll-contain rounded-2xl border border-neutral-700/90 shadow-2xl shadow-black/90 md:max-h-[80vh]"
-              style={{
-                backgroundColor: "#131313",
-                backgroundImage: DARK_PAPER_PATTERN,
-              }}
-            >
+            {/* Main Modal Card (Clean dark background) */}
+            <div className="relative flex max-h-[85vh] w-full flex-col overflow-hidden overscroll-contain rounded-2xl border border-neutral-800/90 bg-[#141414] shadow-2xl shadow-black/90 md:max-h-[80vh]">
               {/* Close Button */}
               <button
                 type="button"

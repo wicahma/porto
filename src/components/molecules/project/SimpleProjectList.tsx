@@ -105,7 +105,7 @@ export const SimpleProjectList: React.FC = () => {
   const { data: projectData, isLoading: isProjectsLoading } = useProjects(
     1,
     20,
-    isExpanded,
+    true,
   );
   const count = countData ?? 9;
 

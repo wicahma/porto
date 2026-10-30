@@ -3,7 +3,6 @@
 import { ArrowUpRight } from "lucide-react";
 import React from "react";
 import { ProjectDetailData } from "./ProjectDetailDialog";
-import { STATIC_NOISE_DATA_URI } from "./noise";
 
 export interface ProjectPaperCardProps {
   project: ProjectDetailData;
@@ -19,15 +18,6 @@ export interface ProjectPaperCardProps {
   tilt?: number;
   onClick?: () => void;
 }
-
-/**
- * High-performance hardware-accelerated dark paper pattern:
- * - Pre-rendered static noise PNG (0% CPU filter overhead, 60/120 FPS hardware acceleration)
- * - Clean dashed graph paper grid (44px x 44px)
- */
-const GRID_SVG = `data:image/svg+xml,%3Csvg width='44' height='44' viewBox='0 0 44 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M 44 0 L 0 0 0 44' fill='none' stroke='rgba(255,255,255,0.09)' stroke-width='1' stroke-dasharray='2 3'/%3E%3C/svg%3E`;
-
-export const DARK_PAPER_PATTERN = `url("${STATIC_NOISE_DATA_URI}"), url("${GRID_SVG}")`;
 
 export const ProjectPaperCard: React.FC<ProjectPaperCardProps> = ({
   project,
@@ -48,25 +38,17 @@ export const ProjectPaperCard: React.FC<ProjectPaperCardProps> = ({
       }}
       className="group relative isolate flex h-full w-full cursor-pointer flex-col justify-between focus:outline-none"
     >
-      {/* 1. Underlying stacked paper layer (base background with grid & grain) */}
+      {/* 1. Underlying stacked paper layer (sleek dark paper base) */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-1.5 -top-1.5 bottom-1 -z-10 rounded-2xl border border-neutral-700/60 transition-transform duration-300 group-hover:rotate-0"
+        className="pointer-events-none absolute inset-x-1.5 -top-1.5 bottom-1 -z-10 rounded-2xl border border-neutral-800/70 bg-[#0c0c0c] shadow-lg transition-transform duration-300 group-hover:rotate-0"
         style={{
           transform: `rotate(${tilt}deg)`,
-          backgroundColor: "#0d0d0d",
-          backgroundImage: DARK_PAPER_PATTERN,
         }}
       />
 
-      {/* 2. Main Dark Paper Card (Grid + Grain layer, uniform height) */}
-      <div
-        className="relative flex h-full min-h-[280px] w-full flex-col justify-between overflow-hidden rounded-2xl border border-neutral-700/80 p-5 md:p-6 shadow-2xl transition-all duration-300 group-hover:-translate-y-1 group-hover:border-neutral-500/80"
-        style={{
-          backgroundColor: "#131313",
-          backgroundImage: DARK_PAPER_PATTERN,
-        }}
-      >
+      {/* 2. Main Dark Paper Card (Clean dark background, uniform height) */}
+      <div className="relative flex h-full min-h-[280px] w-full flex-col justify-between overflow-hidden rounded-2xl border border-neutral-800/90 bg-[#141414] p-5 shadow-2xl transition-all duration-300 group-hover:-translate-y-1 group-hover:border-neutral-600/80 md:p-6">
         <div className="flex flex-1 flex-col justify-between">
           <div>
             {/* Top row: Year & Title & External Link */}
@@ -109,7 +91,7 @@ export const ProjectPaperCard: React.FC<ProjectPaperCardProps> = ({
             )}
           </div>
 
-          {/* Problem & Solution callouts: rendered on ALL cards so height remains identical and balanced */}
+          {/* Problem & Solution callouts: rendered on ALL cards for balanced uniform height */}
           <div className="mt-3.5 space-y-1.5 border-t border-neutral-800/80 pt-3 text-[11px] font-mono">
             {project.problem ? (
               <div className="truncate text-neutral-400">

@@ -106,7 +106,7 @@ const ProjectCard = () => {
     data: projectData,
     isLoading: isProjectsLoading,
     isError: hasProjectsError,
-  } = useProjects(1, 20, isExpanded);
+  } = useProjects(1, 20, true);
 
   const rawProjects = (projectData as { projects?: TProjectRow[] } | undefined)
     ?.projects;

@@ -16,7 +16,7 @@ interface ExperienceDialogProps {
   onClose: () => void;
 }
 
-const ExperienceDialog = ({
+export const ExperienceDialog = ({
   data,
   positions,
   isOpen,
@@ -32,7 +32,8 @@ const ExperienceDialog = ({
     const { body } = document;
     const previousOverflow = body.style.overflow;
     const previousPaddingRight = body.style.paddingRight;
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
 
     body.style.overflow = "hidden";
     if (scrollbarWidth > 0) body.style.paddingRight = `${scrollbarWidth}px`;
@@ -54,203 +55,229 @@ const ExperienceDialog = ({
   return createPortal(
     <AnimatePresence mode="wait">
       {isOpen && (
-        <>
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-[150] flex items-center justify-center p-4 md:p-6"
+          onWheel={(event) => event.stopPropagation()}
+        >
+          {/* Lightweight backdrop overlay */}
           <m.div
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/80 backdrop-blur-xs"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.1 }}
-            style={{ zIndex: 150 }}
+            transition={{ duration: 0.15 }}
             onClick={onClose}
-            // Swallow wheel gestures so the page behind never scrolls.
-            onWheel={(event) => event.stopPropagation()}
           />
 
+          {/* Modal Container: matching ProjectDetailDialog layout & scale animation */}
           <m.div
-            className="fixed top-1/2 left-1/2 flex max-h-[85vh] w-[95%] max-w-[700px] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden overscroll-contain rounded-xl border border-[#1a1a1a] bg-[#131313] shadow-2xl md:max-h-[80vh] md:w-[90%] md:rounded-2xl"
-            initial={{ opacity: 0, scale: 0.95 }}
+            className="relative z-10 w-[95%] max-w-[700px] md:w-[90%]"
+            initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{
-              duration: 0.3,
-              ease: [0.4, 0, 0.2, 1],
-            }}
-            style={{
-              zIndex: 200,
-            }}
+            exit={{ opacity: 0, scale: 0.96 }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
           >
-            <button
-              onClick={onClose}
-              className="absolute top-3 right-3 md:top-4 md:right-4 p-1.5 md:p-2 rounded-full bg-white/5 hover:bg-white/10 active:bg-white/15 border border-white/10 transition-colors z-10"
-              aria-label="Close dialog"
-            >
-              <X className="w-4 h-4 md:w-5 md:h-5 text-white" />
-            </button>
-
+            {/* Underlying tilted paper card (clean sleek dark base) */}
             <div
-              data-scrollable
-              className="min-h-0 flex-1 touch-pan-y overflow-y-auto overscroll-contain p-4 md:p-8"
-            >
-              <m.div
-                className="flex flex-col items-center text-center mb-4 md:mb-6"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.8,
-                  ease: [0.4, 0, 0.2, 1],
-                }}
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-1.5 -top-1.5 bottom-1 -z-10 rotate-1 rounded-2xl border border-neutral-800/70 bg-[#0c0c0c] shadow-2xl"
+            />
+
+            {/* Main Modal Card (Clean dark background) */}
+            <div className="relative flex max-h-[85vh] w-full flex-col overflow-hidden overscroll-contain rounded-2xl border border-neutral-800/90 bg-[#141414] shadow-2xl shadow-black/90 md:max-h-[80vh]">
+              {/* Close Button */}
+              <button
+                type="button"
+                onClick={onClose}
+                className="absolute top-3.5 right-3.5 z-20 cursor-pointer rounded-full border border-white/10 bg-white/5 p-2 text-neutral-300 transition-colors hover:bg-white/10 hover:text-white active:bg-white/15 md:top-4 md:right-4"
+                aria-label="Close dialog"
               >
-                {/* Company logo (stored on the experience row) */}
-                {isLogoSource(data.logo) ? (
-                  <img
-                    src={data.logo}
-                    alt={data.company}
-                    className="mb-3 h-16 w-16 shrink-0 rounded-2xl object-contain md:h-20 md:w-20"
-                  />
-                ) : (
-                  <div className="mb-3 flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-neutral-800 text-xl font-black text-[#02C380] md:h-20 md:w-20">
-                    {data.company.charAt(0)}
-                  </div>
-                )}
+                <X className="h-4 w-4 md:h-5 md:w-5" />
+              </button>
 
-                <h2 className="text-lg md:text-2xl font-bold text-white mb-1 md:mb-2">
-                  {data.company}
-                </h2>
-                <p className="text-sm md:text-base text-[#ABABAB]">
-                  {jobHistory
-                    ? `${jobHistory.length} positions`
-                    : `${data.role} | ${data.period}`}
-                </p>
-              </m.div>
-
-              {jobHistory ? (
+              {/* Scrollable Modal Content */}
+              <div
+                data-scrollable
+                className="min-h-0 flex-1 touch-pan-y space-y-6 overflow-y-auto overscroll-contain p-6 md:p-8"
+              >
+                {/* Header with animated entrance */}
                 <m.div
-                  className="mb-4 md:mb-6 space-y-3"
-                  initial={{ opacity: 0, y: 30 }}
+                  className="flex flex-col items-center text-center pr-8 pl-8 md:pr-10 md:pl-10"
+                  initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    delay: 0.15,
-                    duration: 1,
-                    ease: [0.4, 0, 0.2, 1],
-                  }}
+                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  {jobHistory.map((position, index) => (
-                    <div
-                      key={`${position.role}-${index}`}
-                      className="rounded-xl border border-white/5 bg-white/[0.02] p-3.5 md:p-4"
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <h3 className="text-sm md:text-base font-semibold text-white leading-snug">
-                          {position.role}
-                        </h3>
-                        <span className="shrink-0 rounded-full border border-white/10 bg-white/5 px-2 py-0.5 font-mono text-[10px] md:text-xs text-neutral-300">
-                          {position.period}
-                        </span>
-                      </div>
-
-                      {position.description && (
-                        <p className="mt-2 text-sm md:text-[15px] leading-relaxed text-[#ABABAB]">
-                          {position.description}
-                        </p>
-                      )}
-
-                      {position.competency.length > 0 && (
-                        <div className="mt-2.5 space-y-2">
-                          {position.competency.map((comp, compIndex) => (
-                            <p
-                              key={`${index}-${compIndex}`}
-                              className="flex items-start text-sm text-[#ABABAB]"
-                            >
-                              <ChevronRight
-                                color="#FFC501"
-                                className="mt-0.5 h-4 w-4 shrink-0"
-                              />
-                              <span>{comp}</span>
-                            </p>
-                          ))}
-                        </div>
-                      )}
+                  {/* Company logo (stored on the experience row) */}
+                  {isLogoSource(data.logo) ? (
+                    <img
+                      src={data.logo}
+                      alt={data.company}
+                      className="mb-3 h-16 w-16 shrink-0 rounded-2xl object-contain md:h-20 md:w-20"
+                    />
+                  ) : (
+                    <div className="mb-3 flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-neutral-800 text-xl font-black text-[#02C380] md:h-20 md:w-20">
+                      {data.company.charAt(0)}
                     </div>
-                  ))}
-                </m.div>
-              ) : (
-                <>
-                  <m.div
-                    className="mb-4 md:mb-6"
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{
-                      delay: 0.15,
-                      duration: 1,
-                      ease: [0.4, 0, 0.2, 1],
-                    }}
-                  >
-                    <h3 className="md:text-lg font-semibold text-white mb-1.5 md:mb-2">
-                      Description
-                    </h3>
-                    <p className="text-[#ABABAB] leading-relaxed">
-                      {data.description}
-                    </p>
-                  </m.div>
+                  )}
 
-                  <m.div className="space-y-3 mb-4 md:mb-6 text-[#ABABAB]">
-                    {data?.competency?.map((comp, i) => (
+                  <h2 className="text-xl font-bold tracking-tight text-white md:text-2xl">
+                    {data.company}
+                  </h2>
+                  <p className="mt-1 font-mono text-xs text-neutral-400 md:text-sm">
+                    {jobHistory
+                      ? `${jobHistory.length} career positions`
+                      : `${data.role} • ${data.period}`}
+                  </p>
+                </m.div>
+
+                {/* Body Content */}
+                {jobHistory ? (
+                  <div className="space-y-3.5">
+                    {jobHistory.map((position, index) => (
                       <m.div
-                        key={`${comp.slice(2)}-${i}`}
-                        initial={{ opacity: 0, x: 10, y: 30 }}
-                        animate={{ opacity: 1, x: 0, y: 0 }}
+                        key={`${position.role}-${index}`}
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
                         transition={{
-                          delay: 0.15 + i * 0.1,
-                          duration: 1,
-                          ease: [0.4, 0, 0.2, 1],
+                          delay: 0.05 + index * 0.07,
+                          duration: 0.3,
+                          ease: [0.16, 1, 0.3, 1],
                         }}
+                        className="rounded-xl border border-neutral-800/80 bg-[#191919]/60 p-4 transition-all hover:border-neutral-700 hover:bg-[#1c1c1c]/80"
                       >
-                        <p className="flex items-start">
-                          <span>
-                            <ChevronRight color="#FFC501" />
+                        <div className="flex items-start justify-between gap-3">
+                          <h3 className="text-sm font-semibold leading-snug text-white md:text-base">
+                            {position.role}
+                          </h3>
+                          <span className="shrink-0 rounded-full border border-neutral-700/60 bg-neutral-800/90 px-2.5 py-0.5 font-mono text-[10px] text-neutral-300 md:text-xs">
+                            {position.period}
                           </span>
-                          <span> {comp}</span>
-                        </p>
+                        </div>
+
+                        {position.description && (
+                          <p className="mt-2 text-xs leading-relaxed text-neutral-300 md:text-sm">
+                            {position.description}
+                          </p>
+                        )}
+
+                        {position.competency.length > 0 && (
+                          <ul className="mt-3 space-y-1.5 border-t border-neutral-800/60 pt-2.5">
+                            {position.competency.map((comp, compIndex) => (
+                              <m.li
+                                key={`${index}-${compIndex}`}
+                                initial={{ opacity: 0, x: -6 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{
+                                  delay:
+                                    0.1 + index * 0.07 + compIndex * 0.03,
+                                  duration: 0.25,
+                                }}
+                                className="flex items-start gap-2 text-xs leading-relaxed text-neutral-300 md:text-sm"
+                              >
+                                <ChevronRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#FFC501]" />
+                                <span>{comp}</span>
+                              </m.li>
+                            ))}
+                          </ul>
+                        )}
                       </m.div>
                     ))}
-                  </m.div>
-                </>
-              )}
-
-              <m.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  delay: 0.3,
-                  duration: 1,
-                  ease: [0.4, 0, 0.2, 1],
-                }}
-              >
-                <h3 className="font-semibold text-white mb-2 md:mb-3">
-                  Technologies & Skills
-                </h3>
-                <div className="flex flex-wrap gap-1.5 md:gap-2">
-                  {data.technologies.map((tech, index) => (
-                    <m.span
-                      key={tech}
-                      className="px-2 py-1 md:px-3 md:py-1.5 bg-white/5 border border-white/10 rounded-full text-xs md:text-sm text-white"
-                      initial={{ opacity: 0, y: 30 }}
+                  </div>
+                ) : (
+                  <>
+                    <m.div
+                      className="rounded-xl border border-neutral-800/80 bg-[#191919]/60 p-4"
+                      initial={{ opacity: 0, y: 12 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{
-                        delay: 0.45 + index * 0.15,
-                        duration: 1,
-                        ease: [0.4, 0, 0.2, 1],
+                        delay: 0.05,
+                        duration: 0.3,
+                        ease: [0.16, 1, 0.3, 1],
                       }}
                     >
-                      {tech}
-                    </m.span>
-                  ))}
-                </div>
-              </m.div>
+                      <h3 className="mb-1.5 font-mono text-xs uppercase tracking-wider text-neutral-400">
+                        Description
+                      </h3>
+                      <p className="text-xs leading-relaxed text-neutral-300 md:text-sm">
+                        {data.description}
+                      </p>
+                    </m.div>
+
+                    {data?.competency && data.competency.length > 0 && (
+                      <m.div
+                        className="space-y-2 rounded-xl border border-neutral-800/80 bg-[#191919]/60 p-4"
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                          delay: 0.1,
+                          duration: 0.3,
+                          ease: [0.16, 1, 0.3, 1],
+                        }}
+                      >
+                        <h3 className="mb-1 font-mono text-xs uppercase tracking-wider text-neutral-400">
+                          Key Responsibilities &amp; Competencies
+                        </h3>
+                        <ul className="space-y-1.5">
+                          {data.competency.map((comp, i) => (
+                            <m.li
+                              key={`${comp.slice(2)}-${i}`}
+                              initial={{ opacity: 0, x: -6 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{
+                                delay: 0.12 + i * 0.03,
+                                duration: 0.25,
+                              }}
+                              className="flex items-start gap-2 text-xs leading-relaxed text-neutral-300 md:text-sm"
+                            >
+                              <ChevronRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#FFC501]" />
+                              <span>{comp}</span>
+                            </m.li>
+                          ))}
+                        </ul>
+                      </m.div>
+                    )}
+                  </>
+                )}
+
+                {/* Technologies & Skills chips with animated entrance */}
+                {data.technologies && data.technologies.length > 0 && (
+                  <m.div
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      delay: 0.18,
+                      duration: 0.3,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                    className="space-y-2 border-t border-neutral-800/70 pt-4"
+                  >
+                    <h3 className="font-mono text-xs uppercase tracking-wider text-neutral-400">
+                      Technologies &amp; Skills
+                    </h3>
+                    <div className="flex flex-wrap gap-1.5 md:gap-2">
+                      {data.technologies.map((tech, index) => (
+                        <m.span
+                          key={tech}
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{
+                            delay: 0.2 + index * 0.03,
+                            duration: 0.2,
+                          }}
+                          className="rounded-md border border-neutral-700/60 bg-neutral-800/90 px-2.5 py-1 font-mono text-xs font-medium text-neutral-200 transition-colors hover:border-[#02C380] hover:text-[#02C380]"
+                        >
+                          {tech}
+                        </m.span>
+                      ))}
+                    </div>
+                  </m.div>
+                )}
+              </div>
             </div>
           </m.div>
-        </>
+        </div>
       )}
     </AnimatePresence>,
     document.body,
