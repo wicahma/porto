@@ -5,6 +5,7 @@ import ExperienceDialog from "@/components/molecules/experience/ExperienceDialog
 import { SectionHeader } from "@/components/molecules/header/SectionHeader";
 import { ExperienceCard } from "@/constants/dummies/experience-carousel";
 import { useExperiences } from "@/hooks/queries/experience.wrapper";
+import { useCssColors } from "@/hooks/useCssColors";
 import { ExperiencePositionSummary } from "@/interface/entities/experience.interface";
 import {
   companyPhotoFallback,
@@ -250,6 +251,8 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
   }, [autoSlide, autoSlideInterval, pauseOnHover, isHovered, total, navigate, isDialogOpen]);
 
   // Compute position, scale, opacity, and zIndex for a given relative offset
+  const color = useCssColors(["--ink-600", "--line", "--ink-650", "--ink-710"]);
+
   const getCardStyle = useCallback(
     (offset: number) => {
       const step = isMobile ? 115 : 205;
@@ -261,7 +264,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
           scale: 1,
           opacity: 1,
           zIndex: 30,
-          bgColor: "var(--ink-600)",
+          bgColor: color("--ink-600"),
           border: "1px solid rgba(115, 115, 115, 0.4)",
           shadow: "0 20px 40px -10px rgba(0, 0, 0, 0.7)",
         };
@@ -273,7 +276,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
           scale: 0.85,
           opacity: 0.75,
           zIndex: 20,
-          bgColor: "var(--line)",
+          bgColor: color("--line"),
           border: "1px solid rgba(64, 64, 64, 0.4)",
           shadow: "0 10px 20px -5px rgba(0, 0, 0, 0.5)",
         };
@@ -285,7 +288,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
           scale: 0.85,
           opacity: 0.75,
           zIndex: 20,
-          bgColor: "var(--line)",
+          bgColor: color("--line"),
           border: "1px solid rgba(64, 64, 64, 0.4)",
           shadow: "0 10px 20px -5px rgba(0, 0, 0, 0.5)",
         };
@@ -297,7 +300,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
           scale: 0.7,
           opacity: 0.45,
           zIndex: 10,
-          bgColor: "var(--ink-650)",
+          bgColor: color("--ink-650"),
           border: "1px solid transparent",
           shadow: "none",
         };
@@ -309,7 +312,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
           scale: 0.7,
           opacity: 0.45,
           zIndex: 10,
-          bgColor: "var(--ink-650)",
+          bgColor: color("--ink-650"),
           border: "1px solid transparent",
           shadow: "none",
         };
@@ -320,12 +323,12 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
         scale: 0.5,
         opacity: 0,
         zIndex: 0,
-        bgColor: "var(--ink-710)",
+        bgColor: color("--ink-710"),
         border: "1px solid transparent",
         shadow: "none",
       };
     },
-    [isMobile],
+    [color, isMobile],
   );
 
   const handleOpenModal = (item: CardExperience) => {

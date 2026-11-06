@@ -27,6 +27,10 @@ function WaterFillAnimation({ progress }: Readonly<{ progress: number }>) {
     currentWaterLevelRef.current = null;
     targetWaterLevelRef.current = 0;
 
+    // Canvas has no CSS cascade; resolve tokens once from :root.
+    const rootStyle = getComputedStyle(document.documentElement);
+    const token = (name: string) => rootStyle.getPropertyValue(name).trim();
+
     const resizeCanvas = () => {
       const dpr = window.devicePixelRatio || 1;
       const rect = canvas.getBoundingClientRect();
@@ -72,8 +76,8 @@ function WaterFillAnimation({ progress }: Readonly<{ progress: number }>) {
       ctx.clearRect(0, 0, width, height);
 
       const gradient = ctx.createLinearGradient(0, waterLevel, 0, height);
-      gradient.addColorStop(0, "var(--blue)");
-      gradient.addColorStop(1, "var(--blue-strong)");
+      gradient.addColorStop(0, token("--blue"));
+      gradient.addColorStop(1, token("--blue-strong"));
       ctx.fillStyle = gradient;
 
       ctx.beginPath();

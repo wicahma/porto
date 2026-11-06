@@ -4,6 +4,7 @@ import Sun from "@/assets/svg/sun";
 import ExperienceDialog from "@/components/molecules/experience/ExperienceDialog";
 import { ExperienceCard as IExperienceCard } from "@/constants/dummies/experience-carousel";
 import { useExperiences } from "@/hooks/queries/experience.wrapper";
+import { useCssColors } from "@/hooks/useCssColors";
 import { ExperiencePositionSummary } from "@/interface/entities/experience.interface";
 import {
   companyPhotoFallback,
@@ -227,6 +228,8 @@ export const ExperienceCard: React.FC = () => {
   }, [isHovered, total, navigate, isDialogOpen]);
 
   // Style calculations maintaining square card proportions
+  const color = useCssColors(["--ink-750", "--ink-850", "--ink-660"]);
+
   const getCardStyle = useCallback((offset: number) => {
     const step = 85;
     const farStep = 150;
@@ -238,7 +241,7 @@ export const ExperienceCard: React.FC = () => {
         opacity: 1,
         filter: "blur(0px)",
         zIndex: 30,
-        bgColor: "var(--ink-750)",
+        bgColor: color("--ink-750"),
         border: "1px solid rgba(115, 115, 115, 0.4)",
         shadow: "0 25px 50px -12px rgba(0, 0, 0, 0.7)",
       };
@@ -251,7 +254,7 @@ export const ExperienceCard: React.FC = () => {
         opacity: 0.65,
         filter: "blur(1.5px)",
         zIndex: 20,
-        bgColor: "var(--ink-850)",
+        bgColor: color("--ink-850"),
         border: "1px solid rgba(64, 64, 64, 0.3)",
         shadow: "0 10px 25px -5px rgba(0, 0, 0, 0.5)",
       };
@@ -264,7 +267,7 @@ export const ExperienceCard: React.FC = () => {
         opacity: 0.65,
         filter: "blur(1.5px)",
         zIndex: 20,
-        bgColor: "var(--ink-850)",
+        bgColor: color("--ink-850"),
         border: "1px solid rgba(64, 64, 64, 0.3)",
         shadow: "0 10px 25px -5px rgba(0, 0, 0, 0.5)",
       };
@@ -277,7 +280,7 @@ export const ExperienceCard: React.FC = () => {
         opacity: 0.35,
         filter: "blur(3px)",
         zIndex: 10,
-        bgColor: "var(--ink-660)",
+        bgColor: color("--ink-660"),
         border: "1px solid transparent",
         shadow: "none",
       };
@@ -290,7 +293,7 @@ export const ExperienceCard: React.FC = () => {
         opacity: 0.35,
         filter: "blur(3px)",
         zIndex: 10,
-        bgColor: "var(--ink-660)",
+        bgColor: color("--ink-660"),
         border: "1px solid transparent",
         shadow: "none",
       };
@@ -302,11 +305,11 @@ export const ExperienceCard: React.FC = () => {
       opacity: 0,
       filter: "blur(4px)",
       zIndex: 0,
-      bgColor: "var(--ink-660)",
+      bgColor: color("--ink-660"),
       border: "1px solid transparent",
       shadow: "none",
     };
-  }, []);
+  }, [color]);
 
   const handleOpenModal = (item: CardExperience) => {
     const dialogData: IExperienceCard = {
