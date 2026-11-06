@@ -17,7 +17,7 @@ Each route is filed as `<route>-<width>.png`.
 - Home DOM order: Hero → About → "What i've build" → "What i work with" → Experience → Articles.
 - Colours resolve from `src/styles/tokens.css`; no hex literals remain in the public component set.
 - Reduced motion: transitions ≈0 s, `animation-name: none`, carousel autoplay halted, modal opens without scale.
-- Lighthouse (mobile, production build): `/` = 100 performance / 100 accessibility, `/article` = 90 / 100.
+- Lighthouse (mobile, production build): `/` = 100 performance / 100 accessibility, `/article` = 90 / 100 (re-run after the carousel stabilisation, same numbers).
 
 ## Visual review checklist
 

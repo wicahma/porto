@@ -1,5 +1,6 @@
 "use client";
 
+import FolderIcon from "@/assets/svg/folder";
 import ProjectIcon from "@/assets/svg/project-icon";
 import { SectionHeader } from "@/components/molecules/header/SectionHeader";
 import { useProjectCount, useProjects } from "@/hooks/queries/project.wrapper";
@@ -187,51 +188,42 @@ export const SimpleProjectList: React.FC = () => {
             />
           </button>
 
-          {/* Dossier trigger: the old saturated folder artwork replaced by a
-              flat instrument panel that unfolds the project records below. */}
-          <button
-            type="button"
-            onClick={() => setIsExpanded((prev) => !prev)}
-            aria-expanded={isExpanded}
-            title={isExpanded ? "Fold records back" : "Unfold project records"}
-            className="focus-spec plate cornered lift group relative block w-full max-w-[614px] cursor-pointer overflow-hidden p-4 text-left"
-          >
-            <div aria-hidden="true" className="scanlines pointer-events-none absolute inset-0 opacity-60" />
-
-            <div className="relative flex items-center justify-between gap-3">
-              <span className="spec-label spec-label--caution readout">
-                DOSSIER // PRJ
-              </span>
+          {/* Folder trigger: keeps the original dossier artwork (the unfold has
+              to read as files leaving a folder) wrapped in spec framing. */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <span className="led" aria-hidden="true" />
+                <span className="spec-label spec-label--caution readout">
+                  DOSSIER // PRJ
+                </span>
+              </div>
               <span className="spec-label">04 FILES</span>
             </div>
 
-            <div className="relative mt-3 space-y-1.5">
-              {["Onesist", "TypeScript Gateway", "Patok", "Blindfold"].map(
-                (name, i) => (
-                  <div
-                    key={name}
-                    className="flex items-center justify-between gap-3 border-b border-[var(--line-soft)] pb-1 last:border-b-0"
-                  >
-                    <span className="truncate font-mono text-[11px] uppercase tracking-[0.1em] text-neutral-300">
-                      {String(i + 1).padStart(2, "0")} · {name}
-                    </span>
-                    <span className="spec-label readout text-[var(--signal)]">
-                      RDY
-                    </span>
-                  </div>
-                ),
-              )}
-            </div>
+            <button
+              type="button"
+              onClick={() => setIsExpanded((prev) => !prev)}
+              aria-expanded={isExpanded}
+              aria-controls={isExpanded ? "project-previews" : undefined}
+              title={isExpanded ? "Fold records back" : "Unfold project records"}
+              className="focus-spec group block w-full max-w-[614px] cursor-pointer text-left focus:outline-none"
+            >
+              <FolderIcon className="aspect-[614/286] w-full drop-shadow-xl saturate-[0.78] transition-[filter,transform] duration-300 group-hover:-translate-y-1 group-hover:saturate-100" />
+            </button>
 
-            <div className="relative mt-3 flex items-center justify-between">
-              <span className="spec-label">Click to unfold</span>
+            <div className="flex max-w-[614px] items-center justify-between gap-3">
+              <span className="spec-label">
+                {isExpanded ? "Click to fold back" : "Click to unfold"}
+              </span>
               <ChevronDown
-                className={`h-4 w-4 text-neutral-500 transition-transform duration-300 ${
-                  isExpanded ? "rotate-180 text-[var(--signal)]" : ""
+                aria-hidden="true"
+                className={`h-4 w-4 transition-transform duration-300 ${
+                  isExpanded ? "rotate-180 text-[var(--signal)]" : "text-neutral-500"
                 }`}
               />
             </div>
-          </button>
+          </div>
         </div>
 
         {/* Right: What i work with */}

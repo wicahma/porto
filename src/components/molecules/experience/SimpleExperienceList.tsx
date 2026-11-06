@@ -136,7 +136,7 @@ interface ApiExperienceItem {
 }
 
 export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
-  autoSlide = true,
+  autoSlide = false,
   autoSlideInterval = 4000,
   pauseOnHover = true,
   showArrows = true,
@@ -271,8 +271,8 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
 
   const getCardStyle = useCallback(
     (offset: number) => {
-      const step = isMobile ? 115 : 205;
-      const farStep = isMobile ? 190 : 365;
+      const step = isMobile ? 130 : 320;
+      const farStep = isMobile ? 240 : 600;
 
       if (offset === 0) {
         return {
@@ -450,7 +450,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
                 }}
               >
                 {/* Company artwork: the stored logo bleeds out of the top-right corner, photos stay a soft wash */}
-                {item.logo ? (
+                {item.logo && isCenter ? (
                   <div className="pointer-events-none absolute -top-6 -right-6 h-32 w-32 sm:h-40 sm:w-40">
                     <img
                       src={item.logo}
@@ -471,7 +471,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
                   </div>
                 )}
 
-                <div className="relative z-10 flex flex-col justify-between h-full w-full">
+                <div className="relative z-10 flex h-full w-full flex-col justify-between">
                   {/* Top row: Company & Period Badge */}
                   <div
                     className={`flex items-center gap-2 ${
@@ -501,7 +501,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
                 </div>
 
                 {/* Middle: Role & Description (Compact spacing) */}
-                <div className={`mt-1.5 mb-1 ${isRight ? "text-right" : "text-left"}`}>
+                <div className={`mt-1.5 mb-1 transition-opacity duration-300 ${isCenter ? "opacity-100" : "opacity-0"} ${isRight ? "text-right" : "text-left"}`}>
                   <h3 className="truncate text-sm font-black tracking-tight text-white sm:text-base md:text-lg lg:text-xl">
                     {item.role}
                   </h3>
