@@ -2,6 +2,7 @@
 
 import Sun from "@/assets/svg/sun";
 import ExperienceDialog from "@/components/molecules/experience/ExperienceDialog";
+import { SectionHeader } from "@/components/molecules/header/SectionHeader";
 import { ExperienceCard } from "@/constants/dummies/experience-carousel";
 import { useExperiences } from "@/hooks/queries/experience.wrapper";
 import { ExperiencePositionSummary } from "@/interface/entities/experience.interface";
@@ -260,7 +261,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
           scale: 1,
           opacity: 1,
           zIndex: 30,
-          bgColor: "#2c2c2c",
+          bgColor: "var(--ink-600)",
           border: "1px solid rgba(115, 115, 115, 0.4)",
           shadow: "0 20px 40px -10px rgba(0, 0, 0, 0.7)",
         };
@@ -272,7 +273,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
           scale: 0.85,
           opacity: 0.75,
           zIndex: 20,
-          bgColor: "#262626",
+          bgColor: "var(--line)",
           border: "1px solid rgba(64, 64, 64, 0.4)",
           shadow: "0 10px 20px -5px rgba(0, 0, 0, 0.5)",
         };
@@ -284,7 +285,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
           scale: 0.85,
           opacity: 0.75,
           zIndex: 20,
-          bgColor: "#262626",
+          bgColor: "var(--line)",
           border: "1px solid rgba(64, 64, 64, 0.4)",
           shadow: "0 10px 20px -5px rgba(0, 0, 0, 0.5)",
         };
@@ -296,7 +297,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
           scale: 0.7,
           opacity: 0.45,
           zIndex: 10,
-          bgColor: "#202020",
+          bgColor: "var(--ink-650)",
           border: "1px solid transparent",
           shadow: "none",
         };
@@ -308,7 +309,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
           scale: 0.7,
           opacity: 0.45,
           zIndex: 10,
-          bgColor: "#202020",
+          bgColor: "var(--ink-650)",
           border: "1px solid transparent",
           shadow: "none",
         };
@@ -319,7 +320,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
         scale: 0.5,
         opacity: 0,
         zIndex: 0,
-        bgColor: "#1a1a1a",
+        bgColor: "var(--ink-710)",
         border: "1px solid transparent",
         shadow: "none",
       };
@@ -355,13 +356,18 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Header */}
-      <div className="flex items-center justify-center gap-3 group">
-        <Sun className="w-6 h-6 text-[#A855F7] shrink-0 group-hover:rotate-45 transition-transform duration-300" />
-        <h3 className="text-3xl font-bold text-white tracking-tight group-hover:text-purple-300 transition-colors">
-          Experience
-        </h3>
-        <Sun className="w-6 h-6 text-[#A855F7] shrink-0 group-hover:-rotate-45 transition-transform duration-300" />
-      </div>
+      <SectionHeader
+        index="03"
+        title="Experience"
+        meta="Service record"
+        icon={
+          <Sun className="h-6 w-6 shrink-0 text-[var(--violet)] md:h-7 md:w-7" />
+        }
+        action={
+          <span className="readout spec-label">{total} ENTRIES</span>
+        }
+        className="w-full"
+      />
 
       {/* Carousel Container with Left & Right Arrows */}
       <div className="relative w-full flex items-center justify-center select-none py-1">
@@ -374,7 +380,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
               navigate("prev");
             }}
             aria-label="Previous experience"
-            className="absolute left-1 sm:left-4 md:left-8 lg:left-12 z-40 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#1c1c1c]/90 hover:bg-[#282828] border border-neutral-700/60 hover:border-neutral-500 flex items-center justify-center text-neutral-300 hover:text-white transition-all shadow-xl hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-sm"
+            className="absolute left-1 sm:left-4 md:left-8 lg:left-12 z-40 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[var(--ink-690)]/90 hover:bg-[var(--ink-610)] border border-neutral-700/60 hover:border-neutral-500 flex items-center justify-center text-neutral-300 hover:text-white transition-all shadow-xl hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-sm"
           >
             <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
@@ -433,7 +439,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
                       aria-hidden="true"
                       className="h-full w-full object-contain opacity-40 sm:opacity-45"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-bl from-transparent via-[#262626]/50 to-[#262626]" />
+                    <div className="absolute inset-0 bg-gradient-to-bl from-transparent via-[var(--line)]/50 to-[var(--line)]" />
                   </div>
                 ) : (
                   <div className="absolute top-0 right-0 w-28 h-28 sm:w-36 sm:h-36 overflow-hidden pointer-events-none rounded-tr-2xl md:rounded-tr-3xl rounded-bl-3xl">
@@ -442,7 +448,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
                       alt={item.company}
                       className="w-full h-full object-cover opacity-15 sm:opacity-20 filter contrast-125"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-bl from-transparent via-[#262626]/40 to-[#262626]" />
+                    <div className="absolute inset-0 bg-gradient-to-bl from-transparent via-[var(--line)]/40 to-[var(--line)]" />
                   </div>
                 )}
 
@@ -458,7 +464,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
                       isRight ? "text-right" : "text-left"
                     }`}
                   >
-                    <span className="text-xs sm:text-sm font-bold text-[#02C380] tracking-wide uppercase truncate">
+                    <span className="text-xs sm:text-sm font-bold text-[var(--signal)] tracking-wide uppercase truncate">
                       {item.company}
                     </span>
                     {item.location && isCenter && (
@@ -469,7 +475,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
                   </div>
 
                   {isCenter && (item.positions?.length ?? 0) > 1 && (
-                    <span className="shrink-0 rounded-full bg-[#02C380]/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-[#02C380]">
+                    <span className="shrink-0 rounded-full bg-[var(--signal)]/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-[var(--signal)]">
                       {item.positions?.length} roles
                     </span>
                   )}
@@ -529,7 +535,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
               navigate("next");
             }}
             aria-label="Next experience"
-            className="absolute right-1 sm:right-4 md:right-8 lg:right-12 z-40 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#1c1c1c]/90 hover:bg-[#282828] border border-neutral-700/60 hover:border-neutral-500 flex items-center justify-center text-neutral-300 hover:text-white transition-all shadow-xl hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-sm"
+            className="absolute right-1 sm:right-4 md:right-8 lg:right-12 z-40 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[var(--ink-690)]/90 hover:bg-[var(--ink-610)] border border-neutral-700/60 hover:border-neutral-500 flex items-center justify-center text-neutral-300 hover:text-white transition-all shadow-xl hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-sm"
           >
             <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
@@ -547,7 +553,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
               aria-label={`Go to slide ${idx + 1}`}
               className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
                 idx === centerIndex
-                  ? "w-6 bg-[#02C380]"
+                  ? "w-6 bg-[var(--signal)]"
                   : "w-1.5 bg-neutral-700 hover:bg-neutral-500"
               }`}
             />

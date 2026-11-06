@@ -184,7 +184,7 @@ export const SimpleExperiencePage: React.FC = () => {
       {/* Header */}
       <div className="space-y-4">
         <div className="flex items-center gap-3">
-          <Sun className="w-8 h-8 text-[#A855F7] shrink-0" />
+          <Sun className="w-8 h-8 text-[var(--violet)] shrink-0" />
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">
             Work Experience
           </h1>
@@ -210,7 +210,7 @@ export const SimpleExperiencePage: React.FC = () => {
           {experiences.map((exp) => (
             <div
               key={exp.id}
-              className="rounded-2xl bg-[#161616] border border-neutral-800/80 hover:border-neutral-700 p-6 sm:p-8 space-y-6 transition-colors shadow-lg"
+              className="rounded-2xl bg-[var(--ink-750)] border border-neutral-800/80 hover:border-neutral-700 p-6 sm:p-8 space-y-6 transition-colors shadow-lg"
             >
               {/* Company Header */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-neutral-800/80 pb-4">
@@ -238,7 +238,7 @@ export const SimpleExperiencePage: React.FC = () => {
                 {exp.jobs.map((job) => (
                   <div key={job.id} className="space-y-3">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                      <h3 className="text-lg font-bold text-[#02C380]">
+                      <h3 className="text-lg font-bold text-[var(--signal)]">
                         {job.role}
                       </h3>
                       <span className="text-xs font-mono font-medium px-3 py-1 rounded-full bg-neutral-800/90 text-neutral-300 border border-neutral-700/60 self-start sm:self-auto">
@@ -257,7 +257,7 @@ export const SimpleExperiencePage: React.FC = () => {
                             key={cIdx}
                             className="flex items-start gap-2 text-xs sm:text-sm text-neutral-400"
                           >
-                            <ChevronRight className="w-4 h-4 text-[#FFC501] shrink-0 mt-0.5" />
+                            <ChevronRight className="w-4 h-4 text-[var(--caution)] shrink-0 mt-0.5" />
                             <span>{comp}</span>
                           </div>
                         ))}

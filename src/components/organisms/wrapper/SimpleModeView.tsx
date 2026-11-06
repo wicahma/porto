@@ -29,64 +29,96 @@ export const SimpleModeView: React.FC<{
   return (
     <div className="w-full mx-auto space-y-16 lg:space-y-24 py-6">
       {/* 1. Hero Section */}
-      <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-6 lg:gap-8">
-        {/* Left: Hello tag + Line + Name (Right Aligned) */}
-        <div className="flex flex-col items-end w-full">
-          {/* Hello tag and stretching orange line */}
-          <div className="flex items-center gap-4 w-full mb-4">
-            <div className="relative font-bold flex items-center justify-center shrink-0">
-              <span className="relative z-10 text-xs md:text-sm font-semibold text-white px-4 py-1">
-                Hello, I'm
+      <section className="relative">
+        {/* Station strip */}
+        <div className="mb-5 flex items-center gap-3">
+          <span className="led" aria-hidden="true" />
+          <span className="spec-label spec-label--signal readout">
+            Personnel file // TDCK-2026
+          </span>
+          <span className="rule flex-1" aria-hidden="true" />
+          <span className="spec-label hidden sm:inline">Status: available</span>
+        </div>
+
+        <div className="plate cornered relative overflow-hidden p-5 md:p-8">
+          <div
+            aria-hidden="true"
+            className="scanlines pointer-events-none absolute inset-0 opacity-70"
+          />
+
+          <div className="relative grid grid-cols-1 items-center gap-6 md:grid-cols-[1fr_auto_1fr] lg:gap-8">
+            {/* Left: Hello tag + Line + Name (Right Aligned) */}
+            <div className="flex w-full flex-col items-end">
+              <div className="mb-4 flex w-full items-center gap-4">
+                <div className="relative flex shrink-0 items-center justify-center font-bold">
+                  <span className="relative z-10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white md:text-sm">
+                    Hello, I&apos;m
+                  </span>
+                  <Hello className="absolute w-28 -translate-y-0.5" />
+                </div>
+                <div className="h-[2.5px] flex-1 bg-[var(--flare)]" />
+              </div>
+
+              <h1 className="text-right text-4xl font-black leading-[1.05] tracking-tight text-white sm:text-5xl md:text-5xl lg:text-[64px]">
+                <div>Teguh Dwi</div>
+                <div>Cahya</div>
+                <div>Kusuma</div>
+              </h1>
+
+              <span className="spec-label mt-3 text-right">
+                ID // SOFTWARE ENGINEER — YOGYAKARTA, ID
               </span>
-              <Hello className="absolute w-28 -translate-y-0.5" />
             </div>
-            <div className="h-[2.5px] flex-1 bg-[#FF3714] rounded-full" />
+
+            {/* Center: Bare Social Icons Stack */}
+            <div className="flex justify-center py-4 md:py-0">
+              <Socials simpleView />
+            </div>
+
+            {/* Right: Software Developer + Subtitle + Buttons */}
+            <div className="flex w-full flex-col items-start">
+              <h2 className="text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl md:text-5xl lg:text-[64px]">
+                <span className="text-white">Software</span>
+                <br />
+                <span className="text-[var(--signal)]">Developer</span>
+              </h2>
+
+              <p className="mt-4 max-w-md text-sm font-normal leading-relaxed text-neutral-400 md:text-base lg:text-lg">
+                Specialized in Backend Developer, Frontend developer &amp; Mobile
+                Developer
+              </p>
+
+              <div className="mt-4 flex flex-wrap gap-1.5">
+                {["BACKEND", "FRONTEND", "MOBILE"].map((tag) => (
+                  <span
+                    key={tag}
+                    className="spec-label border border-[var(--line)] bg-[var(--ink-900)] px-2 py-1 text-neutral-400"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              <ButtonsLeft simpleView />
+            </div>
           </div>
-
-          {/* Name in 3 lines right-aligned */}
-          <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-[64px] font-black text-right tracking-tight text-white leading-[1.05]">
-            <div>Teguh Dwi</div>
-            <div>Cahya</div>
-            <div>Kusuma</div>
-          </h1>
         </div>
-
-        {/* Center: Bare Social Icons Stack */}
-        <div className="flex justify-center md:py-0 py-4">
-          <Socials simpleView />
-        </div>
-
-        {/* Right: Software Developer + Subtitle + Buttons */}
-        <div className="flex flex-col items-start w-full">
-          <h2 className="text-4xl sm:text-5xl md:text-5xl lg:text-[64px] font-black tracking-tight leading-[1.05]">
-            <span className="text-white">Software</span>
-            <br />
-            <span className="text-[#02C380]">Developer</span>
-          </h2>
-
-          <p className="mt-4 text-sm md:text-base lg:text-lg text-neutral-400 font-normal leading-relaxed max-w-md">
-            Specialized in Backend Developer, Frontend developer &amp; Mobile Developer
-          </p>
-
-          <ButtonsLeft simpleView />
-        </div>
-      </div>
+      </section>
 
       {/* 2. About Me Section */}
       <div className="flex flex-col md:flex-row items-center md:items-start gap-8 lg:gap-12">
         {/* Avatar Box with Peeps */}
-        <div className="w-[260px] sm:w-[280px] md:w-[320px] aspect-square rounded-[36px] bg-[#ABABAB] flex items-end justify-center overflow-hidden shrink-0 shadow-lg">
+        <div className="w-[260px] sm:w-[280px] md:w-[320px] aspect-square rounded-[36px] bg-[var(--text-mid)] flex items-end justify-center overflow-hidden shrink-0 shadow-lg">
           <Peeps className="w-[85%] h-[85%] object-contain" />
         </div>
 
         {/* About Details */}
         <div className="flex-1 space-y-4">
           {/* Header Line */}
-          <div className="flex items-center gap-4 w-full">
-            <span className="text-xs md:text-sm font-semibold text-neutral-400 tracking-wider">
-              About me
-            </span>
-            <div className="h-px flex-1 bg-neutral-800" />
+          <div className="flex items-center gap-3 w-full">
+            <span className="spec-label spec-label--signal readout">SEC.01</span>
+            <span className="spec-label">// Operator profile</span>
+            <span className="rule flex-1" aria-hidden="true" />
           </div>
 
           {/* Heading */}

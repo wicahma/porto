@@ -174,7 +174,7 @@ const StackedCarousel = <T,>({
               className={`cursor-pointer h-2 rounded-full transition-all ${
                 index === activeIndex
                   ? "w-8 bg-white"
-                  : "w-2 bg-[#ABABAB]/30 hover:bg-[#ABABAB]/50"
+                  : "w-2 bg-[var(--text-mid)]/30 hover:bg-[var(--text-mid)]/50"
               }`}
               aria-label={`Go to slide ${index + 1}`}
             />

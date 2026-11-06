@@ -5,18 +5,21 @@ import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 import { ILayoutProps } from "@/interface/app/layout";
 import { cn } from "@/lib/utils";
 import { useViewModeStore } from "@/store/viewModeStore";
-import { RenderIf } from "@/utils/helper/render-if";
 import { useParams, usePathname } from "next/navigation";
 import NextTopLoader from "nextjs-toploader";
-import React, { useId, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
+/**
+ * Public shell. The old dual-mode blur masks were tied to the animated home
+ * variant; the public site now renders one composition, so the masks are gone
+ * and only the shared chrome remains.
+ */
 const Layout: React.FC<ILayoutProps> = ({ children }) => {
   const params = useParams();
-  const id = useId();
   const pathname = usePathname();
-  const isSimpleMode = useViewModeStore((state) => state.isSimpleMode);
-  const init = useViewModeStore((state) => state.init);
   const disableOnPathname = [`/article/${params.slug}`];
+  const init = useViewModeStore((state) => state.init);
+
   usePageLoading();
 
   useEffect(() => {
@@ -31,29 +34,12 @@ const Layout: React.FC<ILayoutProps> = ({ children }) => {
   return (
     <main className="max-w-screen overflow-hidden">
       <LoadingScreen />
-      <NextTopLoader height={1} color="#414141" />
-      <RenderIf
-        condition={!isSimpleMode && !disableOnPathname.includes(pathname)}
-      >
-        <div
-          id="maskblur"
-          className="md:mask-blur mask-blur-y w-screen h-screen cursor-none pointer-events-none fixed top-0 left-0 z-1000"
-        />
-        <div
-          id="maskcolor"
-          className="md:mask-color mask-color-y w-screen h-screen cursor-none pointer-events-none fixed top-0 left-0 z-1000"
-        />
-      </RenderIf>
+      <NextTopLoader height={1} color="var(--ink-500)" />
       <div
         id="data"
         className={cn(
-          "w-screen overflow-visible min-h-screen",
-          isSimpleMode ? "md:h-auto pb-24" : "md:h-screen",
-          disableOnPathname.includes(pathname)
-            ? ""
-            : pathname === "/" && !isSimpleMode
-              ? "md:pt-[4.5rem] pt-12"
-              : "md:pt-28 pt-12",
+          "w-screen overflow-visible min-h-screen pb-24",
+          disableOnPathname.includes(pathname) ? "pt-12" : "pt-12 md:pt-20",
         )}
       >
         <div

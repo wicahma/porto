@@ -18,6 +18,10 @@ export default function NotFoundWaterAnimation() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
+    // Canvas cannot resolve CSS variables; read them once from :root.
+    const rootStyle = getComputedStyle(document.documentElement);
+    const token = (name: string) => rootStyle.getPropertyValue(name).trim();
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
@@ -52,8 +56,8 @@ export default function NotFoundWaterAnimation() {
       ctx.clearRect(0, 0, width, height);
       // Draw water with more dynamic waves
       const gradient = ctx.createLinearGradient(0, waterLevel, 0, height);
-      gradient.addColorStop(0, "#3b82f6");
-      gradient.addColorStop(1, "#0C4DB8");
+      gradient.addColorStop(0, token("--blue"));
+      gradient.addColorStop(1, token("--blue-strong"));
       ctx.fillStyle = gradient;
       ctx.beginPath();
       ctx.moveTo(0, height);
@@ -127,7 +131,7 @@ export default function NotFoundWaterAnimation() {
       for (const p of splashParticlesRef.current) {
         ctx.save();
         ctx.globalAlpha = Math.max(0, p.life);
-        ctx.fillStyle = "#e0e7ff";
+        ctx.fillStyle = token("--blue-tint");
         ctx.beginPath();
         ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
         ctx.fill();
@@ -170,14 +174,14 @@ export default function NotFoundWaterAnimation() {
         0
       );
       ctx.closePath();
-      ctx.fillStyle = "#eab308";
+      ctx.fillStyle = token("--warning");
       ctx.fill();
       // Mast
       ctx.beginPath();
       ctx.moveTo(0, 0);
       ctx.lineTo(0, -boatHeight / 2 - 18);
       ctx.lineWidth = 4;
-      ctx.strokeStyle = "#fff";
+      ctx.strokeStyle = token("--text-hi");
       ctx.stroke();
       // Sail (triangle, with slight curve)
       ctx.beginPath();
@@ -185,7 +189,7 @@ export default function NotFoundWaterAnimation() {
       ctx.quadraticCurveTo(22, -boatHeight / 2, 0, 0);
       ctx.lineTo(0, -boatHeight / 2 - 18);
       ctx.closePath();
-      ctx.fillStyle = "#e0e7ff";
+      ctx.fillStyle = token("--blue-tint");
       ctx.globalAlpha = 0.95;
       ctx.fill();
       ctx.globalAlpha = 1;
@@ -195,7 +199,7 @@ export default function NotFoundWaterAnimation() {
       ctx.lineTo(-12, -boatHeight / 2 - 14);
       ctx.lineTo(0, -boatHeight / 2 - 10);
       ctx.closePath();
-      ctx.fillStyle = "#ef4444";
+      ctx.fillStyle = token("--danger");
       ctx.fill();
       ctx.restore();
       animationFrameRef.current = requestAnimationFrame(animate);

@@ -1,0 +1,237 @@
+/*
+ * Portfolio design tokens — single source of colour + structural primitives.
+ * Palette anchors are inherited from the original identity; the rest is the
+ * Cyber-Industrial (MIL-SPEC) layer mixed on top of it.
+ */
+
+:root {
+  /* ---- Surface ---------------------------------------------------------- */
+  --ink-950: #080808;
+  --ink-900: #0d0d0d;
+  --ink-850: #131313;
+  --ink-800: #141414;
+  --ink-700: #1a1a1a;
+  --ink-600: #212121;
+
+  /* ---- Lines / structure ------------------------------------------------ */
+  --line: #262626;
+  --line-soft: #1f1f1f;
+  --line-strong: #3a3a3a;
+
+  /* ---- Text ------------------------------------------------------------- */
+  --text-hi: #f5f5f5;
+  --text-mid: #a3a3a3;
+  --text-low: #6f6f6f;
+
+  /* ---- Signal palette (identity anchors) -------------------------------- */
+  --signal: #02c380;
+  --signal-dim: #04a06a;
+  --caution: #ffc501;
+  --alert: #ff4141;
+  --petal-indigo: #574bf5;
+  --petal-cyan: #4ff1ff;
+  --petal-amber: #ffc700;
+
+  /* ---- Type ------------------------------------------------------------- */
+  --font-mono-spec: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --tracking-spec: 0.18em;
+
+  /* ---- Spacing scale ---------------------------------------------------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 72px;
+  --space-9: 104px;
+
+  /* ---- Grid ------------------------------------------------------------- */
+  --grid-cell: 24px;
+  --grid-line: color-mix(in srgb, var(--text-hi) 5%, transparent);
+}
+
+/* ------------------------------------------------------------------------- */
+/* Structural primitives                                                     */
+/* ------------------------------------------------------------------------- */
+
+/* Mono metadata label: // SECTION 03 --------------------------------------- */
+.spec-label {
+  font-family: var(--font-mono-spec);
+  font-size: 10px;
+  line-height: 1.4;
+  letter-spacing: var(--tracking-spec);
+  text-transform: uppercase;
+  color: var(--text-low);
+}
+
+.spec-label--signal {
+  color: var(--signal);
+}
+
+.spec-label--caution {
+  color: var(--caution);
+}
+
+/* Panel: flat plate, hairline border, inset top highlight. */
+.plate {
+  position: relative;
+  background-color: var(--ink-800);
+  border: 1px solid var(--line);
+}
+
+.plate--sunken {
+  background-color: var(--ink-900);
+}
+
+/* Dashed measurement rule with square end caps. */
+.rule {
+  position: relative;
+  height: 1px;
+  background-image: linear-gradient(
+    90deg,
+    var(--line-strong) 0 6px,
+    transparent 6px 12px
+  );
+  background-size: 12px 1px;
+  background-repeat: repeat-x;
+}
+
+.rule--solid {
+  background-image: none;
+  background-color: var(--line);
+}
+
+/* Corner brackets for framed panels (top-left + bottom-right). */
+.cornered::before,
+.cornered::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  border-color: var(--line-strong);
+  border-style: solid;
+  border-width: 0;
+}
+
+.cornered::before {
+  top: -1px;
+  left: -1px;
+  border-top-width: 1px;
+  border-left-width: 1px;
+}
+
+.cornered::after {
+  right: -1px;
+  bottom: -1px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+}
+
+/* Faint plotting grid behind a section. */
+.grid-plot {
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: var(--grid-cell) var(--grid-cell);
+}
+
+/* Scanline texture used sparingly on hero / plates. */
+.scanlines {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 3px,
+    color-mix(in srgb, var(--text-hi) 2.5%, transparent) 3px 4px
+  );
+}
+
+/* Status LED: square, not a glowing dot. */
+.led {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background-color: var(--signal);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--signal) 35%, transparent);
+}
+
+.led--caution {
+  background-color: var(--caution);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--caution) 35%, transparent);
+}
+
+.led--idle {
+  background-color: var(--text-low);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--text-low) 35%, transparent);
+}
+
+/* Numeric / serial readout. */
+.readout {
+  font-family: var(--font-mono-spec);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+/* Interactive lift kept from the original motion language. */
+.lift {
+  transition:
+    transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 200ms ease,
+    background-color 200ms ease;
+}
+
+.lift:hover {
+  transform: translateY(-2px);
+}
+
+/* Focus ring shared by all interactive elements. */
+.focus-spec:focus-visible {
+  outline: 1px solid var(--signal);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lift,
+  .lift:hover {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* ---- Extended palette (extracted from components) ---------------------- */
+:root {
+  --violet: #a855f7;
+  --violet-strong: #8d41ff;
+  --pink: #ff8fc0;
+  --flare: #ff3714;
+  --danger: #ef4444;
+  --danger-soft: #ff5a5a;
+  --warning: #eab308;
+  --grafana: #f05a28;
+  --grafana-hi: #ff884d;
+  --redis-top: #d82c20;
+  --redis-side: #b8271d;
+  --redis-back: #a32219;
+  --blue: #3b82f6;
+  --blue-strong: #0c4db8;
+  --blue-deep: #0f589b;
+  --blue-tint: #e0e7ff;
+  --ink-750: #161616;
+  --ink-725: #191919;
+  --ink-710: #1a1a1a;
+  --ink-700b: #181818;
+  --ink-690: #1c1c1c;
+  --ink-660: #101010;
+  --ink-650: #202020;
+  --ink-640: #222222;
+  --ink-620: #252525;
+  --ink-610: #282828;
+  --ink-600: #2c2c2c;
+  --ink-550: #373737;
+  --ink-540: #383838;
+  --ink-500: #414141;
+  --text-mid-2: #a1a1a1;
+  --signal-deep: #004e33;
+}

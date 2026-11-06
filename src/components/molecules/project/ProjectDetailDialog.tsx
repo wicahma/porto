@@ -84,11 +84,11 @@ export const ProjectDetailDialog = ({
             {/* Underlying tilted paper card (clean sleek dark base) */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute inset-x-1.5 -top-1.5 bottom-1 -z-10 rotate-1 rounded-2xl border border-neutral-800/70 bg-[#0c0c0c] shadow-2xl"
+              className="pointer-events-none absolute inset-x-1.5 -top-1.5 bottom-1 -z-10 rotate-1 rounded-2xl border border-neutral-800/70 bg-[var(--ink-900)] shadow-2xl"
             />
 
             {/* Main Modal Card (Clean dark background) */}
-            <div className="relative flex max-h-[85vh] w-full flex-col overflow-hidden overscroll-contain rounded-2xl border border-neutral-800/90 bg-[#141414] shadow-2xl shadow-black/90 md:max-h-[80vh]">
+            <div className="relative flex max-h-[85vh] w-full flex-col overflow-hidden overscroll-contain rounded-2xl border border-neutral-800/90 bg-[var(--ink-800)] shadow-2xl shadow-black/90 md:max-h-[80vh]">
               {/* Close Button */}
               <button
                 type="button"
@@ -117,7 +117,7 @@ export const ProjectDetailDialog = ({
                         href={project.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 font-mono text-[11px] text-[#02C380] hover:underline"
+                        className="inline-flex items-center gap-1 font-mono text-[11px] text-[var(--signal)] hover:underline"
                       >
                         <span>
                           {project.link
@@ -156,9 +156,9 @@ export const ProjectDetailDialog = ({
 
                 {/* Solution Callout Box */}
                 {project.solution && (
-                  <div className="space-y-1.5 rounded-xl border border-[#02C380]/30 bg-[#02C380]/5 p-4">
-                    <div className="flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider text-[#02C380]">
-                      <span className="h-1.5 w-1.5 rounded-full bg-[#02C380]" />
+                  <div className="space-y-1.5 rounded-xl border border-[var(--signal)]/30 bg-[var(--signal)]/5 p-4">
+                    <div className="flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider text-[var(--signal)]">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[var(--signal)]" />
                       Solution
                     </div>
                     <p className="text-sm leading-relaxed text-neutral-300">
@@ -193,7 +193,7 @@ export const ProjectDetailDialog = ({
                       href={project.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full bg-[#02C380] px-5 py-2.5 text-sm font-bold text-neutral-950 shadow-lg shadow-emerald-950/40 transition-all hover:scale-[1.02] hover:bg-emerald-400 active:scale-[0.98]"
+                      className="inline-flex items-center gap-2 rounded-full bg-[var(--signal)] px-5 py-2.5 text-sm font-bold text-neutral-950 shadow-lg shadow-emerald-950/40 transition-all hover:scale-[1.02] hover:bg-emerald-400 active:scale-[0.98]"
                     >
                       <span>
                         {project.link.includes("github.com")

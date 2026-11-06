@@ -16,7 +16,7 @@ const ArticleCard = ({ article }: ArticleCardProps) => {
         <StorageImage
           src={article.image}
           alt={article.title}
-          className="border-4 border-[#383838] bg-[#131313] rounded-xl w-full object-cover aspect-square"
+          className="border-4 border-[var(--ink-540)] bg-[var(--ink-850)] rounded-xl w-full object-cover aspect-square"
         />
       </div>
       <div className="shrink w-fit">

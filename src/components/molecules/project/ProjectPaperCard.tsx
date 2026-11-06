@@ -41,14 +41,14 @@ export const ProjectPaperCard: React.FC<ProjectPaperCardProps> = ({
       {/* 1. Underlying stacked paper layer (sleek dark paper base) */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-1.5 -top-1.5 bottom-1 -z-10 rounded-2xl border border-neutral-800/70 bg-[#0c0c0c] shadow-lg transition-transform duration-300 group-hover:rotate-0"
+        className="pointer-events-none absolute inset-x-1.5 -top-1.5 bottom-1 -z-10 rounded-2xl border border-neutral-800/70 bg-[var(--ink-900)] shadow-lg transition-transform duration-300 group-hover:rotate-0"
         style={{
           transform: `rotate(${tilt}deg)`,
         }}
       />
 
       {/* 2. Main Dark Paper Card (Clean dark background, uniform height) */}
-      <div className="relative flex h-full min-h-[280px] w-full flex-col justify-between overflow-hidden rounded-2xl border border-neutral-800/90 bg-[#141414] p-5 shadow-2xl transition-all duration-300 group-hover:-translate-y-1 group-hover:border-neutral-600/80 md:p-6">
+      <div className="relative flex h-full min-h-[280px] w-full flex-col justify-between overflow-hidden rounded-2xl border border-neutral-800/90 bg-[var(--ink-800)] p-5 shadow-2xl transition-all duration-300 group-hover:-translate-y-1 group-hover:border-neutral-600/80 md:p-6">
         <div className="flex flex-1 flex-col justify-between">
           <div>
             {/* Top row: Year & Title & External Link */}
@@ -64,7 +64,7 @@ export const ProjectPaperCard: React.FC<ProjectPaperCardProps> = ({
                     Project file
                   </span>
                 </div>
-                <h4 className="truncate text-lg font-bold leading-snug tracking-tight text-white transition-colors group-hover:text-[#02C380] md:text-xl">
+                <h4 className="truncate text-lg font-bold leading-snug tracking-tight text-white transition-colors group-hover:text-[var(--signal)] md:text-xl">
                   {project.title}
                 </h4>
               </div>
@@ -76,7 +76,7 @@ export const ProjectPaperCard: React.FC<ProjectPaperCardProps> = ({
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
                   title={`Open ${project.title}`}
-                  className="shrink-0 rounded-xl border border-neutral-700/70 bg-neutral-800/90 p-2 text-neutral-300 shadow-sm transition-all hover:border-[#02C380] hover:bg-[#02C380] hover:text-neutral-950"
+                  className="shrink-0 rounded-xl border border-neutral-700/70 bg-neutral-800/90 p-2 text-neutral-300 shadow-sm transition-all hover:border-[var(--signal)] hover:bg-[var(--signal)] hover:text-neutral-950"
                 >
                   <ArrowUpRight className="h-4 w-4" />
                 </a>
@@ -110,7 +110,7 @@ export const ProjectPaperCard: React.FC<ProjectPaperCardProps> = ({
             )}
             {project.solution ? (
               <div className="truncate text-neutral-400">
-                <span className="mr-1.5 font-semibold text-[#02C380]">
+                <span className="mr-1.5 font-semibold text-[var(--signal)]">
                   Solution:
                 </span>
                 <span>{project.solution}</span>
@@ -139,7 +139,7 @@ export const ProjectPaperCard: React.FC<ProjectPaperCardProps> = ({
             ))}
           </div>
 
-          <span className="font-mono text-[10px] text-neutral-400 transition-colors group-hover:text-[#02C380]">
+          <span className="font-mono text-[10px] text-neutral-400 transition-colors group-hover:text-[var(--signal)]">
             Click to view detail ↗
           </span>
         </div>

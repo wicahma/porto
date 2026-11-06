@@ -28,12 +28,12 @@ export const ViewModeToggle: React.FC = () => {
       className={cn(
         "h-12 cursor-pointer group flex items-center justify-center aspect-square rounded-full transition-all duration-300 text-xs font-semibold select-none",
         isSimpleMode
-          ? "bg-[#02C380]/10 text-[#02C380] hover:bg-[#02C380]/20"
+          ? "bg-[var(--signal)]/10 text-[var(--signal)] hover:bg-[var(--signal)]/20"
           : "bg-neutral-900/80 text-neutral-300 hover:text-white",
       )}
     >
       <RenderIf condition={isSimpleMode}>
-        <LayoutList className="w-3.5 h-3.5 text-[#02C380]" />
+        <LayoutList className="w-3.5 h-3.5 text-[var(--signal)]" />
       </RenderIf>
       <RenderIf condition={!isSimpleMode}>
         <Sparkles className="w-3.5 h-3.5 text-amber-300" />

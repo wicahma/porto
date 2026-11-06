@@ -113,7 +113,7 @@ export const SimpleProjectPage: React.FC = () => {
           {projects.map((proj) => (
             <div
               key={proj.id}
-              className="rounded-2xl bg-[#161616] border border-neutral-800/80 hover:border-neutral-700 p-6 sm:p-7 flex flex-col justify-between transition-all hover:scale-[1.01] shadow-lg group"
+              className="rounded-2xl bg-[var(--ink-750)] border border-neutral-800/80 hover:border-neutral-700 p-6 sm:p-7 flex flex-col justify-between transition-all hover:scale-[1.01] shadow-lg group"
             >
               <div>
                 {/* Top: Title, Year & Live Link */}
@@ -122,7 +122,7 @@ export const SimpleProjectPage: React.FC = () => {
                     <span className="text-xs font-mono font-medium text-neutral-500 block mb-1">
                       {proj.year}
                     </span>
-                    <h2 className="text-xl font-bold text-white group-hover:text-[#02C380] transition-colors leading-snug">
+                    <h2 className="text-xl font-bold text-white group-hover:text-[var(--signal)] transition-colors leading-snug">
                       {proj.title}
                     </h2>
                   </div>
@@ -161,7 +161,7 @@ export const SimpleProjectPage: React.FC = () => {
 
                     {proj.solution && (
                       <div className="p-3.5 rounded-xl bg-neutral-900/80 border border-neutral-800">
-                        <span className="text-[11px] font-bold text-[#02C380] uppercase tracking-wider block mb-1">
+                        <span className="text-[11px] font-bold text-[var(--signal)] uppercase tracking-wider block mb-1">
                           Solution
                         </span>
                         <p className="text-xs text-neutral-400 leading-relaxed">

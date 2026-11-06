@@ -47,7 +47,7 @@ function SocialCard({
       ref={ref}
       initial={{ backgroundColor: color }}
       animate={{
-        backgroundColor: isInView ? "#191919" : color,
+        backgroundColor: isInView ? "var(--ink-725)" : color,
       }}
       href={link}
       target="_blank"
@@ -85,10 +85,10 @@ export default function Socials({
         label="GitHub profile"
         icon={
           <GithubIcon
-            className={cn("text-[#FFC501] aspect-auto md:w-10 w-6.25")}
+            className={cn("text-[var(--caution)] aspect-auto md:w-10 w-6.25")}
           />
         }
-        color="#FFC501"
+        color="var(--caution)"
         className={cn(
           simpleView ? "bg-transparent p-2" : "w-full min-h-14 px-3 py-3",
         )}
@@ -99,10 +99,10 @@ export default function Socials({
         label="LinkedIn profile"
         icon={
           <LinkedinIcon
-            className={cn("text-[#0F589B] aspect-auto md:w-10 w-6.25")}
+            className={cn("text-[var(--blue-deep)] aspect-auto md:w-10 w-6.25")}
           />
         }
-        color="#0F589B"
+        color="var(--blue-deep)"
         className={cn(
           simpleView ? "bg-transparent p-2" : "w-full min-h-14 px-3 py-3",
         )}
@@ -113,10 +113,10 @@ export default function Socials({
         label="Instagram profile"
         icon={
           <InstagramIcon
-            className={cn("text-[#FF5A5A] aspect-auto md:w-10 w-6.25")}
+            className={cn("text-[var(--danger-soft)] aspect-auto md:w-10 w-6.25")}
           />
         }
-        color="#FF5A5A"
+        color="var(--danger-soft)"
         className={cn(
           simpleView ? "bg-transparent p-2" : "w-full min-h-14 px-3 py-3",
         )}

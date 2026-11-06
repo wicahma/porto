@@ -27,16 +27,16 @@ const ExperienceCarouselCard: React.FC<ExperienceCardProps> = ({
             setIsDialogOpen(true);
           }
         }}
-        className={`w-[200px] h-[200px] aspect-square rounded-2xl bg-[#131313] border shadow-2xl p-4 flex flex-col justify-center items-center text-center select-none transition-colors ${
+        className={`w-[200px] h-[200px] aspect-square rounded-2xl bg-[var(--ink-850)] border shadow-2xl p-4 flex flex-col justify-center items-center text-center select-none transition-colors ${
           isCenter
             ? "border-neutral-700/80 hover:border-neutral-500 cursor-pointer"
-            : "border-[#1a1a1a] cursor-pointer"
+            : "border-[var(--ink-710)] cursor-pointer"
         }`}
       >
         <h3 className="text-base font-bold text-white mb-1.5 leading-snug truncate max-w-full">
           {data.company}
         </h3>
-        <p className="text-sm font-medium text-[#ABABAB] mb-1 line-clamp-2 leading-snug">
+        <p className="text-sm font-medium text-[var(--text-mid)] mb-1 line-clamp-2 leading-snug">
           {data.role}
         </p>
         <p className="text-xs text-neutral-400 font-mono mt-0.5">

@@ -2,6 +2,7 @@
 
 import FolderIcon from "@/assets/svg/folder";
 import ProjectIcon from "@/assets/svg/project-icon";
+import { SectionHeader } from "@/components/molecules/header/SectionHeader";
 import { useProjectCount, useProjects } from "@/hooks/queries/project.wrapper";
 import { TProjectRow } from "@/interface/entities/project.interface";
 import { AnimatePresence, m } from "motion/react";
@@ -153,22 +154,27 @@ export const SimpleProjectList: React.FC = () => {
           <button
             type="button"
             onClick={() => setIsExpanded((prev) => !prev)}
-            className="flex items-center justify-between w-full cursor-pointer group text-left focus:outline-none"
+            aria-expanded={isExpanded}
+            className="focus-spec group w-full cursor-pointer text-left focus:outline-none"
           >
-            <div className="flex items-center gap-3">
-              <ProjectIcon className="w-8 h-8 rounded-sm shrink-0" />
-              <h3 className="text-2xl font-bold text-white tracking-tight group-hover:text-[#02C380] transition-colors">
-                What i've build
-              </h3>
-            </div>
-            <div className="flex items-center gap-2 text-sm font-medium text-neutral-500">
-              <span>{count} projects</span>
-              <ChevronDown
-                className={`w-4 h-4 transition-transform duration-300 ${
-                  isExpanded ? "rotate-180 text-[#02C380]" : "text-neutral-500"
-                }`}
-              />
-            </div>
+            <SectionHeader
+              index="02"
+              title="What i've build"
+              meta="Build artefacts"
+              icon={<ProjectIcon className="h-6 w-6 rounded-sm md:h-7 md:w-7" />}
+              action={
+                <div className="flex items-center gap-2 text-xs font-medium text-neutral-500">
+                  <span className="readout">{count} PROJECTS</span>
+                  <ChevronDown
+                    className={`h-4 w-4 transition-transform duration-300 ${
+                      isExpanded
+                        ? "rotate-180 text-[var(--signal)]"
+                        : "text-neutral-500"
+                    }`}
+                  />
+                </div>
+              }
+            />
           </button>
 
           {/* Folder Graphic Trigger */}
@@ -195,19 +201,19 @@ export const SimpleProjectList: React.FC = () => {
             >
               <path
                 d="M20.5 41C9.17817 41 4.61708e-06 31.8218 5.60686e-06 20.5L20.5 20.5L20.5 41Z"
-                fill="#574BF5"
+                fill="var(--petal-indigo)"
               />
               <path
                 d="M3.8147e-06 -1.79217e-06C11.3218 -8.0238e-07 20.5 9.17816 20.5 20.5L2.02253e-06 20.5L3.8147e-06 -1.79217e-06Z"
-                fill="#4FF1FF"
+                fill="var(--petal-cyan)"
               />
               <path
                 d="M41 1.79217e-06C29.6782 8.0238e-07 20.5 9.17816 20.5 20.5L41 20.5L41 1.79217e-06Z"
-                fill="#FFC700"
+                fill="var(--petal-amber)"
               />
               <path
                 d="M20.5 41C31.8218 41 41 31.8218 41 20.5L20.5 20.5L20.5 41Z"
-                fill="#4FF1FF"
+                fill="var(--petal-cyan)"
               />
             </svg>
             <h3 className="text-2xl font-bold text-white tracking-tight">
@@ -226,7 +232,7 @@ export const SimpleProjectList: React.FC = () => {
               href="https://grafana.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#181818] border border-neutral-800 hover:border-neutral-700 text-neutral-300 text-xs font-medium transition-colors hover:text-white group"
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--ink-700b)] border border-neutral-800 hover:border-neutral-700 text-neutral-300 text-xs font-medium transition-colors hover:text-white group"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -236,32 +242,32 @@ export const SimpleProjectList: React.FC = () => {
               >
                 <path
                   d="M12 2C6.477 2 2 6.477 2 12C2 17.523 6.477 22 12 22C17.523 22 22 17.523 22 12C22 6.477 17.523 2 12 2Z"
-                  fill="#F05A28"
+                  fill="var(--grafana)"
                 />
                 <path
                   d="M16.5 12C16.5 14.485 14.485 16.5 12 16.5C9.515 16.5 7.5 14.485 7.5 12C7.5 9.515 9.515 7.5 12 7.5C14.485 7.5 16.5 9.515 16.5 12Z"
-                  fill="#FF884D"
+                  fill="var(--grafana-hi)"
                 />
-                <circle cx="12" cy="12" r="2.5" fill="#FFFFFF" />
+                <circle cx="12" cy="12" r="2.5" fill="var(--text-hi)" />
               </svg>
               <span>Grafana</span>
               <ArrowUpRight className="w-3 h-3 text-neutral-500 group-hover:text-white transition-colors" />
             </a>
 
             {/* Redis */}
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#181818] border border-neutral-800 text-neutral-300 text-xs font-medium">
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--ink-700b)] border border-neutral-800 text-neutral-300 text-xs font-medium">
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-3.5 h-3.5 shrink-0"
               >
-                <path d="M3 7.5L12 3L21 7.5L12 12L3 7.5Z" fill="#D82C20" />
-                <path d="M3 7.5L12 12V21L3 16.5V7.5Z" fill="#A32219" />
-                <path d="M21 7.5L12 12V21L21 16.5V7.5Z" fill="#B8271D" />
+                <path d="M3 7.5L12 3L21 7.5L12 12L3 7.5Z" fill="var(--redis-top)" />
+                <path d="M3 7.5L12 12V21L3 16.5V7.5Z" fill="var(--redis-back)" />
+                <path d="M21 7.5L12 12V21L21 16.5V7.5Z" fill="var(--redis-side)" />
                 <path
                   d="M7 8L12 5.5L17 8L12 10.5L7 8Z"
-                  fill="#FFFFFF"
+                  fill="var(--text-hi)"
                   fillOpacity="0.4"
                 />
               </svg>
@@ -286,7 +292,7 @@ export const SimpleProjectList: React.FC = () => {
               {/* Top Bar matching Folder tab */}
               <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
                 <div className="flex items-center gap-2">
-                  <span className="inline-block w-2 h-2 rounded-full bg-[#02C380] animate-pulse" />
+                  <span className="inline-block w-2 h-2 rounded-full bg-[var(--signal)] animate-pulse" />
                   <span className="text-xs font-mono uppercase tracking-wider text-neutral-300">
                     Unfolded Project Documents (04 / 04)
                   </span>
@@ -362,7 +368,7 @@ export const SimpleProjectList: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => router.push("/project")}
-                  className="inline-flex items-center gap-1.5 text-neutral-300 hover:text-[#02C380] transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1.5 text-neutral-300 hover:text-[var(--signal)] transition-colors cursor-pointer"
                 >
                   <span>Explore all projects archive</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />

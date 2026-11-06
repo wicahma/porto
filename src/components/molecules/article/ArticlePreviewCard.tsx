@@ -42,7 +42,7 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
     >
       <div>
         {/* Thumbnail */}
-        <div className="relative flex aspect-[466/252] w-full items-center justify-center overflow-hidden rounded-2xl bg-[#373737]">
+        <div className="relative flex aspect-[466/252] w-full items-center justify-center overflow-hidden rounded-2xl bg-[var(--ink-550)]">
           {article.image ? (
             <StorageImage
               src={article.image}
@@ -51,10 +51,10 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
             />
           ) : null}
 
-          <ArrowUpRight className="absolute top-4 right-4 h-6 w-6 text-[#A1A1A1] transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white" />
+          <ArrowUpRight className="absolute top-4 right-4 h-6 w-6 text-[var(--text-mid-2)] transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white" />
         </div>
 
-        <h4 className="mt-3.5 line-clamp-2 text-base font-bold leading-snug text-white transition-colors group-hover:text-[#02C380] md:text-lg">
+        <h4 className="mt-3.5 line-clamp-2 text-base font-bold leading-snug text-white transition-colors group-hover:text-[var(--signal)] md:text-lg">
           {article.title}
         </h4>
 

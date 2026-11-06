@@ -168,7 +168,7 @@ export default function Globe() {
         className="absolute cursor-pointer top-2 right-2 z-10 p-2 bg-neutral-800 hover:bg-neutral-700 rounded-full transition-colors"
         title="Re-center to your location"
       >
-        <RotateCcw size={16} className="text-[#FF8FC0]" />
+        <RotateCcw size={16} className="text-[var(--pink)]" />
       </button>
       <canvas
         ref={canvasRef}
@@ -238,11 +238,11 @@ export default function Globe() {
       >
         <path
           d="M12 1.5C7.31 1.5 3.5 5.31 3.5 10c0 6.25 8.5 12.5 8.5 12.5s8.5-6.25 8.5-12.5C20.5 5.31 16.69 1.5 12 1.5z"
-          fill="#ffffff"
+          fill="var(--text-hi)"
           stroke="rgba(0,0,0,0.4)"
           strokeWidth="1.4"
         />
-        <circle cx="12" cy="9.5" r="3.1" fill="#02C380" />
+        <circle cx="12" cy="9.5" r="3.1" fill="var(--signal)" />
       </svg>
     </div>
   );

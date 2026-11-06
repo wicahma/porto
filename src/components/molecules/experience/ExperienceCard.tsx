@@ -238,7 +238,7 @@ export const ExperienceCard: React.FC = () => {
         opacity: 1,
         filter: "blur(0px)",
         zIndex: 30,
-        bgColor: "#161616",
+        bgColor: "var(--ink-750)",
         border: "1px solid rgba(115, 115, 115, 0.4)",
         shadow: "0 25px 50px -12px rgba(0, 0, 0, 0.7)",
       };
@@ -251,7 +251,7 @@ export const ExperienceCard: React.FC = () => {
         opacity: 0.65,
         filter: "blur(1.5px)",
         zIndex: 20,
-        bgColor: "#131313",
+        bgColor: "var(--ink-850)",
         border: "1px solid rgba(64, 64, 64, 0.3)",
         shadow: "0 10px 25px -5px rgba(0, 0, 0, 0.5)",
       };
@@ -264,7 +264,7 @@ export const ExperienceCard: React.FC = () => {
         opacity: 0.65,
         filter: "blur(1.5px)",
         zIndex: 20,
-        bgColor: "#131313",
+        bgColor: "var(--ink-850)",
         border: "1px solid rgba(64, 64, 64, 0.3)",
         shadow: "0 10px 25px -5px rgba(0, 0, 0, 0.5)",
       };
@@ -277,7 +277,7 @@ export const ExperienceCard: React.FC = () => {
         opacity: 0.35,
         filter: "blur(3px)",
         zIndex: 10,
-        bgColor: "#101010",
+        bgColor: "var(--ink-660)",
         border: "1px solid transparent",
         shadow: "none",
       };
@@ -290,7 +290,7 @@ export const ExperienceCard: React.FC = () => {
         opacity: 0.35,
         filter: "blur(3px)",
         zIndex: 10,
-        bgColor: "#101010",
+        bgColor: "var(--ink-660)",
         border: "1px solid transparent",
         shadow: "none",
       };
@@ -302,7 +302,7 @@ export const ExperienceCard: React.FC = () => {
       opacity: 0,
       filter: "blur(4px)",
       zIndex: 0,
-      bgColor: "#101010",
+      bgColor: "var(--ink-660)",
       border: "1px solid transparent",
       shadow: "none",
     };
@@ -337,11 +337,11 @@ export const ExperienceCard: React.FC = () => {
     >
       {/* Header */}
       <div className="flex items-center justify-center gap-3 group w-full">
-        <Sun className="w-6 h-6 text-[#8D41FF] shrink-0 group-hover:rotate-45 transition-transform duration-300" />
+        <Sun className="w-6 h-6 text-[var(--violet-strong)] shrink-0 group-hover:rotate-45 transition-transform duration-300" />
         <h3 className="text-3xl font-semibold text-white tracking-tight group-hover:text-purple-300 transition-colors">
           Work Experience
         </h3>
-        <Sun className="w-6 h-6 text-[#8D41FF] shrink-0 group-hover:-rotate-45 transition-transform duration-300" />
+        <Sun className="w-6 h-6 text-[var(--violet-strong)] shrink-0 group-hover:-rotate-45 transition-transform duration-300" />
       </div>
 
       {/* Carousel Track with Left & Right Arrows */}
@@ -354,7 +354,7 @@ export const ExperienceCard: React.FC = () => {
             navigate("prev");
           }}
           aria-label="Previous experience"
-          className="absolute left-0 sm:left-2 z-40 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#1c1c1c]/90 hover:bg-[#282828] border border-neutral-700/60 hover:border-neutral-500 flex items-center justify-center text-neutral-300 hover:text-white transition-all shadow-xl hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-sm"
+          className="absolute left-0 sm:left-2 z-40 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[var(--ink-690)]/90 hover:bg-[var(--ink-610)] border border-neutral-700/60 hover:border-neutral-500 flex items-center justify-center text-neutral-300 hover:text-white transition-all shadow-xl hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-sm"
         >
           <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
@@ -423,7 +423,7 @@ export const ExperienceCard: React.FC = () => {
                       alt={item.company}
                       className="w-full h-full object-cover opacity-20 filter contrast-125"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-bl from-transparent via-[#161616]/40 to-[#161616]" />
+                    <div className="absolute inset-0 bg-gradient-to-bl from-transparent via-[var(--ink-750)]/40 to-[var(--ink-750)]" />
                   </div>
                 )}
 
@@ -431,7 +431,7 @@ export const ExperienceCard: React.FC = () => {
                   <h4 className="text-sm sm:text-base font-bold text-white mb-1.5 leading-snug truncate max-w-full">
                     {item.company}
                   </h4>
-                  <p className="text-xs sm:text-sm font-medium text-[#ABABAB] mb-1 line-clamp-2 leading-snug">
+                  <p className="text-xs sm:text-sm font-medium text-[var(--text-mid)] mb-1 line-clamp-2 leading-snug">
                     {item.role}
                   </p>
                   <p className="text-[11px] sm:text-xs text-neutral-400 font-mono mt-0.5">
@@ -451,7 +451,7 @@ export const ExperienceCard: React.FC = () => {
             navigate("next");
           }}
           aria-label="Next experience"
-          className="absolute right-0 sm:right-2 z-40 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#1c1c1c]/90 hover:bg-[#282828] border border-neutral-700/60 hover:border-neutral-500 flex items-center justify-center text-neutral-300 hover:text-white transition-all shadow-xl hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-sm"
+          className="absolute right-0 sm:right-2 z-40 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[var(--ink-690)]/90 hover:bg-[var(--ink-610)] border border-neutral-700/60 hover:border-neutral-500 flex items-center justify-center text-neutral-300 hover:text-white transition-all shadow-xl hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-sm"
         >
           <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>

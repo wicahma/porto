@@ -86,7 +86,7 @@ export const SimpleArticlePage: React.FC = () => {
             placeholder="Search some article..."
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            className="w-full px-6 py-3.5 bg-transparent border-2 border-[#FF8FC0] rounded-full text-neutral-200 placeholder:text-neutral-500 focus:outline-none focus:border-[#FF8FC0] transition-colors text-base"
+            className="w-full px-6 py-3.5 bg-transparent border-2 border-[var(--pink)] rounded-full text-neutral-200 placeholder:text-neutral-500 focus:outline-none focus:border-[var(--pink)] transition-colors text-base"
           />
         </div>
 
@@ -96,7 +96,7 @@ export const SimpleArticlePage: React.FC = () => {
             <ChipGroup
               key={categories.join("-")}
               initialChips={chipItems}
-              activeColor="bg-[#FF8FC0]"
+              activeColor="bg-[var(--pink)]"
               multiSelect={false}
               onChipsChange={handleChipsChange}
             />

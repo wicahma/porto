@@ -82,11 +82,11 @@ export const ExperienceDialog = ({
             {/* Underlying tilted paper card (clean sleek dark base) */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute inset-x-1.5 -top-1.5 bottom-1 -z-10 rotate-1 rounded-2xl border border-neutral-800/70 bg-[#0c0c0c] shadow-2xl"
+              className="pointer-events-none absolute inset-x-1.5 -top-1.5 bottom-1 -z-10 rotate-1 rounded-2xl border border-neutral-800/70 bg-[var(--ink-900)] shadow-2xl"
             />
 
             {/* Main Modal Card (Clean dark background) */}
-            <div className="relative flex max-h-[85vh] w-full flex-col overflow-hidden overscroll-contain rounded-2xl border border-neutral-800/90 bg-[#141414] shadow-2xl shadow-black/90 md:max-h-[80vh]">
+            <div className="relative flex max-h-[85vh] w-full flex-col overflow-hidden overscroll-contain rounded-2xl border border-neutral-800/90 bg-[var(--ink-800)] shadow-2xl shadow-black/90 md:max-h-[80vh]">
               {/* Close Button */}
               <button
                 type="button"
@@ -117,7 +117,7 @@ export const ExperienceDialog = ({
                       className="mb-3 h-16 w-16 shrink-0 rounded-2xl object-contain md:h-20 md:w-20"
                     />
                   ) : (
-                    <div className="mb-3 flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-neutral-800 text-xl font-black text-[#02C380] md:h-20 md:w-20">
+                    <div className="mb-3 flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-neutral-800 text-xl font-black text-[var(--signal)] md:h-20 md:w-20">
                       {data.company.charAt(0)}
                     </div>
                   )}
@@ -145,7 +145,7 @@ export const ExperienceDialog = ({
                           duration: 0.3,
                           ease: [0.16, 1, 0.3, 1],
                         }}
-                        className="rounded-xl border border-neutral-800/80 bg-[#191919]/60 p-4 transition-all hover:border-neutral-700 hover:bg-[#1c1c1c]/80"
+                        className="rounded-xl border border-neutral-800/80 bg-[var(--ink-725)]/60 p-4 transition-all hover:border-neutral-700 hover:bg-[var(--ink-690)]/80"
                       >
                         <div className="flex items-start justify-between gap-3">
                           <h3 className="text-sm font-semibold leading-snug text-white md:text-base">
@@ -176,7 +176,7 @@ export const ExperienceDialog = ({
                                 }}
                                 className="flex items-start gap-2 text-xs leading-relaxed text-neutral-300 md:text-sm"
                               >
-                                <ChevronRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#FFC501]" />
+                                <ChevronRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--caution)]" />
                                 <span>{comp}</span>
                               </m.li>
                             ))}
@@ -188,7 +188,7 @@ export const ExperienceDialog = ({
                 ) : (
                   <>
                     <m.div
-                      className="rounded-xl border border-neutral-800/80 bg-[#191919]/60 p-4"
+                      className="rounded-xl border border-neutral-800/80 bg-[var(--ink-725)]/60 p-4"
                       initial={{ opacity: 0, y: 12 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{
@@ -207,7 +207,7 @@ export const ExperienceDialog = ({
 
                     {data?.competency && data.competency.length > 0 && (
                       <m.div
-                        className="space-y-2 rounded-xl border border-neutral-800/80 bg-[#191919]/60 p-4"
+                        className="space-y-2 rounded-xl border border-neutral-800/80 bg-[var(--ink-725)]/60 p-4"
                         initial={{ opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{
@@ -231,7 +231,7 @@ export const ExperienceDialog = ({
                               }}
                               className="flex items-start gap-2 text-xs leading-relaxed text-neutral-300 md:text-sm"
                             >
-                              <ChevronRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#FFC501]" />
+                              <ChevronRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--caution)]" />
                               <span>{comp}</span>
                             </m.li>
                           ))}
@@ -266,7 +266,7 @@ export const ExperienceDialog = ({
                             delay: 0.2 + index * 0.03,
                             duration: 0.2,
                           }}
-                          className="rounded-md border border-neutral-700/60 bg-neutral-800/90 px-2.5 py-1 font-mono text-xs font-medium text-neutral-200 transition-colors hover:border-[#02C380] hover:text-[#02C380]"
+                          className="rounded-md border border-neutral-700/60 bg-neutral-800/90 px-2.5 py-1 font-mono text-xs font-medium text-neutral-200 transition-colors hover:border-[var(--signal)] hover:text-[var(--signal)]"
                         >
                           {tech}
                         </m.span>

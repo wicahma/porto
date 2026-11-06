@@ -69,7 +69,7 @@ export default function Infographic({
       <div className="flex gap-2 items-center">
         {shouldShowToggle && <ViewModeToggle />}
         <div>
-          <h3 className="text-nowrap truncate max-w-50 text-xl font-semibold text-[#02C380]">
+          <h3 className="text-nowrap truncate max-w-50 text-xl font-semibold text-[var(--signal)]">
             {getDayName()}
           </h3>
           <p className="text-sm font-semibold text-nowrap">
@@ -86,7 +86,7 @@ export default function Infographic({
         }
       >
         <div className="flex gap-1 items-center justify-center cursor-pointer">
-          <MapPin className="text-[#FF8FC0]" size={20} />
+          <MapPin className="text-[var(--pink)]" size={20} />
           <span className="text-lg font-semibold">Indonesia</span>
         </div>
       </Tooltip>

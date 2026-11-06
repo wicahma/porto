@@ -80,7 +80,7 @@ export default function Breadcrumb() {
               <span
                 className={cn(
                   isActive
-                    ? "text-[#02C380]"
+                    ? "text-[var(--signal)]"
                     : "text-neutral-400 hover:text-neutral-200",
                   isArticlePage
                     ? "text-xs sm:text-sm font-medium tracking-normal truncate max-w-[180px] sm:max-w-xs md:max-w-md"

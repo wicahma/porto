@@ -1,7 +1,7 @@
-import HomePage from "@/components/organisms/MainPage";
+import SimpleModeView from "@/components/organisms/wrapper/SimpleModeView";
 
 const Home = () => {
-  return <HomePage />;
+  return <SimpleModeView />;
 };
 
 export default Home;

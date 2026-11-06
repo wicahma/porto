@@ -61,7 +61,7 @@ const ButtonsLeft = ({
         <button
           type="button"
           onClick={handleRedirectToEmail}
-          className="cursor-pointer bg-[#FF3714] hover:bg-[#ff4e2e] text-white flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full text-sm font-semibold transition-transform hover:scale-105"
+          className="cursor-pointer bg-[var(--flare)] hover:bg-[var(--flare)] text-white flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full text-sm font-semibold transition-transform hover:scale-105"
         >
           <Chat className="w-5 h-4" />
           <span>Open to discuss</span>
@@ -70,7 +70,7 @@ const ButtonsLeft = ({
           type="button"
           onClick={handleDownloadCV}
           disabled={isGenerating}
-          className="cursor-pointer bg-[#191919] hover:bg-[#252525] border border-neutral-700/60 text-white flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full text-sm font-semibold transition-transform hover:scale-105"
+          className="cursor-pointer bg-[var(--ink-725)] hover:bg-[var(--ink-620)] border border-neutral-700/60 text-white flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full text-sm font-semibold transition-transform hover:scale-105"
         >
           <Download className="w-4 h-4" />
           <span>{isGenerating ? "Generating..." : "Download CV"}</span>
@@ -88,7 +88,7 @@ const ButtonsLeft = ({
         <Chat className="md:w-7 md:h-7 w-5 h-5" /> Open to discuss
       </ButtonBig>
       <ButtonBig
-        className="hoverable bg-[#222222]"
+        className="hoverable bg-[var(--ink-640)]"
         onClick={handleDownloadCV}
         disabled={isGenerating}
       >

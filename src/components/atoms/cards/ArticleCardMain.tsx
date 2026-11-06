@@ -49,7 +49,7 @@ const ArticleCard = () => {
             <input
               type="text"
               placeholder="Search some article..."
-              className="w-full px-5 py-3 bg-neutral-900 border-2 border-[#FF8FC0] rounded-full text-neutral-400 placeholder:text-neutral-600 focus:outline-none focus:border-[#FF8FC0] transition-colors"
+              className="w-full px-5 py-3 bg-neutral-900 border-2 border-[var(--pink)] rounded-full text-neutral-400 placeholder:text-neutral-600 focus:outline-none focus:border-[var(--pink)] transition-colors"
             />
           </div>
 

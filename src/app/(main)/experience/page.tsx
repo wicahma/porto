@@ -1,5 +1,10 @@
-import { redirect } from "next/navigation";
+import PublicPageShell from "@/components/organisms/wrapper/PublicPageShell";
+import SimpleExperiencePage from "@/components/organisms/SimpleExperiencePage";
 
 export default function ExperiencePage() {
-  redirect("/");
+  return (
+    <PublicPageShell code="SEC / 04 — EXPERIENCE">
+      <SimpleExperiencePage />
+    </PublicPageShell>
+  );
 }

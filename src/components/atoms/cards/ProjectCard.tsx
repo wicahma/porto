@@ -152,7 +152,7 @@ const ProjectCard = () => {
         aria-controls={isExpanded ? "project-previews" : undefined}
         onClick={() => setIsExpanded((expanded) => !expanded)}
         whileTap={reduceMotion ? undefined : { scale: 0.99 }}
-        className="group w-full cursor-pointer text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#02C380]"
+        className="group w-full cursor-pointer text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--signal)]"
       >
         <div className="mb-5 flex items-center justify-between gap-3">
           <div className="flex min-w-0 items-center gap-3">
@@ -198,7 +198,7 @@ const ProjectCard = () => {
           >
             <div className="mb-4 flex items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400 md:text-xs">
               <span className="flex items-center gap-2">
-                <span className="inline-block w-2 h-2 rounded-full bg-[#02C380] animate-pulse" />
+                <span className="inline-block w-2 h-2 rounded-full bg-[var(--signal)] animate-pulse" />
                 <span>Project files</span>
               </span>
               <span>{projects.length.toString().padStart(2, "0")} / 04</span>
@@ -257,7 +257,7 @@ const ProjectCard = () => {
             <button
               type="button"
               onClick={() => router.push("/project")}
-              className="mt-5 inline-flex items-center gap-2 rounded-full border border-neutral-700 px-4 py-2 text-xs font-mono font-semibold text-neutral-300 transition-colors hover:border-[#02C380] hover:text-[#02C380] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#02C380]"
+              className="mt-5 inline-flex items-center gap-2 rounded-full border border-neutral-700 px-4 py-2 text-xs font-mono font-semibold text-neutral-300 transition-colors hover:border-[var(--signal)] hover:text-[var(--signal)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--signal)]"
             >
               <span>Explore all projects archive</span>
               <ArrowUpRight aria-hidden="true" className="h-4 w-4" />

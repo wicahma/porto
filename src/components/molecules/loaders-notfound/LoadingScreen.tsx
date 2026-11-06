@@ -72,8 +72,8 @@ function WaterFillAnimation({ progress }: Readonly<{ progress: number }>) {
       ctx.clearRect(0, 0, width, height);
 
       const gradient = ctx.createLinearGradient(0, waterLevel, 0, height);
-      gradient.addColorStop(0, "#3b82f6");
-      gradient.addColorStop(1, "#0C4DB8");
+      gradient.addColorStop(0, "var(--blue)");
+      gradient.addColorStop(1, "var(--blue-strong)");
       ctx.fillStyle = gradient;
 
       ctx.beginPath();
