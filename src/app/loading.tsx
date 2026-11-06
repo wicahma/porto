@@ -1,5 +1,7 @@
-import LoadingScreen from "@/components/molecules/loaders-notfound/LoadingScreen";
-
+/**
+ * No blocking curtain: the previous fallback rendered a full-screen canvas
+ * animation that pinned LCP to its removal. Route content streams in directly.
+ */
 export default function Loading() {
-  return <LoadingScreen />;
+  return null;
 }

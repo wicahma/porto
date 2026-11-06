@@ -12,7 +12,7 @@ import {
   isLogoSource,
 } from "@/utils/helper/experience-logo";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { m } from "motion/react";
+import { m, useReducedMotion } from "motion/react";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -146,6 +146,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
   const { data: experiencesData } = useExperiences(1, 10);
   const [centerIndex, setCenterIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const reduceMotion = useReducedMotion();
   const [isMobile, setIsMobile] = useState(false);
   const [selectedExperience, setSelectedExperience] = useState<ExperienceCard | null>(null);
   const [selectedPositions, setSelectedPositions] = useState<
@@ -239,7 +240,13 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
 
   // Auto-slide effect with customizable interval and pause-on-hover
   useEffect(() => {
-    if (!autoSlide || (pauseOnHover && isHovered) || total <= 1 || isDialogOpen) {
+    if (
+      !autoSlide ||
+      reduceMotion ||
+      (pauseOnHover && isHovered) ||
+      total <= 1 ||
+      isDialogOpen
+    ) {
       return;
     }
 
@@ -248,7 +255,16 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
     }, autoSlideInterval);
 
     return () => clearInterval(timer);
-  }, [autoSlide, autoSlideInterval, pauseOnHover, isHovered, total, navigate, isDialogOpen]);
+  }, [
+    autoSlide,
+    autoSlideInterval,
+    pauseOnHover,
+    isHovered,
+    total,
+    navigate,
+    isDialogOpen,
+    reduceMotion,
+  ]);
 
   // Compute position, scale, opacity, and zIndex for a given relative offset
   const color = useCssColors(["--ink-600", "--line", "--ink-650", "--ink-710"]);
@@ -364,7 +380,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
         title="Experience"
         meta="Service record"
         icon={
-          <Sun className="h-6 w-6 shrink-0 text-[var(--violet)] md:h-7 md:w-7" />
+          <Sun className="h-6 w-6 shrink-0 text-[var(--caution)] md:h-7 md:w-7" />
         }
         action={
           <span className="readout spec-label">{total} ENTRIES</span>
@@ -424,7 +440,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
                   height: isMobile ? "165px" : "195px",
                   pointerEvents: isVisible ? "auto" : "none",
                 }}
-                className="absolute cursor-pointer rounded-2xl md:rounded-3xl overflow-hidden p-4 sm:p-5 flex flex-col justify-between"
+                className="absolute cursor-pointer overflow-hidden rounded-sm p-4 sm:p-5 flex flex-col justify-between"
                 onClick={() => {
                   if (isCenter) {
                     handleOpenModal(item);
@@ -467,7 +483,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
                       isRight ? "text-right" : "text-left"
                     }`}
                   >
-                    <span className="text-xs sm:text-sm font-bold text-[var(--signal)] tracking-wide uppercase truncate">
+                    <span className="truncate font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--signal)] sm:text-xs">
                       {item.company}
                     </span>
                     {item.location && isCenter && (
@@ -486,9 +502,9 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
 
                 {/* Middle: Role & Description (Compact spacing) */}
                 <div className={`mt-1.5 mb-1 ${isRight ? "text-right" : "text-left"}`}>
-                  <h4 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-white tracking-tight truncate">
+                  <h3 className="truncate text-sm font-black tracking-tight text-white sm:text-base md:text-lg lg:text-xl">
                     {item.role}
-                  </h4>
+                  </h3>
                   <span className="mt-0.5 block font-mono text-[10px] sm:text-xs text-neutral-400 transition-opacity duration-300">
                     {item.period}
                   </span>
@@ -517,7 +533,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
                     item.tags.slice(0, 4).map((tag, i) => (
                       <span
                         key={i}
-                        className="px-2 py-0.5 rounded-md text-[10px] font-medium bg-neutral-800/90 text-neutral-300 border border-neutral-700/50"
+                        className="border border-[var(--line)] px-1.5 py-0.5 font-mono text-[10px] leading-none text-neutral-400"
                       >
                         {tag}
                       </span>
@@ -554,12 +570,17 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
               type="button"
               onClick={() => setCenterIndex(idx)}
               aria-label={`Go to slide ${idx + 1}`}
-              className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                idx === centerIndex
-                  ? "w-6 bg-[var(--signal)]"
-                  : "w-1.5 bg-neutral-700 hover:bg-neutral-500"
-              }`}
-            />
+              aria-current={idx === centerIndex ? "true" : undefined}
+              className="group relative flex h-6 w-6 cursor-pointer items-center justify-center"
+            >
+              <span
+                className={`block h-1.5 transition-all duration-300 ${
+                  idx === centerIndex
+                    ? "w-5 bg-[var(--signal)]"
+                    : "w-1.5 bg-neutral-700 group-hover:bg-neutral-500"
+                }`}
+              />
+            </button>
           ))}
         </div>
       )}

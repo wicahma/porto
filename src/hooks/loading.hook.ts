@@ -16,7 +16,10 @@ export function usePageLoading() {
     resetProgress();
     startLoading();
 
-    const randomDelay = isMdUp() ? Math.random() * 1500 : Math.random() * 3000;
+    // The old overlay stalled first paint for up to 3s on mobile purely for
+    // effect. Keep a short curtain so the transition still reads, but let the
+    // page paint immediately.
+    const randomDelay = isMdUp() ? 220 : 260;
     const startTime = Date.now();
 
     const progressInterval = setInterval(() => {

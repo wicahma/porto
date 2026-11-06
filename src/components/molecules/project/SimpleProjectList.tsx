@@ -1,6 +1,5 @@
 "use client";
 
-import FolderIcon from "@/assets/svg/folder";
 import ProjectIcon from "@/assets/svg/project-icon";
 import { SectionHeader } from "@/components/molecules/header/SectionHeader";
 import { useProjectCount, useProjects } from "@/hooks/queries/project.wrapper";
@@ -96,6 +95,17 @@ const FEATURED_FOUR_PROJECTS: Partial<TProjectRow>[] = [
 
 const TARGET_ORDER = ["Onesist", "TypeScript Gateway", "Patok", "Blindfold"];
 
+const CORE_STACK = [
+  "TypeScript",
+  "Go",
+  "Next.js",
+  "React",
+  "PostgreSQL",
+  "Node.js",
+  ".NET",
+  "Docker",
+];
+
 export const SimpleProjectList: React.FC = () => {
   const router = useRouter();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -177,14 +187,51 @@ export const SimpleProjectList: React.FC = () => {
             />
           </button>
 
-          {/* Folder Graphic Trigger */}
-          <div
+          {/* Dossier trigger: the old saturated folder artwork replaced by a
+              flat instrument panel that unfolds the project records below. */}
+          <button
+            type="button"
             onClick={() => setIsExpanded((prev) => !prev)}
-            className="cursor-pointer group relative transition-transform duration-300 hover:scale-[1.01]"
-            title={isExpanded ? "Click to fold back" : "Click to unfold projects"}
+            aria-expanded={isExpanded}
+            title={isExpanded ? "Fold records back" : "Unfold project records"}
+            className="focus-spec plate cornered lift group relative block w-full max-w-[614px] cursor-pointer overflow-hidden p-4 text-left"
           >
-            <FolderIcon className="w-full max-w-[614px] aspect-[614/286] drop-shadow-xl" />
-          </div>
+            <div aria-hidden="true" className="scanlines pointer-events-none absolute inset-0 opacity-60" />
+
+            <div className="relative flex items-center justify-between gap-3">
+              <span className="spec-label spec-label--caution readout">
+                DOSSIER // PRJ
+              </span>
+              <span className="spec-label">04 FILES</span>
+            </div>
+
+            <div className="relative mt-3 space-y-1.5">
+              {["Onesist", "TypeScript Gateway", "Patok", "Blindfold"].map(
+                (name, i) => (
+                  <div
+                    key={name}
+                    className="flex items-center justify-between gap-3 border-b border-[var(--line-soft)] pb-1 last:border-b-0"
+                  >
+                    <span className="truncate font-mono text-[11px] uppercase tracking-[0.1em] text-neutral-300">
+                      {String(i + 1).padStart(2, "0")} · {name}
+                    </span>
+                    <span className="spec-label readout text-[var(--signal)]">
+                      RDY
+                    </span>
+                  </div>
+                ),
+              )}
+            </div>
+
+            <div className="relative mt-3 flex items-center justify-between">
+              <span className="spec-label">Click to unfold</span>
+              <ChevronDown
+                className={`h-4 w-4 text-neutral-500 transition-transform duration-300 ${
+                  isExpanded ? "rotate-180 text-[var(--signal)]" : ""
+                }`}
+              />
+            </div>
+          </button>
         </div>
 
         {/* Right: What i work with */}
@@ -274,6 +321,29 @@ export const SimpleProjectList: React.FC = () => {
               <span>Redis</span>
             </div>
           </div>
+
+          {/* Capability matrix */}
+          <div className="mt-4 border-t border-[var(--line-soft)] pt-3">
+            <div className="flex items-center justify-between">
+              <span className="spec-label">Core stack</span>
+              <span className="spec-label readout">{CORE_STACK.length} ITEMS</span>
+            </div>
+            <ul className="mt-2 grid grid-cols-1 gap-x-6 sm:grid-cols-2">
+              {CORE_STACK.map((tech, i) => (
+                <li
+                  key={tech}
+                  className="flex items-baseline justify-between gap-3 border-b border-[var(--line-soft)] py-1 last:border-b-0"
+                >
+                  <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-neutral-300">
+                    {tech}
+                  </span>
+                  <span className="spec-label readout">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
 
@@ -350,6 +420,7 @@ export const SimpleProjectList: React.FC = () => {
                       >
                         <ProjectPaperCard
                           project={proj}
+                          index={idx}
                           variant={variant}
                           tilt={tilt}
                           onClick={() => setSelectedProject(proj)}

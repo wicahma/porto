@@ -1,6 +1,5 @@
 "use client";
 
-import Batik from "@/assets/svg/batik";
 import Triangles from "@/assets/svg/triangles";
 import { ArticlePreviewCard } from "@/components/molecules/article/ArticlePreviewCard";
 import ChipGroup from "@/components/molecules/chips/ChipGroup";
@@ -13,7 +12,15 @@ import { TArticleRow } from "@/interface/entities/article.interface";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
 
-export const SimpleArticlePage: React.FC = () => {
+export interface SimpleArticlePageProps {
+  initialArticles?: { articles: TArticleRow[]; total: number };
+  initialCategories?: string[];
+}
+
+export const SimpleArticlePage: React.FC<SimpleArticlePageProps> = ({
+  initialArticles,
+  initialCategories,
+}) => {
   const router = useRouter();
 
   // Search state with 300ms server-side debounce
@@ -29,7 +36,7 @@ export const SimpleArticlePage: React.FC = () => {
   }, [searchInput]);
 
   // Fetch distinct categories directly from database articles table
-  const { data: dbCategories } = useArticleCategories();
+  const { data: dbCategories } = useArticleCategories(initialCategories);
 
   // Fetch articles with server-side search and category filtering
   const { data, isLoading } = useArticles(
@@ -37,6 +44,7 @@ export const SimpleArticlePage: React.FC = () => {
     50,
     debouncedSearch,
     selectedCategory === "All" ? "" : selectedCategory,
+    initialArticles,
   );
 
   const articles = (data?.articles as TArticleRow[] | undefined) ?? [];
@@ -83,10 +91,11 @@ export const SimpleArticlePage: React.FC = () => {
         <div className="w-full">
           <input
             type="text"
+            aria-label="Search articles"
             placeholder="Search some article..."
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            className="w-full px-6 py-3.5 bg-transparent border-2 border-[var(--pink)] rounded-full text-neutral-200 placeholder:text-neutral-500 focus:outline-none focus:border-[var(--pink)] transition-colors text-base"
+            className="w-full border border-[var(--line-strong)] bg-[var(--ink-900)] px-4 py-3 font-mono text-sm text-neutral-200 transition-colors placeholder:text-[var(--text-low)] focus:border-[var(--signal)] focus:outline-none"
           />
         </div>
 
@@ -96,7 +105,7 @@ export const SimpleArticlePage: React.FC = () => {
             <ChipGroup
               key={categories.join("-")}
               initialChips={chipItems}
-              activeColor="bg-[var(--pink)]"
+              activeColor="bg-[var(--signal)]"
               multiSelect={false}
               onChipsChange={handleChipsChange}
             />
@@ -105,6 +114,15 @@ export const SimpleArticlePage: React.FC = () => {
       </div>
 
       {/* 3. Article Card List (shared borderless card with the home summary) */}
+      <div className="flex items-center gap-3">
+        <span className="spec-label spec-label--signal readout">
+          IDX / {articles.length.toString().padStart(2, "0")}
+        </span>
+        <h2 className="font-mono text-xs uppercase tracking-[0.18em] text-neutral-400">
+          Article index
+        </h2>
+        <span className="rule flex-1" aria-hidden="true" />
+      </div>
       {isLoading ? (
         <div className="grid grid-cols-1 gap-6 pt-2 md:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 3 }).map((_, i) => (
@@ -117,7 +135,7 @@ export const SimpleArticlePage: React.FC = () => {
         </div>
       ) : articles.length > 0 ? (
         <div className="grid grid-cols-1 gap-6 pt-2 md:grid-cols-2 lg:grid-cols-3">
-          {articles.map((article) => (
+          {articles.map((article, index) => (
             <ArticlePreviewCard
               key={article.id}
               article={article}
@@ -133,11 +151,7 @@ export const SimpleArticlePage: React.FC = () => {
         </div>
       )}
 
-      {/* Footer Batik */}
-      <div className="w-full overflow-hidden flex flex-nowrap rounded-lg my-8 opacity-90 select-none pointer-events-none">
-        <Batik />
-        <Batik />
-      </div>
+      <span className="rule mt-8 block w-full" aria-hidden="true" />
     </div>
   );
 };

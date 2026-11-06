@@ -240,6 +240,7 @@ const ProjectCard = () => {
                     >
                       <ProjectPaperCard
                         project={project}
+                        index={index}
                         variant="full"
                         tilt={tilt}
                         onClick={() => setSelectedProject(project)}

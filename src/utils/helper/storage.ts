@@ -3,8 +3,12 @@ export const getStorageFileUrl = (
 ): string => {
   if (!filePath) return "";
 
-  // If it's already a full URL, return it
-  if (filePath.startsWith("http://") || filePath.startsWith("https://")) {
+  // Absolute URLs and same-origin asset paths are used verbatim.
+  if (
+    filePath.startsWith("http://") ||
+    filePath.startsWith("https://") ||
+    filePath.startsWith("/")
+  ) {
     return filePath;
   }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { StorageImage } from "@/components/atoms/images/StorageImage";
+import { getStorageFileUrl } from "@/utils/helper/storage";
 import { TArticleRow } from "@/interface/entities/article.interface";
 import { ArrowUpRight } from "lucide-react";
 import React from "react";
@@ -42,21 +42,23 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
     >
       <div>
         {/* Thumbnail */}
-        <div className="relative flex aspect-[466/252] w-full items-center justify-center overflow-hidden rounded-2xl bg-[var(--ink-550)]">
+        <div className="relative flex aspect-[466/252] w-full items-center justify-center overflow-hidden rounded-sm border border-[var(--line)] bg-[var(--ink-550)]">
           {article.image ? (
-            <StorageImage
-              src={article.image}
-              alt={article.title}
-              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-105"
+              style={{
+                backgroundImage: `url("${getStorageFileUrl(article.image)}")`,
+              }}
             />
           ) : null}
 
-          <ArrowUpRight className="absolute top-4 right-4 h-6 w-6 text-[var(--text-mid-2)] transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white" />
+          <span className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center border border-[var(--line-strong)] bg-[var(--ink-900)]/80 text-[var(--text-mid)] transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:border-[var(--signal)] group-hover:text-[var(--signal)]"><ArrowUpRight className="h-4 w-4" /></span>
         </div>
 
-        <h4 className="mt-3.5 line-clamp-2 text-base font-bold leading-snug text-white transition-colors group-hover:text-[var(--signal)] md:text-lg">
+        <h3 className="mt-3.5 line-clamp-2 text-base font-bold leading-snug text-white transition-colors group-hover:text-[var(--signal)] md:text-lg">
           {article.title}
-        </h4>
+        </h3>
 
         {article.excerpt && (
           <p className="mt-1.5 line-clamp-2 text-xs font-normal leading-relaxed text-neutral-400">
@@ -65,10 +67,12 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
         )}
       </div>
 
-      <p className="mt-2 text-xs font-normal text-neutral-400 md:text-sm">
-        {article.category || "Tech"} {readTime} min read ·{" "}
-        {formatArticleDate(article.created_at)}
-      </p>
+      <div className="mt-2.5 flex items-center justify-between gap-2 border-t border-[var(--line-soft)] pt-2">
+        <span className="spec-label spec-label--signal">{article.category || "Tech"}</span>
+        <span className="spec-label readout">
+          {readTime} MIN · {formatArticleDate(article.created_at)}
+        </span>
+      </div>
     </div>
   );
 };

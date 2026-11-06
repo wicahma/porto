@@ -1,6 +1,5 @@
 "use client";
 
-import Batik from "@/assets/svg/batik";
 import Sun from "@/assets/svg/sun";
 import ExperienceDialog from "@/components/molecules/experience/ExperienceDialog";
 import { ExperienceCard as IExperienceCard } from "@/constants/dummies/experience-carousel";
@@ -183,9 +182,16 @@ export const SimpleExperiencePage: React.FC = () => {
     <div className="w-full space-y-12 py-6">
       {/* Header */}
       <div className="space-y-4">
+        <div className="flex items-center gap-2">
+          <span className="led" aria-hidden="true" />
+          <span className="spec-label spec-label--signal readout">
+            Service record // {experiences.length} entries
+          </span>
+          <span className="rule flex-1" aria-hidden="true" />
+        </div>
         <div className="flex items-center gap-3">
-          <Sun className="w-8 h-8 text-[var(--violet)] shrink-0" />
-          <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">
+          <Sun className="h-7 w-7 shrink-0 text-[var(--caution)] md:h-8 md:w-8" />
+          <h1 className="text-3xl font-black tracking-tight text-white md:text-4xl">
             Work Experience
           </h1>
         </div>
@@ -210,7 +216,7 @@ export const SimpleExperiencePage: React.FC = () => {
           {experiences.map((exp) => (
             <div
               key={exp.id}
-              className="rounded-2xl bg-[var(--ink-750)] border border-neutral-800/80 hover:border-neutral-700 p-6 sm:p-8 space-y-6 transition-colors shadow-lg"
+              className="plate cornered lift space-y-6 p-6 hover:border-[var(--line-strong)] sm:p-8"
             >
               {/* Company Header */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-neutral-800/80 pb-4">
@@ -238,7 +244,7 @@ export const SimpleExperiencePage: React.FC = () => {
                 {exp.jobs.map((job) => (
                   <div key={job.id} className="space-y-3">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                      <h3 className="text-lg font-bold text-[var(--signal)]">
+                      <h3 className="font-mono text-base font-bold uppercase tracking-[0.08em] text-[var(--signal)]">
                         {job.role}
                       </h3>
                       <span className="text-xs font-mono font-medium px-3 py-1 rounded-full bg-neutral-800/90 text-neutral-300 border border-neutral-700/60 self-start sm:self-auto">
@@ -272,7 +278,7 @@ export const SimpleExperiencePage: React.FC = () => {
                 {exp.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="px-2.5 py-0.5 rounded-md text-[11px] font-medium bg-neutral-800/90 text-neutral-300 border border-neutral-700/60"
+                    className="border border-[var(--line)] px-1.5 py-0.5 font-mono text-[10px] leading-none text-neutral-400"
                   >
                     {tag}
                   </span>
@@ -283,11 +289,7 @@ export const SimpleExperiencePage: React.FC = () => {
         </div>
       )}
 
-      {/* Footer Batik */}
-      <div className="w-full overflow-hidden flex flex-nowrap rounded-lg my-8 opacity-90 select-none pointer-events-none">
-        <Batik />
-        <Batik />
-      </div>
+      <span className="rule mt-8 block w-full" aria-hidden="true" />
 
       {/* Modal Dialog */}
       {selectedExperience && (

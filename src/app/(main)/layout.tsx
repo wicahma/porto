@@ -1,6 +1,4 @@
 "use client";
-import LoadingScreen from "@/components/molecules/loaders-notfound/LoadingScreen";
-import { usePageLoading } from "@/hooks/loading.hook";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 import { ILayoutProps } from "@/interface/app/layout";
 import { cn } from "@/lib/utils";
@@ -20,8 +18,6 @@ const Layout: React.FC<ILayoutProps> = ({ children }) => {
   const disableOnPathname = [`/article/${params.slug}`];
   const init = useViewModeStore((state) => state.init);
 
-  usePageLoading();
-
   useEffect(() => {
     init();
   }, [init]);
@@ -33,7 +29,6 @@ const Layout: React.FC<ILayoutProps> = ({ children }) => {
 
   return (
     <main className="max-w-screen overflow-hidden">
-      <LoadingScreen />
       <NextTopLoader height={1} color="var(--ink-500)" />
       <div
         id="data"

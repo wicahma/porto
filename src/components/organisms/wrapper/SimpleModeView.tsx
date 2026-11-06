@@ -1,6 +1,5 @@
 "use client";
 
-import Batik from "@/assets/svg/batik";
 import Hello from "@/assets/svg/hello";
 import Peeps from "@/assets/svg/peeps";
 import StarGede from "@/assets/svg/star-gede";
@@ -27,7 +26,7 @@ export const SimpleModeView: React.FC<{
   }
 
   return (
-    <div className="w-full mx-auto space-y-16 lg:space-y-24 py-6">
+    <div className="section-stack mx-auto w-full py-6">
       {/* 1. Hero Section */}
       <section className="relative">
         {/* Station strip */}
@@ -151,11 +150,11 @@ export const SimpleModeView: React.FC<{
       {/* 5. Articles Section */}
       <SimpleArticleList />
 
-      {/* 6. Footer Decorative Batik Pattern */}
-      <div className="w-full overflow-hidden flex flex-nowrap rounded-lg my-12 opacity-90 select-none pointer-events-none">
-        <Batik />
-        <Batik />
-        <Batik />
+      {/* 6. Footer rule */}
+      <div className="flex items-center gap-3 py-6">
+        <span className="spec-label readout">EOF</span>
+        <span className="rule flex-1" aria-hidden="true" />
+        <span className="spec-label">TDCK // 2026</span>
       </div>
     </div>
   );

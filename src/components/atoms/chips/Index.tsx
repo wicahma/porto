@@ -59,7 +59,7 @@ const Chip: React.FC<IChipProps> = ({
 
   return (
     <m.div
-      className="relative bg-neutral-800 overflow-hidden font-semibold w-fit px-6 h-[38px] flex items-center justify-center rounded-full"
+      className="relative overflow-hidden border border-[var(--line)] bg-[var(--ink-800)] font-mono text-[11px] uppercase tracking-[0.12em] w-fit px-4 h-[32px] flex items-center justify-center rounded-none"
       {...props.motioncomp}
     >
       <m.div

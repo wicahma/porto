@@ -41,6 +41,7 @@ export function useArticles(
   limit: number = 10,
   search: string = "",
   category: string = "",
+  initialData?: { articles: unknown[]; total: number },
 ) {
   return useQuery({
     queryKey: articleKeys.list(page, limit, search, category),
@@ -50,12 +51,17 @@ export function useArticles(
       );
       return result.data;
     },
+    initialData:
+      initialData && page === 1 && !search && !category
+        ? (initialData as never)
+        : undefined,
   });
 }
 
-export function useArticleCategories() {
+export function useArticleCategories(initialData?: string[]) {
   return useQuery({
     queryKey: articleKeys.categories(),
+    initialData,
     queryFn: async () => {
       const result = await errorWrapper(apiGetArticleCategories(), false);
       return result.data ?? [];

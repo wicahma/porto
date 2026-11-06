@@ -7,24 +7,25 @@ import { ProjectDetailData } from "./ProjectDetailDialog";
 export interface ProjectPaperCardProps {
   project: ProjectDetailData;
   index?: number;
-  /**
-   * Bento/Tetris grid sizing variant:
-   * - "wide": 7 columns on md+ screens
-   * - "compact": 5 columns on md+ screens
-   * - "full": full width (for stacked/animated UI)
-   */
   variant?: "wide" | "compact" | "full";
-  /** Tilt angle for underlying stacked paper card (e.g. -1, 1, -0.8, 0.8) */
   tilt?: number;
   onClick?: () => void;
 }
 
+/**
+ * MIL-SPEC project plate: serial header, stencilled title, measurement rule,
+ * problem/solution readout rows, and bracketed tech tags.
+ */
 export const ProjectPaperCard: React.FC<ProjectPaperCardProps> = ({
   project,
+  index = 0,
   variant = "full",
   tilt = 1,
   onClick,
 }) => {
+  const serial = `P-${String(index + 1).padStart(2, "0")}`;
+  const compact = variant === "compact";
+
   return (
     <div
       onClick={onClick}
@@ -36,111 +37,86 @@ export const ProjectPaperCard: React.FC<ProjectPaperCardProps> = ({
           onClick?.();
         }
       }}
-      className="group relative isolate flex h-full w-full cursor-pointer flex-col justify-between focus:outline-none"
+      className="focus-spec group relative isolate flex h-full w-full cursor-pointer flex-col focus:outline-none"
     >
-      {/* 1. Underlying stacked paper layer (sleek dark paper base) */}
+      {/* Underside plate, offset for the stacked-document read */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-1.5 -top-1.5 bottom-1 -z-10 rounded-2xl border border-neutral-800/70 bg-[var(--ink-900)] shadow-lg transition-transform duration-300 group-hover:rotate-0"
-        style={{
-          transform: `rotate(${tilt}deg)`,
-        }}
+        className="pointer-events-none absolute inset-x-1.5 -top-1.5 bottom-1 -z-10 border border-[var(--line-soft)] bg-[var(--ink-950)] transition-transform duration-300 group-hover:rotate-0"
+        style={{ transform: `rotate(${tilt}deg)` }}
       />
 
-      {/* 2. Main Dark Paper Card (Clean dark background, uniform height) */}
-      <div className="relative flex h-full min-h-[280px] w-full flex-col justify-between overflow-hidden rounded-2xl border border-neutral-800/90 bg-[var(--ink-800)] p-5 shadow-2xl transition-all duration-300 group-hover:-translate-y-1 group-hover:border-neutral-600/80 md:p-6">
+      <div className="plate cornered lift relative flex h-full min-h-[268px] w-full flex-col justify-between overflow-hidden p-5 group-hover:border-[var(--line-strong)] md:p-6">
         <div className="flex flex-1 flex-col justify-between">
           <div>
-            {/* Top row: Year & Title & External Link */}
+            {/* Serial + link */}
             <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0 flex-1">
-                <div className="mb-1.5 flex items-center gap-2">
-                  {project.year && (
-                    <span className="rounded-full border border-neutral-700/60 bg-neutral-800/90 px-2 py-0.5 font-mono text-[10px] text-neutral-300 md:text-[11px]">
-                      {project.year}
-                    </span>
-                  )}
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-neutral-500">
-                    Project file
-                  </span>
-                </div>
-                <h4 className="truncate text-lg font-bold leading-snug tracking-tight text-white transition-colors group-hover:text-[var(--signal)] md:text-xl">
-                  {project.title}
-                </h4>
+              <div className="flex min-w-0 flex-wrap items-center gap-x-2.5 gap-y-1">
+                <span className="led" aria-hidden="true" />
+                <span className="spec-label spec-label--signal readout">
+                  {serial}
+                </span>
+                <span className="spec-label readout">{project.year}</span>
+                <span className="spec-label hidden sm:inline">// build record</span>
               </div>
 
-              {project.link && (
+              {project.link ? (
                 <a
                   href={project.link}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
                   title={`Open ${project.title}`}
-                  className="shrink-0 rounded-xl border border-neutral-700/70 bg-neutral-800/90 p-2 text-neutral-300 shadow-sm transition-all hover:border-[var(--signal)] hover:bg-[var(--signal)] hover:text-neutral-950"
+                  className="focus-spec shrink-0 border border-[var(--line)] p-2 text-neutral-400 transition-colors hover:border-[var(--signal)] hover:text-[var(--signal)]"
                 >
-                  <ArrowUpRight className="h-4 w-4" />
+                  <ArrowUpRight className="h-3.5 w-3.5" />
                 </a>
-              )}
+              ) : null}
             </div>
 
-            {/* Description (2 lines clamp) */}
-            {project.description && (
-              <p className="mt-3 line-clamp-2 text-xs font-normal leading-relaxed text-neutral-300 md:text-sm">
+            <h3 className="mt-3 truncate text-lg font-bold leading-snug tracking-tight text-white transition-colors group-hover:text-[var(--signal)] md:text-xl">
+              {project.title}
+            </h3>
+
+            {project.description ? (
+              <p
+                className={`mt-2 text-xs leading-relaxed text-neutral-400 md:text-[13px] ${
+                  compact ? "line-clamp-2" : "line-clamp-2"
+                }`}
+              >
                 {project.description}
               </p>
-            )}
+            ) : null}
           </div>
 
-          {/* Problem & Solution callouts: rendered on ALL cards for balanced uniform height */}
-          <div className="mt-3.5 space-y-1.5 border-t border-neutral-800/80 pt-3 text-[11px] font-mono">
-            {project.problem ? (
-              <div className="truncate text-neutral-400">
-                <span className="mr-1.5 font-semibold text-amber-400">
-                  Problem:
-                </span>
-                <span>{project.problem}</span>
-              </div>
-            ) : (
-              <div className="truncate text-neutral-500">
-                <span className="mr-1.5 font-semibold text-neutral-500">
-                  System:
-                </span>
-                <span>Production service and domain architecture</span>
-              </div>
-            )}
-            {project.solution ? (
-              <div className="truncate text-neutral-400">
-                <span className="mr-1.5 font-semibold text-[var(--signal)]">
-                  Solution:
-                </span>
-                <span>{project.solution}</span>
-              </div>
-            ) : (
-              <div className="truncate text-neutral-500">
-                <span className="mr-1.5 font-semibold text-neutral-500">
-                  Deliverable:
-                </span>
-                <span>High-performance implementation &amp; APIs</span>
-              </div>
-            )}
-          </div>
+          {/* Readout rows */}
+          <dl className="mt-4 grid grid-cols-[58px_1fr] gap-x-3 gap-y-1.5 border-t border-[var(--line-soft)] pt-3">
+            <dt className="spec-label">Problem</dt>
+            <dd className="truncate font-mono text-[11px] leading-relaxed text-neutral-400">
+              {project.problem ?? "—"}
+            </dd>
+            <dt className="spec-label">Solution</dt>
+            <dd className="truncate font-mono text-[11px] leading-relaxed text-neutral-400">
+              {project.solution ?? "—"}
+            </dd>
+          </dl>
         </div>
 
-        {/* Bottom row: Tech stack tags & Detail preview prompt */}
-        <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-neutral-800/70 pt-3">
+        {/* Tags + affordance */}
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-[var(--line-soft)] pt-3">
           <div className="flex flex-wrap gap-1.5">
-            {project.tags?.slice(0, 3).map((tag) => (
+            {(project.tags ?? []).slice(0, compact ? 3 : 4).map((tag) => (
               <span
                 key={tag}
-                className="rounded-md border border-neutral-700/60 bg-neutral-800/90 px-2 py-0.5 font-mono text-[10px] text-neutral-300"
+                className="border border-[var(--line)] px-1.5 py-0.5 font-mono text-[10px] leading-none text-neutral-400"
               >
                 {tag}
               </span>
             ))}
           </div>
 
-          <span className="font-mono text-[10px] text-neutral-400 transition-colors group-hover:text-[var(--signal)]">
-            Click to view detail ↗
+          <span className="spec-label transition-colors group-hover:text-[var(--signal)]">
+            Open record
           </span>
         </div>
       </div>

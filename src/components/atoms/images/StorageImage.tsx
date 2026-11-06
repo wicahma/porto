@@ -39,8 +39,8 @@ export const StorageImage: React.FC<ImageProps> = ({
       width={width || 800}
       height={height || 600}
       className={className}
-      placeholder="blur"
-      blurDataURL={blurDataURL || loadingImageDataUri}
+      placeholder={preload ? "empty" : "blur"}
+      blurDataURL={preload ? undefined : blurDataURL || loadingImageDataUri}
       preload={preload}
       sizes={sizes}
       {...props}

@@ -65,6 +65,7 @@ const ChipGroup: React.FC<ChipGroupProps> = ({
                 transition: chipTransition,
               }}
               active={chip.active}
+              aria-label={chip.label}
               setActive={() => toggleChip(chip.id)}
             >
               <p>{chip.label}</p>

@@ -1,6 +1,5 @@
 "use client";
 
-import Batik from "@/assets/svg/batik";
 import ProjectIcon from "@/assets/svg/project-icon";
 import { useProjects } from "@/hooks/queries/project.wrapper";
 import { TProjectRow } from "@/interface/entities/project.interface";
@@ -86,13 +85,20 @@ export const SimpleProjectPage: React.FC = () => {
     <div className="w-full space-y-12 py-6">
       {/* Header */}
       <div className="space-y-4">
+        <div className="flex items-center gap-2">
+          <span className="led" aria-hidden="true" />
+          <span className="spec-label spec-label--signal readout">
+            Build register // {projects.length} records
+          </span>
+          <span className="rule flex-1" aria-hidden="true" />
+        </div>
         <div className="flex items-center gap-3">
-          <ProjectIcon className="w-8 h-8 rounded-sm shrink-0" />
-          <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">
+          <ProjectIcon className="h-7 w-7 shrink-0 rounded-sm md:h-8 md:w-8" />
+          <h1 className="text-3xl font-black tracking-tight text-white md:text-4xl">
             Featured Projects
           </h1>
         </div>
-        <p className="text-sm md:text-base text-neutral-400 max-w-xl leading-relaxed">
+        <p className="max-w-xl text-sm leading-relaxed text-neutral-400 md:text-base">
           A showcase of production systems, distributed infrastructure, and
           interactive web applications built with modern engineering standards.
         </p>
@@ -113,16 +119,23 @@ export const SimpleProjectPage: React.FC = () => {
           {projects.map((proj) => (
             <div
               key={proj.id}
-              className="rounded-2xl bg-[var(--ink-750)] border border-neutral-800/80 hover:border-neutral-700 p-6 sm:p-7 flex flex-col justify-between transition-all hover:scale-[1.01] shadow-lg group"
+              className={`plate cornered lift group flex flex-col justify-between p-6 hover:border-[var(--line-strong)] sm:p-7 ${
+                projects.length % 2 === 1 && projects[projects.length - 1].id === proj.id
+                  ? "md:col-span-2"
+                  : ""
+              }`}
             >
               <div>
-                {/* Top: Title, Year & Live Link */}
+                {/* Top: serial, year, link */}
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <span className="text-xs font-mono font-medium text-neutral-500 block mb-1">
-                      {proj.year}
-                    </span>
-                    <h2 className="text-xl font-bold text-white group-hover:text-[var(--signal)] transition-colors leading-snug">
+                    <div className="mb-1 flex items-center gap-2">
+                      <span className="led" aria-hidden="true" />
+                      <span className="spec-label readout">
+                        PRJ-{String(projects.indexOf(proj) + 1).padStart(2, "0")} · {proj.year}
+                      </span>
+                    </div>
+                    <h2 className="text-xl font-bold leading-snug text-white transition-colors group-hover:text-[var(--signal)]">
                       {proj.title}
                     </h2>
                   </div>
@@ -132,7 +145,7 @@ export const SimpleProjectPage: React.FC = () => {
                       href={proj.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2 rounded-lg bg-neutral-800/80 hover:bg-neutral-700 text-neutral-400 hover:text-white transition-colors shrink-0"
+                      className="focus-spec shrink-0 border border-[var(--line)] p-2 text-neutral-400 transition-colors hover:border-[var(--signal)] hover:text-[var(--signal)]"
                       aria-label={`Open ${proj.title} link`}
                     >
                       <ExternalLink className="w-4 h-4" />
@@ -149,9 +162,9 @@ export const SimpleProjectPage: React.FC = () => {
                 {(proj.problem || proj.solution) && (
                   <div className="space-y-3 mt-4 pt-4 border-t border-neutral-800/70">
                     {proj.problem && (
-                      <div className="p-3.5 rounded-xl bg-neutral-900/80 border border-neutral-800">
-                        <span className="text-[11px] font-bold text-amber-400 uppercase tracking-wider block mb-1">
-                          The Problem
+                      <div className="border border-[var(--line-soft)] bg-[var(--ink-900)] p-3.5">
+                        <span className="spec-label spec-label--caution mb-1 block">
+                          Problem
                         </span>
                         <p className="text-xs text-neutral-400 leading-relaxed">
                           {proj.problem}
@@ -160,8 +173,8 @@ export const SimpleProjectPage: React.FC = () => {
                     )}
 
                     {proj.solution && (
-                      <div className="p-3.5 rounded-xl bg-neutral-900/80 border border-neutral-800">
-                        <span className="text-[11px] font-bold text-[var(--signal)] uppercase tracking-wider block mb-1">
+                      <div className="border border-[var(--line-soft)] bg-[var(--ink-900)] p-3.5">
+                        <span className="spec-label spec-label--signal mb-1 block">
                           Solution
                         </span>
                         <p className="text-xs text-neutral-400 leading-relaxed">
@@ -178,7 +191,7 @@ export const SimpleProjectPage: React.FC = () => {
                 {proj.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="px-2.5 py-0.5 rounded-md text-[11px] font-medium bg-neutral-800/90 text-neutral-300 border border-neutral-700/60"
+                    className="border border-[var(--line)] px-1.5 py-0.5 font-mono text-[10px] leading-none text-neutral-400"
                   >
                     {tag}
                   </span>
@@ -189,11 +202,7 @@ export const SimpleProjectPage: React.FC = () => {
         </div>
       )}
 
-      {/* Footer Batik */}
-      <div className="w-full overflow-hidden flex flex-nowrap rounded-lg my-8 opacity-90 select-none pointer-events-none">
-        <Batik />
-        <Batik />
-      </div>
+      <span className="rule mt-8 block w-full" aria-hidden="true" />
     </div>
   );
 };
