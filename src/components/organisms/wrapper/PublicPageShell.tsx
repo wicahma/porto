@@ -18,6 +18,11 @@ export const PublicPageShell: React.FC<PublicPageShellProps> = ({
 }) => {
   return (
     <div className="relative w-full min-h-screen pb-16">
+      <div
+        aria-hidden="true"
+        className="grid-plot pointer-events-none absolute inset-0 opacity-40"
+      />
+
       <m.div
         layoutId="page-top-header"
         transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
@@ -27,9 +32,7 @@ export const PublicPageShell: React.FC<PublicPageShellProps> = ({
           <Breadcrumb />
           <Infographic showToggle={false} />
         </div>
-
       </m.div>
-
       <div className="relative">{children}</div>
     </div>
   );

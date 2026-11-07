@@ -29,6 +29,10 @@ export const SimpleModeView: React.FC<{
     <div className="section-stack mx-auto w-full py-6">
       {/* 1. Hero Section */}
       <section className="relative">
+        <div
+          aria-hidden="true"
+          className="grid-plot pointer-events-none absolute inset-0 opacity-40"
+        />
         <div className="plate cornered relative overflow-hidden p-5 md:p-8">
 
           <div className="relative grid grid-cols-1 items-center gap-6 md:grid-cols-[1fr_auto_1fr] lg:gap-8">
