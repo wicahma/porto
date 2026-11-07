@@ -1,5 +1,3 @@
-import Breadcrumb from "@/components/molecules/header/Breadcrumb";
-import Infographic from "@/components/molecules/header/Infograpnic";
 import SimpleArticlePage from "@/components/organisms/SimpleArticlePage";
 import { TArticleRow } from "@/interface/entities/article.interface";
 import React from "react";
@@ -63,17 +61,9 @@ export default async function ArticleListPage() {
   ]);
 
   return (
-    <div className="w-full min-h-screen pb-16">
-      <div className="mb-6 flex flex-col-reverse gap-3 border-b border-neutral-800/60 pb-4">
-        <Breadcrumb />
-        <Infographic showToggle={false} />
-      </div>
-      <div className="relative">
         <SimpleArticlePage
           initialArticles={initialArticles ?? undefined}
           initialCategories={initialCategories}
         />
-      </div>
-    </div>
   );
 }

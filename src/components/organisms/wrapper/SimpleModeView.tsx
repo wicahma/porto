@@ -1,10 +1,10 @@
 "use client";
 
 import Hello from "@/assets/svg/hello";
-import Breadcrumb from "@/components/molecules/header/Breadcrumb";
-import Infographic from "@/components/molecules/header/Infograpnic";
 import Peeps from "@/assets/svg/peeps";
 import StarGede from "@/assets/svg/star-gede";
+import Breadcrumb from "@/components/molecules/header/Breadcrumb";
+import Infographic from "@/components/molecules/header/Infograpnic";
 import ButtonsLeft from "@/components/atoms/buttons/ButtonsLeft";
 import Socials from "@/components/molecules/Socials";
 import SimpleArticleList from "@/components/molecules/article/SimpleArticleList";
