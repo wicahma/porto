@@ -2,7 +2,6 @@
 
 import Sun from "@/assets/svg/sun";
 import ExperienceDialog from "@/components/molecules/experience/ExperienceDialog";
-import { SectionHeader } from "@/components/molecules/header/SectionHeader";
 import { ExperienceCard } from "@/constants/dummies/experience-carousel";
 import { useExperiences } from "@/hooks/queries/experience.wrapper";
 import { useCssColors } from "@/hooks/useCssColors";
@@ -375,13 +374,12 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Header */}
-      <SectionHeader
-        title="Experience"
-        icon={
-          <Sun className="h-6 w-6 shrink-0 text-[var(--caution)] md:h-7 md:w-7" />
-        }
-        className="w-full"
-      />
+      <div className="flex items-center justify-center gap-3 group w-full">
+        <Sun className="h-6 w-6 shrink-0 text-[var(--caution)] md:h-7 md:w-7" />
+        <h3 className="text-3xl font-bold text-white tracking-tight transition-colors">
+          Experience
+        </h3>
+      </div>
 
       {/* Carousel Container with Left & Right Arrows */}
       <div className="relative w-full flex items-center justify-center select-none py-1">
@@ -435,7 +433,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
                   height: isMobile ? "165px" : "195px",
                   pointerEvents: isVisible ? "auto" : "none",
                 }}
-                className="absolute cursor-pointer overflow-hidden rounded-sm p-4 sm:p-5 flex flex-col justify-between"
+                className="absolute cursor-pointer overflow-hidden rounded-2xl border border-orange-950/50 bg-[#1a130b] p-4 sm:p-5 flex flex-col justify-between"
                 onClick={() => {
                   if (isCenter) {
                     handleOpenModal(item);

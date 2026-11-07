@@ -36,7 +36,7 @@ export const ProjectPaperCard: React.FC<ProjectPaperCardProps> = ({
           onClick?.();
         }
       }}
-      className="focus-spec group relative isolate flex h-full w-full cursor-pointer flex-col focus:outline-none"
+      className="group relative isolate flex h-full w-full cursor-pointer flex-col focus:outline-none"
     >
       {/* Underside plate, offset for the stacked-document read */}
       <div
@@ -63,7 +63,7 @@ export const ProjectPaperCard: React.FC<ProjectPaperCardProps> = ({
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
                   title={`Open ${project.title}`}
-                  className="focus-spec shrink-0 border border-[var(--line)] p-2 text-neutral-400 transition-colors hover:border-[var(--signal)] hover:text-[var(--signal)]"
+                  className="shrink-0 border border-[var(--line)] p-2 text-neutral-400 transition-colors hover:border-[var(--signal)] hover:text-[var(--signal)]"
                 >
                   <ArrowUpRight className="h-3.5 w-3.5" />
                 </a>

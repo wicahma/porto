@@ -70,7 +70,7 @@ export const SimpleArticlePage: React.FC<SimpleArticlePageProps> = ({
   };
 
   return (
-    <div className="w-full space-y-10 py-4">
+    <div className="w-full space-y-10 py-4" data-section="article">
       {/* 1. Header matching Image #2 */}
       <div className="space-y-3">
         <div className="flex items-center gap-3">
@@ -115,7 +115,7 @@ export const SimpleArticlePage: React.FC<SimpleArticlePageProps> = ({
 
       {/* 3. Article Card List (shared borderless card with the home summary) */}
       <h2 className="text-lg font-bold tracking-tight text-white">
-        Article index
+        Articles
       </h2>
       {isLoading ? (
         <div className="grid grid-cols-1 gap-6 pt-2 md:grid-cols-2 lg:grid-cols-3">

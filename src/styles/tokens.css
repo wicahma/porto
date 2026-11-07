@@ -235,3 +235,22 @@
     gap: var(--space-9);
   }
 }
+
+/* ---- Section accents: the signal colour rotates per surface ------------- */
+[data-section="build"] {
+  --signal: #3b82f6;
+  --signal-dim: #2563eb;
+  --signal-deep: #172554;
+}
+
+[data-section="experience"] {
+  --signal: #ff8a00;
+  --signal-dim: #d97706;
+  --signal-deep: #431407;
+}
+
+[data-section="article"] {
+  --signal: #ff4d6d;
+  --signal-dim: #e11d48;
+  --signal-deep: #4a0817;
+}

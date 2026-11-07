@@ -82,7 +82,7 @@ export const SimpleProjectPage: React.FC = () => {
   }, [data]);
 
   return (
-    <div className="w-full space-y-12 py-6">
+    <div className="w-full space-y-12 py-6" data-section="build">
       {/* Header */}
       <div className="space-y-4">
         <div className="flex items-center gap-3">
@@ -112,7 +112,7 @@ export const SimpleProjectPage: React.FC = () => {
           {projects.map((proj) => (
             <div
               key={proj.id}
-              className={`plate cornered lift group flex flex-col justify-between p-6 hover:border-[var(--line-strong)] sm:p-7 ${
+              className={`group flex flex-col justify-between rounded-2xl border border-blue-950/70 bg-[#0b1622] p-6 transition-all duration-200 hover:border-[var(--signal)]/50 hover:shadow-2xl sm:p-7 ${
                 projects.length % 2 === 1 && projects[projects.length - 1].id === proj.id
                   ? "md:col-span-2"
                   : ""
@@ -138,7 +138,7 @@ export const SimpleProjectPage: React.FC = () => {
                       href={proj.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="focus-spec shrink-0 border border-[var(--line)] p-2 text-neutral-400 transition-colors hover:border-[var(--signal)] hover:text-[var(--signal)]"
+                      className="shrink-0 border border-[var(--line)] p-2 text-neutral-400 transition-colors hover:border-[var(--signal)] hover:text-[var(--signal)]"
                       aria-label={`Open ${proj.title} link`}
                     >
                       <ExternalLink className="w-4 h-4" />
@@ -156,7 +156,7 @@ export const SimpleProjectPage: React.FC = () => {
                   <div className="space-y-3 mt-4 pt-4 border-t border-neutral-800/70">
                     {proj.problem && (
                       <div className="border border-[var(--line-soft)] bg-[var(--ink-900)] p-3.5">
-                        <span className="spec-label spec-label--caution mb-1 block">
+                        <span className="spec-label mb-1 block">
                           Problem
                         </span>
                         <p className="text-xs text-neutral-400 leading-relaxed">
@@ -167,7 +167,7 @@ export const SimpleProjectPage: React.FC = () => {
 
                     {proj.solution && (
                       <div className="border border-[var(--line-soft)] bg-[var(--ink-900)] p-3.5">
-                        <span className="spec-label spec-label--signal mb-1 block">
+                        <span className="spec-label mb-1 block">
                           Solution
                         </span>
                         <p className="text-xs text-neutral-400 leading-relaxed">

@@ -27,7 +27,7 @@ const ArticleDetailPage = ({
     <ScrollableContainer className="h-screen relative rounded-2xl overflow-y-auto">
       <ArticleHeader />
 
-      <article className="max-w-350 mx-auto px-6 py-16 relative z-10">
+      <article className="max-w-350 mx-auto px-6 py-16 relative z-10" data-section="article">
         <div className="max-w-170 mx-auto mb-12">
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-8 leading-tight">
             {data?.title}
@@ -124,7 +124,7 @@ const ArticleDetailPage = ({
                     </div>
                   </RenderIf>
                   <div className="p-6">
-                    <span className="spec-label spec-label--signal mb-3 inline-block border border-[var(--line)] px-2 py-0.5">
+                    <span className="spec-label mb-3 inline-block border border-[var(--line)] px-2 py-0.5">
                       {relatedItem.category}
                     </span>
                     <h3 className="text-white font-bold text-lg mb-3 line-clamp-2 group-hover:text-[var(--signal)] transition-colors">

@@ -2,7 +2,6 @@
 
 import FolderIcon from "@/assets/svg/folder";
 import ProjectIcon from "@/assets/svg/project-icon";
-import { SectionHeader } from "@/components/molecules/header/SectionHeader";
 import { useProjectCount, useProjects } from "@/hooks/queries/project.wrapper";
 import { TProjectRow } from "@/interface/entities/project.interface";
 import { AnimatePresence, m } from "motion/react";
@@ -167,24 +166,26 @@ export const SimpleProjectList: React.FC = () => {
             type="button"
             onClick={() => setIsExpanded((prev) => !prev)}
             aria-expanded={isExpanded}
-            className="focus-spec group w-full cursor-pointer text-left focus:outline-none"
+            className="group w-full cursor-pointer text-left focus:outline-none"
           >
-            <SectionHeader
-              title="What i've build"
-              icon={<ProjectIcon className="h-6 w-6 rounded-sm md:h-7 md:w-7" />}
-              action={
-                <div className="flex items-center gap-2 text-xs font-medium text-neutral-500">
-                  <span className="font-mono">{count} PROJECTS</span>
-                  <ChevronDown
-                    className={`h-4 w-4 transition-transform duration-300 ${
-                      isExpanded
-                        ? "rotate-180 text-[var(--signal)]"
-                        : "text-neutral-500"
-                    }`}
-                  />
-                </div>
-              }
-            />
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <ProjectIcon className="h-6 w-6 rounded-sm md:h-7 md:w-7" />
+                <h3 className="text-2xl font-bold text-white tracking-tight group-hover:text-[var(--signal)] transition-colors">
+                  What i've build
+                </h3>
+              </div>
+              <div className="flex items-center gap-2 text-xs font-medium text-neutral-500">
+                <span className="font-mono">{count} PROJECTS</span>
+                <ChevronDown
+                  className={`h-4 w-4 transition-transform duration-300 ${
+                    isExpanded
+                      ? "rotate-180 text-[var(--signal)]"
+                      : "text-neutral-500"
+                  }`}
+                />
+              </div>
+            </div>
           </button>
 
           {/* Folder trigger: keeps the original dossier artwork (the unfold has
@@ -196,7 +197,7 @@ export const SimpleProjectList: React.FC = () => {
               aria-expanded={isExpanded}
               aria-controls={isExpanded ? "project-previews" : undefined}
               title={isExpanded ? "Fold records back" : "Unfold project records"}
-              className="focus-spec group block w-full max-w-[614px] cursor-pointer text-left focus:outline-none"
+              className="group block w-full max-w-[614px] cursor-pointer text-left focus:outline-none"
             >
               <FolderIcon className="aspect-[614/286] w-full drop-shadow-xl saturate-[0.78] transition-[filter,transform] duration-300 group-hover:-translate-y-1 group-hover:saturate-100" />
             </button>
@@ -308,10 +309,10 @@ export const SimpleProjectList: React.FC = () => {
               Core stack
             </span>
             <ul className="mt-2 grid grid-cols-1 gap-x-6 sm:grid-cols-2">
-              {CORE_STACK.map((tech, i) => (
+              {CORE_STACK.map((tech) => (
                 <li
                   key={tech}
-                  className="flex items-baseline justify-between gap-3 border-b border-[var(--line-soft)] py-1 last:border-b-0"
+                  className="border-b border-[var(--line-soft)] py-1 last:border-b-0"
                 >
                   <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-neutral-300">
                     {tech}

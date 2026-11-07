@@ -179,7 +179,7 @@ export const SimpleExperiencePage: React.FC = () => {
   };
 
   return (
-    <div className="w-full space-y-12 py-6">
+    <div className="w-full space-y-12 py-6" data-section="experience">
       {/* Header */}
       <div className="space-y-4">
         <div className="flex items-center gap-3">
@@ -209,7 +209,7 @@ export const SimpleExperiencePage: React.FC = () => {
           {experiences.map((exp) => (
             <div
               key={exp.id}
-              className="plate cornered lift space-y-6 p-6 hover:border-[var(--line-strong)] sm:p-8"
+              className="space-y-6 rounded-2xl border border-orange-950/60 bg-[#1a130b] p-6 transition-all duration-200 hover:border-[var(--signal)]/60 sm:p-8"
             >
               {/* Company Header */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-neutral-800/80 pb-4">

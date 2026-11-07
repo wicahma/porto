@@ -113,13 +113,19 @@ export const SimpleModeView: React.FC<{
       </div>
 
       {/* 3. What i've build & What i work with */}
-      <SimpleProjectList />
+      <div data-section="build">
+        <SimpleProjectList />
+      </div>
 
       {/* 4. Experience Section */}
-      <SimpleExperienceList />
+      <div data-section="experience">
+        <SimpleExperienceList />
+      </div>
 
       {/* 5. Articles Section */}
-      <SimpleArticleList />
+      <div data-section="article">
+        <SimpleArticleList />
+      </div>
 
       {/* 6. Footer rule */}
     </div>

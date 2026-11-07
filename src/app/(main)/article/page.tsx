@@ -1,5 +1,4 @@
 import SimpleArticlePage from "@/components/organisms/SimpleArticlePage";
-import PublicPageShell from "@/components/organisms/wrapper/PublicPageShell";
 import { TArticleRow } from "@/interface/entities/article.interface";
 import React from "react";
 
@@ -62,11 +61,9 @@ export default async function ArticleListPage() {
   ]);
 
   return (
-    <PublicPageShell >
       <SimpleArticlePage
         initialArticles={initialArticles ?? undefined}
         initialCategories={initialCategories}
       />
-    </PublicPageShell>
   );
 }

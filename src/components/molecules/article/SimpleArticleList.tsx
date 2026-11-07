@@ -1,7 +1,6 @@
 "use client";
 
 import Triangles from "@/assets/svg/triangles";
-import { SectionHeader } from "@/components/molecules/header/SectionHeader";
 import { ArticlePreviewCard } from "@/components/molecules/article/ArticlePreviewCard";
 import { useArticles } from "@/hooks/queries/article.wrapper";
 import { TArticleRow } from "@/interface/entities/article.interface";
@@ -24,20 +23,23 @@ export const SimpleArticleList: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <SectionHeader
-        title="Articles"
-        icon={<Triangles />}
-        action={
-          <button
-            type="button"
-            onClick={() => router.push("/article")}
-            className="focus-spec flex cursor-pointer items-center gap-1 font-mono text-xs uppercase tracking-[0.18em] text-neutral-400 transition-colors hover:text-[var(--signal)]"
-          >
-            <span>Index</span>
-            <span aria-hidden="true">→</span>
-          </button>
-        }
-      />
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <Triangles />
+          <h3 className="text-2xl lg:text-3xl font-bold text-white tracking-tight">
+            Articles
+          </h3>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => router.push("/article")}
+          className="flex cursor-pointer items-center gap-1 font-mono text-xs uppercase tracking-[0.18em] text-neutral-400 transition-colors hover:text-[var(--signal)]"
+        >
+          <span>Index</span>
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
 
       {/* Grid: Only real articles from database */}
       {isLoading ? (
