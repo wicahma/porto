@@ -229,3 +229,8 @@
   --signal-dim: #e11d48;
   --signal-deep: #4a0817;
 }
+
+:root {
+  --warn-link: #ffc501;
+  --warn-deep: #d97706;
+}

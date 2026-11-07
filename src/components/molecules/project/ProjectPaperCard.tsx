@@ -41,11 +41,11 @@ export const ProjectPaperCard: React.FC<ProjectPaperCardProps> = ({
       {/* Underside plate, offset for the stacked-document read */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-1.5 -top-1.5 bottom-1 -z-10 border border-[var(--line-soft)] bg-[var(--ink-950)] transition-transform duration-300 group-hover:rotate-0"
+        className="pointer-events-none absolute inset-x-1.5 -top-1.5 bottom-1 -z-10 rounded-[2rem] bg-[#e0a800] shadow-lg transition-transform duration-300 group-hover:rotate-0"
         style={{ transform: `rotate(${tilt}deg)` }}
       />
 
-      <div className="plate cornered lift relative flex h-full min-h-[268px] w-full flex-col justify-between overflow-hidden p-5 group-hover:border-[var(--line-strong)] md:p-6">
+      <div className="lift relative flex h-full min-h-[268px] w-full flex-col justify-between overflow-hidden rounded-[2rem] border border-[var(--warn-link)] bg-[#ffc501] p-5 md:p-6">
         <div className="flex flex-1 flex-col justify-between">
           <div>
             {/* Serial + link */}
@@ -70,7 +70,7 @@ export const ProjectPaperCard: React.FC<ProjectPaperCardProps> = ({
               ) : null}
             </div>
 
-            <h3 className="mt-3 truncate text-lg font-bold leading-snug tracking-tight text-white transition-colors group-hover:text-[var(--signal)] md:text-xl">
+            <h3 className="mt-3 truncate text-lg font-bold leading-snug tracking-tight text-[#141414] md:text-xl">
               {project.title}
             </h3>
 

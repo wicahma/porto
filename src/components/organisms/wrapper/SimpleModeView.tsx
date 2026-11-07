@@ -28,7 +28,12 @@ export const SimpleModeView: React.FC<{
   }
 
   return (
-    <div className="section-stack mx-auto w-full py-6">
+    <div className="relative mx-auto w-full py-6">
+      <div
+        aria-hidden="true"
+        className="grid-plot pointer-events-none absolute inset-0 w-full opacity-40"
+      />
+      <div className="section-stack relative mx-auto w-full">
       <div className="flex flex-col-reverse gap-2 sm:gap-3">
         <Breadcrumb />
         <Infographic showToggle={false} />
@@ -135,6 +140,7 @@ export const SimpleModeView: React.FC<{
       </div>
 
       {/* 6. Footer rule */}
+      </div>
     </div>
   );
 };
