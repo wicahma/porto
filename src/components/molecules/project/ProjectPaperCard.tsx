@@ -41,11 +41,11 @@ export const ProjectPaperCard: React.FC<ProjectPaperCardProps> = ({
       {/* Underside plate, offset for the stacked-document read */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-1.5 -top-1.5 bottom-1 -z-10 rounded-[2rem] bg-[#e0a800] shadow-lg transition-transform duration-300 group-hover:rotate-0"
+        className="pointer-events-none absolute inset-x-1.5 -top-1.5 bottom-1 -z-10 rounded-2xl bg-[#e0a800] shadow-lg transition-transform duration-300 group-hover:rotate-0"
         style={{ transform: `rotate(${tilt}deg)` }}
       />
 
-      <div className="lift relative flex h-full min-h-[268px] w-full flex-col justify-between overflow-hidden rounded-[2rem] border border-[var(--warn-link)] bg-[#ffc501] p-5 md:p-6">
+      <div className="lift relative flex h-full min-h-[268px] w-full flex-col justify-between overflow-hidden rounded-2xl border border-[var(--warn-link)] bg-[#ffc501] p-5 md:p-6">
         <div className="flex flex-1 flex-col justify-between">
           <div>
             {/* Serial + link */}
