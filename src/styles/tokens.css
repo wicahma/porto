@@ -24,10 +24,10 @@
   --text-low: #8f8f8f;
 
   /* ---- Signal palette (identity anchors) -------------------------------- */
-  --signal: #02c380;
-  --signal-dim: #04a06a;
+  --signal: #ff4438;
+  --signal-dim: #d92c20;
   --caution: #ffc501;
-  --alert: #ff4141;
+  --alert: #c81e1e;
   --petal-indigo: #574bf5;
   --petal-cyan: #4ff1ff;
   --petal-amber: #ffc700;
@@ -233,7 +233,7 @@
   --ink-540: #383838;
   --ink-500: #414141;
   --text-mid-2: #a1a1a1;
-  --signal-deep: #004e33;
+  --signal-deep: #4a0f0b;
 }
 
 @media (prefers-reduced-motion: reduce) {
