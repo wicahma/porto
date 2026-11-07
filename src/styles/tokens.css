@@ -57,24 +57,6 @@
 /* Structural primitives                                                     */
 /* ------------------------------------------------------------------------- */
 
-/* Mono metadata label: // SECTION 03 --------------------------------------- */
-.spec-label {
-  font-family: var(--font-mono-spec);
-  font-size: 10px;
-  line-height: 1.4;
-  letter-spacing: var(--tracking-spec);
-  text-transform: uppercase;
-  color: var(--text-low);
-}
-
-.spec-label--signal {
-  color: var(--signal);
-}
-
-.spec-label--caution {
-  color: var(--caution);
-}
-
 /* Panel: flat plate, hairline border, inset top highlight. */
 .plate {
   position: relative;
@@ -137,13 +119,6 @@
     linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
     linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
   background-size: var(--grid-cell) var(--grid-cell);
-}
-
-/* Numeric / serial readout. */
-.readout-placeholder {
-  font-family: var(--font-mono-spec);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.04em;
 }
 
 /* Interactive lift kept from the original motion language. */

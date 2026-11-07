@@ -188,8 +188,7 @@ export const SimpleProjectList: React.FC = () => {
             </div>
           </button>
 
-          {/* Folder trigger: keeps the original dossier artwork (the unfold has
-              to read as files leaving a folder) wrapped in spec framing. */}
+          {/* Folder trigger: keeps the original artwork and lists the four projects. */}
           <div className="space-y-2">
             <button
               type="button"
@@ -203,7 +202,7 @@ export const SimpleProjectList: React.FC = () => {
             </button>
 
             <div className="flex max-w-[614px] items-center justify-between gap-3">
-              <span className="spec-label">
+              <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-neutral-500">
                 {isExpanded ? "Fold back" : "Unfold projects"}
               </span>
               <ChevronDown

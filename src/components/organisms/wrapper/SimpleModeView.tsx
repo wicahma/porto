@@ -1,6 +1,8 @@
 "use client";
 
 import Hello from "@/assets/svg/hello";
+import Breadcrumb from "@/components/molecules/header/Breadcrumb";
+import Infographic from "@/components/molecules/header/Infograpnic";
 import Peeps from "@/assets/svg/peeps";
 import StarGede from "@/assets/svg/star-gede";
 import ButtonsLeft from "@/components/atoms/buttons/ButtonsLeft";
@@ -27,6 +29,11 @@ export const SimpleModeView: React.FC<{
 
   return (
     <div className="section-stack mx-auto w-full py-6">
+      <div className="flex flex-col-reverse gap-2 sm:gap-3">
+        <Breadcrumb />
+        <Infographic showToggle={false} />
+      </div>
+
       {/* 1. Hero Section */}
       <section className="relative">
         <div
