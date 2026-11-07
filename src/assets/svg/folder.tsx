@@ -11,7 +11,7 @@ const FolderIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
       <g clipPath="url(#clip0_1811_1058)">
         <path
           d="M36 30C36 13.4315 49.4315 0 66 0H246.238C255.571 0 264.127 5.19853 268.427 13.4818L283.75 43H36V30Z"
-          fill="var(--signal)"
+          fill="#02C380"
         />
         <path
           d="M19 30C19 13.4315 32.4315 0 49 0H229.238C238.571 0 247.127 5.19853 251.427 13.4818L266.75 43H19V30Z"
@@ -35,7 +35,7 @@ const FolderIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
           fill="#FFC501"
         />
         <rect x="43" y="73" width="140" height="140" rx="19" fill="#FF884D" />
-        <rect x="130" y="73" width="140" height="140" rx="19" fill="var(--signal)" />
+        <rect x="130" y="73" width="140" height="140" rx="19" fill="#02C380" />
         <rect x="217" y="73" width="140" height="140" rx="19" fill="#FF8FC0" />
       </g>
       <defs>

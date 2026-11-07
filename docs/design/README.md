@@ -16,7 +16,6 @@ Each route is filed as `<route>-<width>.png`.
 - 15/15 route×width pairs render an `<h1>` and report `scrollWidth === innerWidth` (no horizontal overflow).
 - Home DOM order: Hero → About → "What i've build" → "What i work with" → Experience → Articles.
 - Colours resolve from `src/styles/tokens.css`; no hex literals remain in the public component set.
-- Base accent is red (`--signal: #ff4438`, 5.4:1 on `#141414`); the previous green is gone from every public surface.
 - Reduced motion: transitions ≈0 s, `animation-name: none`, carousel autoplay halted, modal opens without scale.
 - Lighthouse (mobile, production build): `/` = 100 performance / 100 accessibility, `/article` = 90 / 100 (re-run after the carousel stabilisation, same numbers).
 

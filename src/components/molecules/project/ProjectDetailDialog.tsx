@@ -193,7 +193,7 @@ export const ProjectDetailDialog = ({
                       href={project.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full bg-[var(--signal)] px-5 py-2.5 text-sm font-bold text-neutral-950 shadow-lg shadow-black/50 transition-all hover:scale-[1.02] hover:bg-[var(--signal-dim)] active:scale-[0.98]"
+                      className="inline-flex items-center gap-2 rounded-full bg-[var(--signal)] px-5 py-2.5 text-sm font-bold text-neutral-950 shadow-lg shadow-emerald-950/40 transition-all hover:scale-[1.02] hover:bg-emerald-400 active:scale-[0.98]"
                     >
                       <span>
                         {project.link.includes("github.com")
