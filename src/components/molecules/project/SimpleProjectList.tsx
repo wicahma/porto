@@ -198,7 +198,7 @@ export const SimpleProjectList: React.FC = () => {
               title={isExpanded ? "Fold records back" : "Unfold project records"}
               className="group block w-full max-w-[614px] cursor-pointer text-left focus:outline-none"
             >
-              <FolderIcon className="aspect-[614/286] w-full drop-shadow-xl saturate-[0.78] transition-[filter,transform] duration-300 group-hover:-translate-y-1 group-hover:saturate-100" />
+              <FolderIcon className="aspect-[614/286] w-full drop-shadow-xl transition-transform duration-300 group-hover:-translate-y-1" />
             </button>
 
             <div className="flex max-w-[614px] items-center justify-between gap-3">

@@ -379,6 +379,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
         <h3 className="text-3xl font-bold text-white tracking-tight transition-colors">
           Experience
         </h3>
+        <Sun className="h-6 w-6 shrink-0 text-[var(--caution)] md:h-7 md:w-7" />
       </div>
 
       {/* Carousel Container with Left & Right Arrows */}
