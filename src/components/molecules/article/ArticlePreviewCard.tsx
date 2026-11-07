@@ -69,7 +69,7 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
 
       <div className="mt-2.5 flex items-center justify-between gap-2 border-t border-[var(--line-soft)] pt-2">
         <span className="spec-label spec-label--signal">{article.category || "Tech"}</span>
-        <span className="spec-label readout">
+        <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-neutral-500">
           {readTime} MIN · {formatArticleDate(article.created_at)}
         </span>
       </div>

@@ -182,13 +182,6 @@ export const SimpleExperiencePage: React.FC = () => {
     <div className="w-full space-y-12 py-6">
       {/* Header */}
       <div className="space-y-4">
-        <div className="flex items-center gap-2">
-          <span className="led" aria-hidden="true" />
-          <span className="spec-label spec-label--signal readout">
-            Service record // {experiences.length} entries
-          </span>
-          <span className="rule flex-1" aria-hidden="true" />
-        </div>
         <div className="flex items-center gap-3">
           <Sun className="h-7 w-7 shrink-0 text-[var(--caution)] md:h-8 md:w-8" />
           <h1 className="text-3xl font-black tracking-tight text-white md:text-4xl">

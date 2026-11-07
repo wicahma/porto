@@ -85,13 +85,6 @@ export const SimpleProjectPage: React.FC = () => {
     <div className="w-full space-y-12 py-6">
       {/* Header */}
       <div className="space-y-4">
-        <div className="flex items-center gap-2">
-          <span className="led" aria-hidden="true" />
-          <span className="spec-label spec-label--signal readout">
-            Build register // {projects.length} records
-          </span>
-          <span className="rule flex-1" aria-hidden="true" />
-        </div>
         <div className="flex items-center gap-3">
           <ProjectIcon className="h-7 w-7 shrink-0 rounded-sm md:h-8 md:w-8" />
           <h1 className="text-3xl font-black tracking-tight text-white md:text-4xl">
@@ -131,7 +124,7 @@ export const SimpleProjectPage: React.FC = () => {
                   <div>
                     <div className="mb-1 flex items-center gap-2">
                       <span className="led" aria-hidden="true" />
-                      <span className="spec-label readout">
+                      <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-neutral-500">
                         PRJ-{String(projects.indexOf(proj) + 1).padStart(2, "0")} · {proj.year}
                       </span>
                     </div>

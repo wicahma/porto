@@ -34,14 +34,13 @@ const ArticleDetailPage = ({
           </h1>
 
           <div className="flex flex-wrap items-center gap-3 pb-6">
-            <span className="spec-label spec-label--signal border border-[var(--line)] px-2 py-1">
+            <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--signal)]">
               {data?.category}
             </span>
-            <span className="spec-label readout">
+            <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-neutral-500">
               {formatArticleDate(data?.created_at)} · {data?.read_time}
             </span>
           </div>
-          <span className="rule mb-8 block w-full" aria-hidden="true" />
         </div>
 
         <RenderIf condition={Boolean(data?.image)}>
@@ -134,7 +133,7 @@ const ArticleDetailPage = ({
                     <p className="text-sm text-neutral-400 line-clamp-3 leading-relaxed mb-4">
                       {relatedItem.excerpt}
                     </p>
-                    <div className="spec-label readout">
+                    <div className="font-mono text-[11px] uppercase tracking-[0.12em] text-neutral-500">
                       {relatedItem.read_time}
                     </div>
                   </div>

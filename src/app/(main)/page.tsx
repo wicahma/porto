@@ -3,7 +3,7 @@ import SimpleModeView from "@/components/organisms/wrapper/SimpleModeView";
 
 const Home = () => {
   return (
-    <PublicPageShell code="SEC / 01 — OPERATOR">
+    <PublicPageShell >
       <SimpleModeView />
     </PublicPageShell>
   );

@@ -107,6 +107,7 @@ const CORE_STACK = [
   "Docker",
 ];
 
+
 export const SimpleProjectList: React.FC = () => {
   const router = useRouter();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -169,13 +170,11 @@ export const SimpleProjectList: React.FC = () => {
             className="focus-spec group w-full cursor-pointer text-left focus:outline-none"
           >
             <SectionHeader
-              index="02"
               title="What i've build"
-              meta="Build artefacts"
               icon={<ProjectIcon className="h-6 w-6 rounded-sm md:h-7 md:w-7" />}
               action={
                 <div className="flex items-center gap-2 text-xs font-medium text-neutral-500">
-                  <span className="readout">{count} PROJECTS</span>
+                  <span className="font-mono">{count} PROJECTS</span>
                   <ChevronDown
                     className={`h-4 w-4 transition-transform duration-300 ${
                       isExpanded
@@ -191,16 +190,6 @@ export const SimpleProjectList: React.FC = () => {
           {/* Folder trigger: keeps the original dossier artwork (the unfold has
               to read as files leaving a folder) wrapped in spec framing. */}
           <div className="space-y-2">
-            <div className="flex items-center justify-between gap-3">
-              <div className="flex items-center gap-2">
-                <span className="led" aria-hidden="true" />
-                <span className="spec-label spec-label--caution readout">
-                  DOSSIER // PRJ
-                </span>
-              </div>
-              <span className="spec-label">04 FILES</span>
-            </div>
-
             <button
               type="button"
               onClick={() => setIsExpanded((prev) => !prev)}
@@ -214,7 +203,7 @@ export const SimpleProjectList: React.FC = () => {
 
             <div className="flex max-w-[614px] items-center justify-between gap-3">
               <span className="spec-label">
-                {isExpanded ? "Click to fold back" : "Click to unfold"}
+                {isExpanded ? "Fold back" : "Unfold projects"}
               </span>
               <ChevronDown
                 aria-hidden="true"
@@ -314,12 +303,10 @@ export const SimpleProjectList: React.FC = () => {
             </div>
           </div>
 
-          {/* Capability matrix */}
           <div className="mt-4 border-t border-[var(--line-soft)] pt-3">
-            <div className="flex items-center justify-between">
-              <span className="spec-label">Core stack</span>
-              <span className="spec-label readout">{CORE_STACK.length} ITEMS</span>
-            </div>
+            <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-neutral-500">
+              Core stack
+            </span>
             <ul className="mt-2 grid grid-cols-1 gap-x-6 sm:grid-cols-2">
               {CORE_STACK.map((tech, i) => (
                 <li
@@ -328,9 +315,6 @@ export const SimpleProjectList: React.FC = () => {
                 >
                   <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-neutral-300">
                     {tech}
-                  </span>
-                  <span className="spec-label readout">
-                    {String(i + 1).padStart(2, "0")}
                   </span>
                 </li>
               ))}
@@ -353,12 +337,9 @@ export const SimpleProjectList: React.FC = () => {
             <div className="pt-6 pb-2 space-y-5">
               {/* Top Bar matching Folder tab */}
               <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
-                <div className="flex items-center gap-2">
-                  <span className="inline-block w-2 h-2 rounded-full bg-[var(--signal)] animate-pulse" />
-                  <span className="text-xs font-mono uppercase tracking-wider text-neutral-300">
-                    Unfolded Project Documents (04 / 04)
-                  </span>
-                </div>
+                <span className="text-xs font-mono uppercase tracking-wider text-neutral-300">
+                Featured projects
+              </span>
                 <button
                   type="button"
                   onClick={() => setIsExpanded(false)}
@@ -412,7 +393,6 @@ export const SimpleProjectList: React.FC = () => {
                       >
                         <ProjectPaperCard
                           project={proj}
-                          index={idx}
                           variant={variant}
                           tilt={tilt}
                           onClick={() => setSelectedProject(proj)}
@@ -425,9 +405,7 @@ export const SimpleProjectList: React.FC = () => {
 
               {/* Bottom Navigation footer */}
               <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-neutral-800/60 text-xs font-mono text-neutral-400">
-                <span>
-                  4 selected systems • {count} total projects in database
-                </span>
+                <span>{count} total projects in database</span>
                 <button
                   type="button"
                   onClick={() => router.push("/project")}

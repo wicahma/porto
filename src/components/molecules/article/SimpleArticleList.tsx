@@ -25,9 +25,7 @@ export const SimpleArticleList: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <SectionHeader
-        index="04"
         title="Articles"
-        meta="Field journal"
         icon={<Triangles />}
         action={
           <button

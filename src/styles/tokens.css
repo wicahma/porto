@@ -139,36 +139,8 @@
   background-size: var(--grid-cell) var(--grid-cell);
 }
 
-/* Scanline texture used sparingly on hero / plates. */
-.scanlines {
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0 3px,
-    color-mix(in srgb, var(--text-hi) 2.5%, transparent) 3px 4px
-  );
-}
-
-/* Status LED: square, not a glowing dot. */
-.led {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  background-color: var(--signal);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--signal) 35%, transparent);
-}
-
-.led--caution {
-  background-color: var(--caution);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--caution) 35%, transparent);
-}
-
-.led--idle {
-  background-color: var(--text-low);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--text-low) 35%, transparent);
-}
-
 /* Numeric / serial readout. */
-.readout {
+.readout-placeholder {
   font-family: var(--font-mono-spec);
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.04em;

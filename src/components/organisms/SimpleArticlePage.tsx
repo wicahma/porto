@@ -114,15 +114,9 @@ export const SimpleArticlePage: React.FC<SimpleArticlePageProps> = ({
       </div>
 
       {/* 3. Article Card List (shared borderless card with the home summary) */}
-      <div className="flex items-center gap-3">
-        <span className="spec-label spec-label--signal readout">
-          IDX / {articles.length.toString().padStart(2, "0")}
-        </span>
-        <h2 className="font-mono text-xs uppercase tracking-[0.18em] text-neutral-400">
-          Article index
-        </h2>
-        <span className="rule flex-1" aria-hidden="true" />
-      </div>
+      <h2 className="text-lg font-bold tracking-tight text-white">
+        Article index
+      </h2>
       {isLoading ? (
         <div className="grid grid-cols-1 gap-6 pt-2 md:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 3 }).map((_, i) => (

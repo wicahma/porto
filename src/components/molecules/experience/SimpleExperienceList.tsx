@@ -376,14 +376,9 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
     >
       {/* Header */}
       <SectionHeader
-        index="03"
         title="Experience"
-        meta="Service record"
         icon={
           <Sun className="h-6 w-6 shrink-0 text-[var(--caution)] md:h-7 md:w-7" />
-        }
-        action={
-          <span className="readout spec-label">{total} ENTRIES</span>
         }
         className="w-full"
       />
@@ -587,7 +582,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
 
       {/* Subtitle */}
       <p className="text-xs md:text-sm text-neutral-400 font-medium text-center">
-        with 1 year of work experience
+        with 2 years of work experience
       </p>
 
       {/* Experience Detail Popup Modal */}

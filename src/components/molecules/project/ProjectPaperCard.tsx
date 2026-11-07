@@ -13,8 +13,8 @@ export interface ProjectPaperCardProps {
 }
 
 /**
- * MIL-SPEC project plate: serial header, stencilled title, measurement rule,
- * problem/solution readout rows, and bracketed tech tags.
+ * Project plate with title, measurement rule,
+ * problem/solution rows, and bracketed tech tags.
  */
 export const ProjectPaperCard: React.FC<ProjectPaperCardProps> = ({
   project,
@@ -23,7 +23,6 @@ export const ProjectPaperCard: React.FC<ProjectPaperCardProps> = ({
   tilt = 1,
   onClick,
 }) => {
-  const serial = `P-${String(index + 1).padStart(2, "0")}`;
   const compact = variant === "compact";
 
   return (
@@ -51,14 +50,11 @@ export const ProjectPaperCard: React.FC<ProjectPaperCardProps> = ({
           <div>
             {/* Serial + link */}
             <div className="flex items-start justify-between gap-3">
-              <div className="flex min-w-0 flex-wrap items-center gap-x-2.5 gap-y-1">
-                <span className="led" aria-hidden="true" />
-                <span className="spec-label spec-label--signal readout">
-                  {serial}
+              {project.year ? (
+                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-neutral-500 md:text-[11px]">
+                  {project.year}
                 </span>
-                <span className="spec-label readout">{project.year}</span>
-                <span className="spec-label hidden sm:inline">// build record</span>
-              </div>
+              ) : null}
 
               {project.link ? (
                 <a
@@ -115,8 +111,8 @@ export const ProjectPaperCard: React.FC<ProjectPaperCardProps> = ({
             ))}
           </div>
 
-          <span className="spec-label transition-colors group-hover:text-[var(--signal)]">
-            Open record
+          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-neutral-500 transition-colors group-hover:text-[var(--signal)]">
+            Details
           </span>
         </div>
       </div>

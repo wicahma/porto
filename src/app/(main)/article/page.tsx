@@ -62,7 +62,7 @@ export default async function ArticleListPage() {
   ]);
 
   return (
-    <PublicPageShell code="SEC / 05 — JOURNAL">
+    <PublicPageShell >
       <SimpleArticlePage
         initialArticles={initialArticles ?? undefined}
         initialCategories={initialCategories}

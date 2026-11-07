@@ -29,21 +29,7 @@ export const SimpleModeView: React.FC<{
     <div className="section-stack mx-auto w-full py-6">
       {/* 1. Hero Section */}
       <section className="relative">
-        {/* Station strip */}
-        <div className="mb-5 flex items-center gap-3">
-          <span className="led" aria-hidden="true" />
-          <span className="spec-label spec-label--signal readout">
-            Personnel file // TDCK-2026
-          </span>
-          <span className="rule flex-1" aria-hidden="true" />
-          <span className="spec-label hidden sm:inline">Status: available</span>
-        </div>
-
         <div className="plate cornered relative overflow-hidden p-5 md:p-8">
-          <div
-            aria-hidden="true"
-            className="scanlines pointer-events-none absolute inset-0 opacity-70"
-          />
 
           <div className="relative grid grid-cols-1 items-center gap-6 md:grid-cols-[1fr_auto_1fr] lg:gap-8">
             {/* Left: Hello tag + Line + Name (Right Aligned) */}
@@ -64,9 +50,6 @@ export const SimpleModeView: React.FC<{
                 <div>Kusuma</div>
               </h1>
 
-              <span className="spec-label mt-3 text-right">
-                ID // SOFTWARE ENGINEER — YOGYAKARTA, ID
-              </span>
             </div>
 
             {/* Center: Bare Social Icons Stack */}
@@ -87,17 +70,6 @@ export const SimpleModeView: React.FC<{
                 Developer
               </p>
 
-              <div className="mt-4 flex flex-wrap gap-1.5">
-                {["BACKEND", "FRONTEND", "MOBILE"].map((tag) => (
-                  <span
-                    key={tag}
-                    className="spec-label border border-[var(--line)] bg-[var(--ink-900)] px-2 py-1 text-neutral-400"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
               <ButtonsLeft simpleView />
             </div>
           </div>
@@ -114,11 +86,6 @@ export const SimpleModeView: React.FC<{
         {/* About Details */}
         <div className="flex-1 space-y-4">
           {/* Header Line */}
-          <div className="flex items-center gap-3 w-full">
-            <span className="spec-label spec-label--signal readout">SEC.01</span>
-            <span className="spec-label">// Operator profile</span>
-            <span className="rule flex-1" aria-hidden="true" />
-          </div>
 
           {/* Heading */}
           <div className="flex items-center gap-3">
@@ -151,11 +118,6 @@ export const SimpleModeView: React.FC<{
       <SimpleArticleList />
 
       {/* 6. Footer rule */}
-      <div className="flex items-center gap-3 py-6">
-        <span className="spec-label readout">EOF</span>
-        <span className="rule flex-1" aria-hidden="true" />
-        <span className="spec-label">TDCK // 2026</span>
-      </div>
     </div>
   );
 };
