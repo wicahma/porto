@@ -12,7 +12,7 @@ steps:
     image: bash
     commands:
       - NODE_BIN="$(ls -d /home/diama/.nvm/versions/node/*/bin 2>/dev/null | sort -V | tail -1)"
-      - export PATH="/home/diama/ci-tools/bin:${NODE_BIN}:/home/diama/.local/bin:/usr/local/bin:$PATH"
+      - export PATH="/home/diama/ci-tools/bin:$NODE_BIN:/home/diama/.local/bin:/usr/local/bin:$PATH"
       - export NODE_OPTIONS="--max-old-space-size=1536"
       - set -a; . /home/diama/repos/personal-porto/porto/.env.local; set +a
       - npm install --legacy-peer-deps
@@ -22,7 +22,7 @@ steps:
     image: bash
     commands:
       - NODE_BIN="$(ls -d /home/diama/.nvm/versions/node/*/bin 2>/dev/null | sort -V | tail -1)"
-      - export PATH="/home/diama/ci-tools/bin:${NODE_BIN}:/home/diama/.local/bin:/usr/local/bin:$PATH"
+      - export PATH="/home/diama/ci-tools/bin:$NODE_BIN:/home/diama/.local/bin:/usr/local/bin:$PATH"
       - WS="${CI_WORKSPACE:-$PWD}"
       - chmod a+x "$WS" "$(dirname "$WS")"
       - chmod -R a+rX "$WS/.next" "$WS/public"
