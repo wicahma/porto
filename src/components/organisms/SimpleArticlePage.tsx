@@ -11,6 +11,7 @@ import { TChip } from "@/interface/app/experience";
 import { TArticleRow } from "@/interface/entities/article.interface";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
+import Breadcrumb from "../molecules/header/Breadcrumb";
 
 export interface SimpleArticlePageProps {
   initialArticles?: { articles: TArticleRow[]; total: number };
@@ -73,6 +74,7 @@ export const SimpleArticlePage: React.FC<SimpleArticlePageProps> = ({
     <div className="w-full space-y-10 py-4" data-section="article">
       {/* 1. Header matching Image #2 */}
       <div className="space-y-3">
+        <Breadcrumb />
         <div className="flex items-center gap-3">
           <Triangles />
           <h1 className="text-4xl font-black text-white tracking-tight">
@@ -80,8 +82,8 @@ export const SimpleArticlePage: React.FC<SimpleArticlePageProps> = ({
           </h1>
         </div>
         <p className="text-sm md:text-base text-neutral-400 max-w-2xl leading-relaxed">
-          Technical deep-dives, architectural lessons, and tutorials on backend systems,
-          modern frontend, and database engineering.
+          Technical deep-dives, architectural lessons, and tutorials on backend
+          systems, modern frontend, and database engineering.
         </p>
       </div>
 
@@ -114,9 +116,7 @@ export const SimpleArticlePage: React.FC<SimpleArticlePageProps> = ({
       </div>
 
       {/* 3. Article Card List (shared borderless card with the home summary) */}
-      <h2 className="text-lg font-bold tracking-tight text-white">
-        Articles
-      </h2>
+      <h2 className="text-lg font-bold tracking-tight text-white">Articles</h2>
       {isLoading ? (
         <div className="grid grid-cols-1 gap-6 pt-2 md:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 3 }).map((_, i) => (
@@ -141,7 +141,8 @@ export const SimpleArticlePage: React.FC<SimpleArticlePageProps> = ({
         </div>
       ) : (
         <div className="py-16 text-center text-sm text-neutral-500">
-          No articles found for &quot;{debouncedSearch || selectedCategory}&quot;.
+          No articles found for &quot;{debouncedSearch || selectedCategory}
+          &quot;.
         </div>
       )}
 

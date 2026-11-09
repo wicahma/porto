@@ -22,6 +22,7 @@
   --text-hi: #f5f5f5;
   --text-mid: #a3a3a3;
   --text-low: #8f8f8f;
+  --text-ultra-low: #525252;
 
   /* ---- Signal palette (identity anchors) -------------------------------- */
   --signal: #02c380;
@@ -31,10 +32,12 @@
   --petal-indigo: #574bf5;
   --petal-cyan: #4ff1ff;
   --petal-amber: #ffc700;
+  --project-amber: #e0a800;
 
   /* ---- Type ------------------------------------------------------------- */
-  --font-mono-spec: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
-    "Liberation Mono", monospace;
+  --font-mono-spec:
+    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono",
+    monospace;
   --tracking-spec: 0.18em;
 
   /* ---- Spacing scale ---------------------------------------------------- */

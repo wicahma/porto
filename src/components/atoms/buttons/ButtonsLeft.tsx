@@ -57,11 +57,11 @@ const ButtonsLeft = ({
 
   if (simpleView) {
     return (
-      <div className="flex items-center gap-4 mt-6">
+      <div className="mt-6 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-4">
         <button
           type="button"
           onClick={handleRedirectToEmail}
-          className="cursor-pointer bg-[var(--flare)] hover:bg-[var(--flare)] text-white flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full text-sm font-semibold transition-transform hover:scale-105"
+          className="cursor-pointer hoverable bg-[var(--flare)] hover:bg-[var(--flare)] text-white flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full text-sm font-semibold transition-transform hover:scale-105"
         >
           <Chat className="w-5 h-4" />
           <span>Open to discuss</span>
@@ -70,7 +70,7 @@ const ButtonsLeft = ({
           type="button"
           onClick={handleDownloadCV}
           disabled={isGenerating}
-          className="cursor-pointer bg-[var(--ink-725)] hover:bg-[var(--ink-620)] border border-neutral-700/60 text-white flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full text-sm font-semibold transition-transform hover:scale-105"
+          className="cursor-pointer hoverable bg-[var(--ink-725)] hover:bg-[var(--ink-620)] border border-neutral-700/60 text-white flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full text-sm font-semibold transition-transform hover:scale-105"
         >
           <Download className="w-4 h-4" />
           <span>{isGenerating ? "Generating..." : "Download CV"}</span>

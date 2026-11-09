@@ -1,4 +1,3 @@
-import { useViewModeStore } from "@/store/viewModeStore";
 import { cn } from "@/utils/helper/cn";
 import {
   domMax,
@@ -13,7 +12,6 @@ import React, { useEffect, useState } from "react";
 
 export const GlobCursor: React.FC = () => {
   const [enabled, setEnabled] = useState(false);
-  const isSimpleMode = useViewModeStore((state) => state.isSimpleMode);
   useEffect(() => {
     const handleResize = () => {
       setEnabled(globalThis.innerWidth >= 768);
@@ -33,8 +31,8 @@ export const GlobCursor: React.FC = () => {
   const [unhoverable, setUnhoverable] = useState(false);
   const [cursor, setCursor] = useState("");
 
-  const cursorX = useMotionValue(0);
-  const cursorY = useMotionValue(0);
+  const cursorX = useMotionValue(-100);
+  const cursorY = useMotionValue(-100);
   const width = useSpring(40, { stiffness: 300, damping: 30 });
   const height = useSpring(40, { stiffness: 300, damping: 30 });
   const left = useSpring(0, springOpt);
@@ -54,6 +52,11 @@ export const GlobCursor: React.FC = () => {
     const handleMouseMove = (e: MouseEvent) => {
       const target = e.target as HTMLElement | null;
       if (!target || typeof target.closest !== "function") return;
+
+      // The dot is the cursor, so it follows the pointer everywhere.
+      cursorX.set(e.clientX);
+      cursorY.set(e.clientY);
+
       const unhoverTarget = target.closest(".unhoverable") as HTMLElement | null;
       if (unhoverTarget) {
         setHoverable(false);
@@ -165,17 +168,15 @@ export const GlobCursor: React.FC = () => {
     };
   }, []);
 
-  if (!enabled || isSimpleMode) return null;
+  if (!enabled) return null;
 
   return (
     <LazyMotion features={domMax} strict>
-      {hoverable && (
-        <style jsx global>{`
-          * {
-            cursor: none !important;
-          }
-        `}</style>
-      )}
+      <style jsx global>{`
+        * {
+          cursor: none !important;
+        }
+      `}</style>
 
       <m.div
         className="fixed inset-0 z-9999 pointer-events-none"
@@ -204,17 +205,15 @@ export const GlobCursor: React.FC = () => {
         }}
       />
 
-      {(hoverable || cursor === "pointer") && (
-        <m.div
-          className="fixed z-10000 pointer-events-none -translate-x-1/2 -translate-y-1/2 bg-white rounded-full"
-          style={{
-            x: cursorX,
-            y: cursorY,
-            width: 8,
-            height: 8,
-          }}
-        />
-      )}
+      <m.div
+        className="fixed z-10000 pointer-events-none -translate-x-1/2 -translate-y-1/2 bg-white rounded-full"
+        style={{
+          x: cursorX,
+          y: cursorY,
+          width: 8,
+          height: 8,
+        }}
+      />
     </LazyMotion>
   );
 };

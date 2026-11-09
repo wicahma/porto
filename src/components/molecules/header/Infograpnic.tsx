@@ -1,19 +1,13 @@
 "use client";
-import { MapPin } from "lucide-react";
-import { useEffect, useState } from "react";
 import Globe from "@/components/atoms/animations/Globe";
 import Tooltip from "@/components/atoms/popups/Tooltip";
-import ViewModeToggle from "@/components/atoms/buttons/ViewModeToggle";
 import { isMdUp } from "@/utils/helper/responsive";
-import { useViewModeStore } from "@/store/viewModeStore";
+import { MapPin } from "lucide-react";
 import { m } from "motion/react";
 import { usePathname } from "next/navigation";
-export default function Infographic({
-  showToggle = true,
-}: {
-  showToggle?: boolean;
-} = {}) {
-  const isSimpleMode = useViewModeStore((state) => state.isSimpleMode);
+import { useEffect, useState } from "react";
+
+export default function Infographic() {
   const [currentTime, setCurrentTime] = useState<Date | undefined>(undefined);
   const [isMd, setIsMd] = useState(false);
 
@@ -56,18 +50,16 @@ export default function Infographic({
 
   const pathname = usePathname();
   const isArticlePage = pathname.startsWith("/article");
-  const shouldShowToggle = showToggle && !isArticlePage;
-  const targetWidth = isSimpleMode || isArticlePage ? "100%" : isMd ? "50%" : "100%";
+  const targetWidth = "100%";
   return (
     <m.div
       layout="position"
       initial={{ width: "100%", opacity: 0 }}
       animate={{ width: targetWidth, opacity: 1 }}
       transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-      className="flex justify-between items-center overflow-hidden"
+      className="flex justify-between items-center"
     >
       <div className="flex gap-2 items-center">
-        {shouldShowToggle && <ViewModeToggle />}
         <div>
           <h3 className="text-nowrap truncate max-w-50 text-xl font-semibold text-[var(--signal)]">
             {getDayName()}

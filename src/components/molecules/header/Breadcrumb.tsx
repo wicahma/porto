@@ -1,16 +1,23 @@
 "use client";
 
 import BreadcrumbArrow from "@/components/atoms/breadcrumbs/BreadcrumbArrow";
-import { useViewModeStore } from "@/store/viewModeStore";
 import { cn } from "@/utils/helper/cn";
 import { m } from "motion/react";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-export default function Breadcrumb() {
+interface BreadcrumbProps {
+  /**
+   * Display overrides keyed by path segment, for routes whose dynamic segment
+   * is not readable (e.g. an experience UUID -> company name).
+   */
+  labels?: Record<string, string>;
+  className?: string;
+}
+
+export default function Breadcrumb({ labels, className }: BreadcrumbProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const isSimpleMode = useViewModeStore((state) => state.isSimpleMode);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const isArticlePage = pathname.startsWith("/article");
@@ -19,10 +26,12 @@ export default function Breadcrumb() {
     const paths = pathname.split("/").filter(Boolean);
 
     const breadcrumbs = paths.map((path, index) => {
-      const label = path
-        .split("-")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ");
+      const label =
+        labels?.[path] ??
+        path
+          .split("-")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ");
 
       const href = "/" + paths.slice(0, index + 1).join("/");
 
@@ -49,7 +58,7 @@ export default function Breadcrumb() {
       transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
       className={cn(
         "w-full flex items-center justify-between gap-3 overflow-hidden",
-        !isSimpleMode && !isArticlePage && "md:w-1/2",
+        className,
       )}
     >
       <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
@@ -70,10 +79,7 @@ export default function Breadcrumb() {
             >
               {(index === 0 || !isArticlePage) && (
                 <BreadcrumbArrow
-                  className={cn(
-                    "aspect-square",
-                    isArticlePage ? "w-3.5 h-3.5 shrink-0" : "max-md:w-4",
-                  )}
+                  className={cn("aspect-square", "w-3.5 h-3.5 shrink-0")}
                   isActive={isActive}
                 />
               )}
@@ -82,20 +88,13 @@ export default function Breadcrumb() {
                   isActive
                     ? "text-[var(--signal)]"
                     : "text-neutral-400 hover:text-neutral-200",
-                  isArticlePage
-                    ? "text-xs sm:text-sm font-medium tracking-normal truncate max-w-[180px] sm:max-w-xs md:max-w-md"
-                    : "font-medium md:text-xl text-base",
+                  "text-xs sm:text-sm font-medium tracking-normal truncate max-w-[180px] sm:max-w-xs md:max-w-md",
                 )}
               >
                 {crumb.label}
               </span>
               {index < lastIndex && (
-                <span
-                  className={cn(
-                    "text-neutral-600",
-                    isArticlePage ? "text-xs mx-0.5" : "text-base",
-                  )}
-                >
+                <span className={cn("text-neutral-600", "text-xs mx-0.5")}>
                   /
                 </span>
               )}

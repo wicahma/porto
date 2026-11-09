@@ -1,26 +1,21 @@
 "use client";
+import { GlobCursor } from "@/components/atoms/animations/GlobCursor";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 import { ILayoutProps } from "@/interface/app/layout";
 import { cn } from "@/lib/utils";
-import { useViewModeStore } from "@/store/viewModeStore";
 import { useParams, usePathname } from "next/navigation";
 import NextTopLoader from "nextjs-toploader";
-import React, { useEffect } from "react";
+import React from "react";
 
 /**
- * Public shell. The old dual-mode blur masks were tied to the animated home
- * variant; the public site now renders one composition, so the masks are gone
- * and only the shared chrome remains.
+ * Public shell. One composition is rendered for every public route; the old
+ * animated/simple mode switch is gone, so the shell only owns chrome, scroll
+ * behaviour, and the shared gutters.
  */
 const Layout: React.FC<ILayoutProps> = ({ children }) => {
   const params = useParams();
   const pathname = usePathname();
   const disableOnPathname = [`/article/${params.slug}`];
-  const init = useViewModeStore((state) => state.init);
-
-  useEffect(() => {
-    init();
-  }, [init]);
 
   const scrollRef = useSmoothScroll({
     disableOnPathname,
@@ -30,6 +25,7 @@ const Layout: React.FC<ILayoutProps> = ({ children }) => {
   return (
     <main className="max-w-screen overflow-hidden">
       <NextTopLoader height={1} color="var(--ink-500)" />
+      <GlobCursor />
       <div
         id="data"
         className={cn(
@@ -40,7 +36,7 @@ const Layout: React.FC<ILayoutProps> = ({ children }) => {
         <div
           id="core-animation-component"
           ref={scrollRef}
-          className="max-w-270 mx-auto h-full"
+          className="max-w-270 mx-auto h-full px-4 sm:px-6 xl:px-0"
         >
           {children}
         </div>

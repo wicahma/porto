@@ -66,19 +66,24 @@ function SocialCard({
 
 export default function Socials({
   simpleView = false,
+  orientation = "column",
 }: Readonly<{
   simpleView?: boolean;
+  orientation?: "column" | "row";
 }>) {
+  const row = simpleView && orientation === "row";
+
   return (
     <StaggerPull
       direction="to-top"
       staggerChildren={0.2}
       className={cn(
         simpleView
-          ? "flex w-fit shrink-0 flex-col"
+          ? "flex w-fit shrink-0"
           : "grid w-full grid-cols-3 gap-2 md:gap-3",
+        simpleView && (row ? "flex-row items-center" : "flex-col"),
       )}
-      itemClassName={simpleView ? "mb-3" : "min-w-0"}
+      itemClassName={simpleView ? (row ? "px-0.5" : "mb-3") : "min-w-0"}
     >
       <SocialCard
         link="https://github.com/wicahma"

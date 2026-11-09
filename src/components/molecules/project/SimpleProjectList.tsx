@@ -9,9 +9,7 @@ import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useMemo, useState } from "react";
 import ProjectPaperCard from "./ProjectPaperCard";
-import ProjectDetailDialog, {
-  ProjectDetailData,
-} from "./ProjectDetailDialog";
+import ProjectDetailDialog, { ProjectDetailData } from "./ProjectDetailDialog";
 
 /** The exact 4 projects requested for the featured showcase */
 const FEATURED_FOUR_PROJECTS: Partial<TProjectRow>[] = [
@@ -106,10 +104,9 @@ const CORE_STACK = [
   "Docker",
 ];
 
-
 export const SimpleProjectList: React.FC = () => {
   const router = useRouter();
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
   const [selectedProject, setSelectedProject] =
     useState<ProjectDetailData | null>(null);
 
@@ -180,7 +177,7 @@ export const SimpleProjectList: React.FC = () => {
                 <ChevronDown
                   className={`h-4 w-4 transition-transform duration-300 ${
                     isExpanded
-                      ? "rotate-180 text-[var(--signal)]"
+                      ? "rotate-180 text-[var(--project-amber)]"
                       : "text-neutral-500"
                   }`}
                 />
@@ -195,7 +192,9 @@ export const SimpleProjectList: React.FC = () => {
               onClick={() => setIsExpanded((prev) => !prev)}
               aria-expanded={isExpanded}
               aria-controls={isExpanded ? "project-previews" : undefined}
-              title={isExpanded ? "Fold records back" : "Unfold project records"}
+              title={
+                isExpanded ? "Fold records back" : "Unfold project records"
+              }
               className="group block w-full max-w-[614px] cursor-pointer text-left focus:outline-none"
             >
               <FolderIcon className="aspect-[614/286] w-full drop-shadow-xl transition-transform duration-300 group-hover:-translate-y-1" />
@@ -208,7 +207,9 @@ export const SimpleProjectList: React.FC = () => {
               <ChevronDown
                 aria-hidden="true"
                 className={`h-4 w-4 transition-transform duration-300 ${
-                  isExpanded ? "rotate-180 text-[var(--signal)]" : "text-neutral-500"
+                  isExpanded
+                    ? "rotate-180 text-[var(--project-amber)]"
+                    : "text-neutral-500"
                 }`}
               />
             </div>
@@ -290,9 +291,18 @@ export const SimpleProjectList: React.FC = () => {
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-3.5 h-3.5 shrink-0"
               >
-                <path d="M3 7.5L12 3L21 7.5L12 12L3 7.5Z" fill="var(--redis-top)" />
-                <path d="M3 7.5L12 12V21L3 16.5V7.5Z" fill="var(--redis-back)" />
-                <path d="M21 7.5L12 12V21L21 16.5V7.5Z" fill="var(--redis-side)" />
+                <path
+                  d="M3 7.5L12 3L21 7.5L12 12L3 7.5Z"
+                  fill="var(--redis-top)"
+                />
+                <path
+                  d="M3 7.5L12 12V21L3 16.5V7.5Z"
+                  fill="var(--redis-back)"
+                />
+                <path
+                  d="M21 7.5L12 12V21L21 16.5V7.5Z"
+                  fill="var(--redis-side)"
+                />
                 <path
                   d="M7 8L12 5.5L17 8L12 10.5L7 8Z"
                   fill="var(--text-hi)"
@@ -338,8 +348,8 @@ export const SimpleProjectList: React.FC = () => {
               {/* Top Bar matching Folder tab */}
               <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
                 <span className="text-xs font-mono uppercase tracking-wider text-neutral-300">
-                Featured projects
-              </span>
+                  Featured projects
+                </span>
                 <button
                   type="button"
                   onClick={() => setIsExpanded(false)}
@@ -349,7 +359,8 @@ export const SimpleProjectList: React.FC = () => {
                 </button>
               </div>
 
-              {isProjectsLoading && (!rawProjects || rawProjects.length === 0) ? (
+              {isProjectsLoading &&
+              (!rawProjects || rawProjects.length === 0) ? (
                 <div className="grid grid-cols-12 gap-5">
                   <div className="col-span-12 md:col-span-7 h-56 rounded-2xl bg-neutral-900/60 border border-neutral-800 animate-pulse" />
                   <div className="col-span-12 md:col-span-5 h-56 rounded-2xl bg-neutral-900/60 border border-neutral-800 animate-pulse" />
@@ -363,8 +374,7 @@ export const SimpleProjectList: React.FC = () => {
                     // Alternating Tetris widths:
                     // 0: wide (7 cols), 1: compact (5 cols)
                     // 2: compact (5 cols), 3: wide (7 cols)
-                    const variant =
-                      idx === 0 || idx === 3 ? "wide" : "compact";
+                    const variant = idx === 0 || idx === 3 ? "wide" : "compact";
                     const tilt =
                       idx === 0 ? -1 : idx === 1 ? 1 : idx === 2 ? -0.8 : 0.8;
 

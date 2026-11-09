@@ -14,7 +14,7 @@ export default function ArticleHeader() {
         className="max-w-270 mx-auto px-6 w-full flex flex-col-reverse gap-2.5"
       >
         <Breadcrumb />
-        <Infographic showToggle={false} />
+        <Infographic />
       </m.div>
     </header>
   );

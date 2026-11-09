@@ -1,8 +1,6 @@
 "use client";
 
 import Sun from "@/assets/svg/sun";
-import ExperienceDialog from "@/components/molecules/experience/ExperienceDialog";
-import { ExperienceCard } from "@/constants/dummies/experience-carousel";
 import { useExperiences } from "@/hooks/queries/experience.wrapper";
 import { useCssColors } from "@/hooks/useCssColors";
 import { ExperiencePositionSummary } from "@/interface/entities/experience.interface";
@@ -10,8 +8,9 @@ import {
   companyPhotoFallback,
   isLogoSource,
 } from "@/utils/helper/experience-logo";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
 import { m, useReducedMotion } from "motion/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -46,7 +45,8 @@ const DEFAULT_EXPERIENCES: CardExperience[] = [
     location: "Jakarta, ID",
     tags: ["Golang", "PostgreSQL", "Redis", "Distributed Systems"],
     image: "https://picsum.photos/seed/tech-corp/200/200",
-    description: "Architected high-throughput cloud telemetry platforms and real-time streaming pipelines.",
+    description:
+      "Architected high-throughput cloud telemetry platforms and real-time streaming pipelines.",
     competency: [
       "Engineered microservices processing 10k+ requests per second with sub-millisecond latencies.",
       "Optimized PostgreSQL database query planning, indexing, and connection pooling.",
@@ -61,7 +61,8 @@ const DEFAULT_EXPERIENCES: CardExperience[] = [
     location: "Jakarta, ID",
     tags: ["Next.js", "TypeScript", "Microservices", "Kafka"],
     image: "https://picsum.photos/seed/fintech-nusantara/200/200",
-    description: "Spearheaded headless core banking services and dynamic customer dashboard portals.",
+    description:
+      "Spearheaded headless core banking services and dynamic customer dashboard portals.",
     competency: [
       "Built performant Next.js client-facing interfaces with server components and edge rendering.",
       "Implemented secure OAuth2/JWT authentication and fine-grained role-based access controls.",
@@ -76,7 +77,8 @@ const DEFAULT_EXPERIENCES: CardExperience[] = [
     location: "Bandung, ID",
     tags: ["PostgreSQL", "Go", "Docker", "REST API"],
     image: "https://picsum.photos/seed/digital-solusindo/200/200",
-    description: "Engineered scalable microservices and optimized relational database queries.",
+    description:
+      "Engineered scalable microservices and optimized relational database queries.",
     competency: [
       "Developed robust RESTful APIs following domain-driven design and clean architecture.",
       "Containerized microservices with Docker and set up automated CI/CD deployment pipelines.",
@@ -91,7 +93,8 @@ const DEFAULT_EXPERIENCES: CardExperience[] = [
     location: "Surabaya, ID",
     tags: ["AWS", "Kubernetes", "CI/CD", "Terraform"],
     image: "https://picsum.photos/seed/astra-cloud/200/200",
-    description: "Managed containerized infrastructure with automated deployments and observability.",
+    description:
+      "Managed containerized infrastructure with automated deployments and observability.",
     competency: [
       "Provisioned cloud resources on AWS using Terraform infrastructure-as-code.",
       "Configured Prometheus, Grafana, and OpenTelemetry monitoring dashboards.",
@@ -106,7 +109,8 @@ const DEFAULT_EXPERIENCES: CardExperience[] = [
     location: "Jakarta, ID",
     tags: ["React", "HTML/CSS", "JavaScript"],
     image: "https://picsum.photos/seed/cyber-labs/200/200",
-    description: "Built responsive web applications and collaborated with UI/UX designers.",
+    description:
+      "Built responsive web applications and collaborated with UI/UX designers.",
     competency: [
       "Created pixel-perfect interactive web pages from Figma design specifications.",
       "Optimized client-side web asset loading times and Core Web Vitals.",
@@ -147,11 +151,6 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
   const [isHovered, setIsHovered] = useState(false);
   const reduceMotion = useReducedMotion();
   const [isMobile, setIsMobile] = useState(false);
-  const [selectedExperience, setSelectedExperience] = useState<ExperienceCard | null>(null);
-  const [selectedPositions, setSelectedPositions] = useState<
-    ExperiencePositionSummary[] | undefined
-  >(undefined);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -161,15 +160,20 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
   }, []);
 
   const experiences = useMemo<CardExperience[]>(() => {
-    const rawList = (experiencesData as unknown as { experiences?: ApiExperienceItem[] })?.experiences;
+    const rawList = (
+      experiencesData as unknown as { experiences?: ApiExperienceItem[] }
+    )?.experiences;
 
     if (!rawList || rawList.length === 0) {
       return DEFAULT_EXPERIENCES;
     }
 
     const mapped: CardExperience[] = rawList.map((item, index) => {
-      const newestJob = item.jobs && item.jobs.length > 0 ? item.jobs[0] : undefined;
-      const startYear = newestJob?.start_date ? new Date(newestJob.start_date).getFullYear() : 2023;
+      const newestJob =
+        item.jobs && item.jobs.length > 0 ? item.jobs[0] : undefined;
+      const startYear = newestJob?.start_date
+        ? new Date(newestJob.start_date).getFullYear()
+        : 2023;
       const endYear = newestJob?.is_current
         ? "Present"
         : newestJob?.end_date
@@ -206,7 +210,9 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
         tags: item.tags || ["Go", "Next.js", "PostgreSQL"],
         logo: isLogoSource(item.logo) ? item.logo : undefined,
         image: item.image || companyPhotoFallback(item.company),
-        description: newestJob?.description || "Built modern web systems and scalable services.",
+        description:
+          newestJob?.description ||
+          "Built modern web systems and scalable services.",
         competency: newestJob?.competency || [
           "Developed scalable backend systems and high-availability APIs.",
           "Designed database schemas, indexing strategies, and optimized query performance.",
@@ -217,7 +223,9 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
     });
 
     while (mapped.length < 5) {
-      mapped.push(DEFAULT_EXPERIENCES[mapped.length % DEFAULT_EXPERIENCES.length]);
+      mapped.push(
+        DEFAULT_EXPERIENCES[mapped.length % DEFAULT_EXPERIENCES.length],
+      );
     }
 
     return mapped;
@@ -243,8 +251,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
       !autoSlide ||
       reduceMotion ||
       (pauseOnHover && isHovered) ||
-      total <= 1 ||
-      isDialogOpen
+      total <= 1
     ) {
       return;
     }
@@ -261,7 +268,6 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
     isHovered,
     total,
     navigate,
-    isDialogOpen,
     reduceMotion,
   ]);
 
@@ -346,25 +352,13 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
     [color, isMobile],
   );
 
-  const handleOpenModal = (item: CardExperience) => {
-    const dialogData: ExperienceCard = {
-      id: item.id,
-      company: item.company,
-      role: item.role,
-      period: item.period,
-      description: item.description || "Contributed to core application engineering and delivered scalable services.",
-      technologies: item.tags || [],
-      competency: item.competency || [
-        "Architected scalable services and microservices components.",
-        "Optimized database performance, caching layers, and reliability.",
-        "Maintained high code quality and test coverage.",
-      ],
-      logo: item.logo,
-      image: item.image,
-    };
-    setSelectedExperience(dialogData);
-    setSelectedPositions(item.positions);
-    setIsDialogOpen(true);
+  /** Records with a real backend id open the detail page; fallbacks stay put. */
+  const openExperience = (item: CardExperience) => {
+    const isUuid =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+        item.id,
+      );
+    router.push(isUuid ? `/experience/${item.id}` : "/experience");
   };
 
   return (
@@ -374,12 +368,21 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Header */}
-      <div className="flex items-center justify-center gap-3 group w-full">
-        <Sun className="h-6 w-6 shrink-0 text-[var(--caution)] md:h-7 md:w-7" />
-        <h3 className="text-3xl font-bold text-white tracking-tight transition-colors">
-          Experience
-        </h3>
-        <Sun className="h-6 w-6 shrink-0 text-[var(--caution)] md:h-7 md:w-7" />
+      <div className="flex w-full flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <Sun className="h-6 w-6 shrink-0 text-[var(--caution)] md:h-7 md:w-7" />
+          <h3 className="text-2xl font-bold text-white tracking-tight transition-colors md:text-3xl">
+            Experience
+          </h3>
+          <Sun className="h-6 w-6 shrink-0 text-[var(--caution)] md:h-7 md:w-7" />
+        </div>
+        <Link
+          href="/experience"
+          className="group inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-neutral-400 transition-colors hover:text-[var(--signal)]"
+        >
+          <span>All experience</span>
+          <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+        </Link>
       </div>
 
       {/* Carousel Container with Left & Right Arrows */}
@@ -400,13 +403,14 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
         )}
 
         {/* Physical 3D Sliding Cards Carousel Track (Compact Height) */}
-        <div className="relative w-full h-[210px] sm:h-[225px] md:h-[235px] flex items-center justify-center overflow-hidden py-2">
+        <div className="relative w-full h-[210px] sm:h-[225px] md:h-[235px] flex items-center justify-center py-2 overflow-hidden">
+          {/*<div />*/}
           {experiences.map((item, index) => {
             let offset = index - centerIndex;
             while (offset > total / 2) offset -= total;
             while (offset < -total / 2) offset += total;
 
-            const isCenter = offset === 0;
+            const isCenter = offset === 0; 
             const isLeft = offset < 0;
             const isRight = offset > 0;
             const isVisible = Math.abs(offset) <= 2;
@@ -437,7 +441,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
                 className="absolute cursor-pointer overflow-hidden rounded-2xl border border-orange-950/50 bg-[#1a130b] p-4 sm:p-5 flex flex-col justify-between"
                 onClick={() => {
                   if (isCenter) {
-                    handleOpenModal(item);
+                    openExperience(item);
                   } else {
                     setCenterIndex(index);
                   }
@@ -472,67 +476,69 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
                       isRight ? "justify-end" : "justify-between"
                     }`}
                   >
-                  <div
-                    className={`flex items-center gap-1.5 min-w-0 ${
-                      isRight ? "text-right" : "text-left"
-                    }`}
-                  >
-                    <span className="truncate font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--signal)] sm:text-xs">
-                      {item.company}
-                    </span>
-                    {item.location && isCenter && (
-                      <span className="text-[11px] text-neutral-400 hidden sm:inline-block">
-                        • {item.location}
+                    <div
+                      className={`flex items-center gap-1.5 min-w-0 ${
+                        isRight ? "text-right" : "text-left"
+                      }`}
+                    >
+                      <span className="truncate font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--signal)] sm:text-xs">
+                        {item.company}
+                      </span>
+                      {item.location && (
+                        <span className="text-[11px] text-neutral-400 hidden sm:inline-block">
+                          • {item.location}
+                        </span>
+                      )}
+                    </div>
+
+                    {isCenter && (item.positions?.length ?? 0) > 1 && (
+                      <span className="shrink-0 rounded-full bg-[var(--signal)]/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-[var(--signal)]">
+                        {item.positions?.length} roles
                       </span>
                     )}
                   </div>
 
-                  {isCenter && (item.positions?.length ?? 0) > 1 && (
-                    <span className="shrink-0 rounded-full bg-[var(--signal)]/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-[var(--signal)]">
-                      {item.positions?.length} roles
+                  {/* Middle: Role & Description (Compact spacing) */}
+                  <div
+                    className={`mt-1.5 mb-1 transition-opacity duration-300 ${isCenter ? "opacity-100" : "opacity-50"} ${isRight ? "text-right" : "text-left"}`}
+                  >
+                    <h3 className="truncate text-sm font-black tracking-tight text-white sm:text-base md:text-lg lg:text-xl">
+                      {item.role}
+                    </h3>
+                    <span className="mt-0.5 block font-mono text-[10px] sm:text-xs text-neutral-400 transition-opacity duration-300">
+                      {item.period}
                     </span>
-                  )}
-                </div>
-
-                {/* Middle: Role & Description (Compact spacing) */}
-                <div className={`mt-1.5 mb-1 transition-opacity duration-300 ${isCenter ? "opacity-100" : "opacity-0"} ${isRight ? "text-right" : "text-left"}`}>
-                  <h3 className="truncate text-sm font-black tracking-tight text-white sm:text-base md:text-lg lg:text-xl">
-                    {item.role}
-                  </h3>
-                  <span className="mt-0.5 block font-mono text-[10px] sm:text-xs text-neutral-400 transition-opacity duration-300">
-                    {item.period}
-                  </span>
-                  {item.description && (
-                    <p
-                      className={`text-[11px] sm:text-xs text-neutral-300 font-normal line-clamp-2 mt-0.5 leading-snug transition-opacity duration-300 ${
-                        isCenter ? "opacity-100" : "opacity-0"
-                      }`}
-                    >
-                      {item.description}
-                    </p>
-                  )}
-                </div>
-
-                {/* Bottom row: Compact Tech Stack tags */}
-                <div
-                  className={`mt-1 flex items-center gap-1.5 overflow-hidden transition-opacity duration-300 ${
-                    isCenter
-                      ? "opacity-100 flex-wrap max-h-6"
-                      : isRight
-                        ? "opacity-80 justify-end"
-                        : "opacity-80 justify-start"
-                  }`}
-                >
-                  {isCenter &&
-                    item.tags.slice(0, 4).map((tag, i) => (
-                      <span
-                        key={i}
-                        className="border border-[var(--line)] px-1.5 py-0.5 font-mono text-[10px] leading-none text-neutral-400"
+                    {item.description && (
+                      <p
+                        className={`text-[11px] sm:text-xs text-neutral-300 font-normal line-clamp-2 mt-0.5 leading-snug transition-opacity duration-300 ${
+                          isCenter ? "opacity-100" : "opacity-50"
+                        }`}
                       >
-                        {tag}
-                      </span>
-                    ))}
-                </div>
+                        {item.description}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Bottom row: Compact Tech Stack tags */}
+                  <div
+                    className={`mt-1 flex items-center gap-1.5 overflow-hidden transition-opacity duration-300 ${
+                      isCenter
+                        ? "opacity-100 flex-wrap max-h-6"
+                        : isRight
+                          ? "opacity-80 justify-end"
+                          : "opacity-80 justify-start"
+                    }`}
+                  >
+                    {isCenter &&
+                      item.tags.slice(0, 4).map((tag, i) => (
+                        <span
+                          key={i}
+                          className="border border-[var(--line)] px-1.5 py-0.5 font-mono text-[10px] leading-none text-neutral-400"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                  </div>
                 </div>
               </m.div>
             );
@@ -583,16 +589,6 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
       <p className="text-xs md:text-sm text-neutral-400 font-medium text-center">
         with 2 years of work experience
       </p>
-
-      {/* Experience Detail Popup Modal */}
-      {selectedExperience && (
-        <ExperienceDialog
-          data={selectedExperience}
-          positions={selectedPositions}
-          isOpen={isDialogOpen}
-          onClose={() => setIsDialogOpen(false)}
-        />
-      )}
     </div>
   );
 };
