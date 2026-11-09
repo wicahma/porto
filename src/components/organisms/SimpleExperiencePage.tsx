@@ -1,6 +1,7 @@
 "use client";
 
 import Sun from "@/assets/svg/sun";
+import { SmartImage } from "@/components/atoms/images/ImageWithFallback";
 import { useExperiences } from "@/hooks/queries/experience.wrapper";
 import { isLogoSource } from "@/utils/helper/experience-logo";
 import { ArrowUpRight, ChevronRight } from "lucide-react";
@@ -243,7 +244,7 @@ export const SimpleExperiencePage: React.FC = () => {
                     </span>
                     {exp.logo ? (
                       <span className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-[var(--line)] bg-[var(--ink-800)]">
-                        <img
+                        <SmartImage
                           src={exp.logo}
                           alt=""
                           aria-hidden="true"

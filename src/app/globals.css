@@ -104,6 +104,88 @@ body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
+/* ------------------------------------------------------------------------- */
+/* Image fallback: a quiet water plate that echoes the 404 fill.              */
+/* CSS-only on purpose (one transform animation, no canvas, no filters) so it  */
+/* stays cheap on edge devices; paint is contained to the placeholder box.     */
+/* ------------------------------------------------------------------------- */
+.image-fallback {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  isolation: isolate;
+  contain: paint;
+  container-type: inline-size;
+  background-color: var(--ink-900);
+  color: var(--text-mid);
+}
+
+.image-fallback::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: var(--grid-cell) var(--grid-cell);
+  opacity: 0.3;
+}
+
+.image-fallback__tank {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: var(--fb-level, 55%);
+  overflow: hidden;
+}
+
+.image-fallback__waves {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  animation: image-fallback-drift var(--fb-duration, 10s) linear infinite;
+}
+
+/* Only the front band animates: one compositor-only layer per placeholder. */
+.image-fallback__waves--slow {
+  animation: none;
+}
+
+@keyframes image-fallback-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Tiny tiles (avatars, list logos) keep the glyph and drop the water. */
+@container (max-width: 64px) {
+  .image-fallback__tank {
+    display: none;
+  }
+
+  .image-fallback__icon {
+    width: 52%;
+    height: 52%;
+    min-width: 0;
+    min-height: 0;
+    max-width: none;
+    max-height: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image-fallback__waves {
+    animation: none;
+  }
+}
+
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
     display: none;

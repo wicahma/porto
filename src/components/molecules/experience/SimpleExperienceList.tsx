@@ -1,6 +1,7 @@
 "use client";
 
 import Sun from "@/assets/svg/sun";
+import { SmartImage } from "@/components/atoms/images/ImageWithFallback";
 import { useExperiences } from "@/hooks/queries/experience.wrapper";
 import { useCssColors } from "@/hooks/useCssColors";
 import { ExperiencePositionSummary } from "@/interface/entities/experience.interface";
@@ -410,7 +411,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
             while (offset > total / 2) offset -= total;
             while (offset < -total / 2) offset += total;
 
-            const isCenter = offset === 0; 
+            const isCenter = offset === 0;
             const isLeft = offset < 0;
             const isRight = offset > 0;
             const isVisible = Math.abs(offset) <= 2;
@@ -450,7 +451,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
                 {/* Company artwork: the stored logo bleeds out of the top-right corner, photos stay a soft wash */}
                 {item.logo && isCenter ? (
                   <div className="pointer-events-none absolute -top-6 -right-6 h-32 w-32 sm:h-40 sm:w-40">
-                    <img
+                    <SmartImage
                       src={item.logo}
                       alt=""
                       aria-hidden="true"
@@ -460,7 +461,7 @@ export const SimpleExperienceList: React.FC<SimpleExperienceListProps> = ({
                   </div>
                 ) : (
                   <div className="absolute top-0 right-0 w-28 h-28 sm:w-36 sm:h-36 overflow-hidden pointer-events-none rounded-tr-2xl md:rounded-tr-3xl rounded-bl-3xl">
-                    <img
+                    <SmartImage
                       src={item.image}
                       alt={item.company}
                       className="w-full h-full object-cover opacity-15 sm:opacity-20 filter contrast-125"

@@ -1,7 +1,7 @@
 "use client";
 import { ICarouselProps } from "@/interface/atoms/carousel";
 import { cn } from "@/utils/helper/cn";
-import NextImage from "next/image";
+import { SmartNextImage } from "@/components/atoms/images/ImageWithFallback";
 import React, { useEffect, useRef, useState } from "react";
 
 const Carousel: React.FC<ICarouselProps> = ({
@@ -88,7 +88,7 @@ const Carousel: React.FC<ICarouselProps> = ({
             <div ref={trackRef} className="carousel-track">
                 {renderedImages.map((img, i) => (
                     <div key={i} className="carousel-content">
-                        <NextImage
+                        <SmartNextImage
                             loading="eager"
                             width={768}
                             height={480}

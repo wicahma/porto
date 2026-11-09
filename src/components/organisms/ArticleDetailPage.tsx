@@ -1,6 +1,7 @@
 "use client";
 
 import { StorageHtmlContent } from "@/components/atoms/content/StorageHtmlContent";
+import { SmartImage } from "@/components/atoms/images/ImageWithFallback";
 import { StorageImg } from "@/components/atoms/images/StorageImage";
 import ArticleFooter from "@/components/molecules/ArticleFooter";
 import ArticleHeader from "@/components/molecules/ArticleHeader";
@@ -27,7 +28,10 @@ const ArticleDetailPage = ({
     <ScrollableContainer className="h-screen relative rounded-2xl overflow-y-auto">
       <ArticleHeader />
 
-      <article className="max-w-350 mx-auto px-6 py-16 relative z-10" data-section="article">
+      <article
+        className="max-w-350 mx-auto px-6 py-16 relative z-10"
+        data-section="article"
+      >
         <div className="max-w-170 mx-auto mb-12">
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-8 leading-tight">
             {data?.title}
@@ -49,7 +53,7 @@ const ArticleDetailPage = ({
               <StorageImg
                 src={data?.image}
                 alt={data?.title}
-                className="w-full h-auto object-cover"
+                className="w-full h-auto min-h-40 object-cover sm:min-h-56"
               />
             </div>
           </div>
@@ -116,7 +120,7 @@ const ArticleDetailPage = ({
                 <article className="border border-[var(--line)] bg-[var(--ink-850)] overflow-hidden transition-colors duration-300 hover:border-[var(--line-strong)]">
                   <RenderIf condition={Boolean(relatedItem.image)}>
                     <div className="aspect-video overflow-hidden bg-neutral-800">
-                      <img
+                      <SmartImage
                         src={relatedItem.image}
                         alt={relatedItem.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

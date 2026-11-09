@@ -1,6 +1,7 @@
-import Image, { ImageProps } from "next/image";
+import { ImageProps } from "next/image";
 import { getStorageFileUrl } from "@/utils/helper/storage";
 import { loadingImageDataUri } from "@/constants/loading";
+import { SmartImage, SmartNextImage } from "./ImageWithFallback";
 
 export const StorageImage: React.FC<ImageProps> = ({
   src,
@@ -18,7 +19,7 @@ export const StorageImage: React.FC<ImageProps> = ({
 
   if (fill) {
     return (
-      <Image
+      <SmartNextImage
         src={imageUrl}
         alt={alt}
         fill
@@ -33,7 +34,7 @@ export const StorageImage: React.FC<ImageProps> = ({
   }
 
   return (
-    <Image
+    <SmartNextImage
       src={imageUrl}
       alt={alt}
       width={width || 800}
@@ -53,5 +54,5 @@ export const StorageImg: React.FC<
 > = ({ src, alt, ...props }) => {
   const imageUrl = getStorageFileUrl(src);
 
-  return <img src={imageUrl} alt={alt} {...props} />;
+  return <SmartImage src={imageUrl} alt={alt} {...props} />;
 };

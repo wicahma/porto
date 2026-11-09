@@ -2,6 +2,7 @@
 
 import React, { useRef, useState } from "react";
 import { Upload, X, File as FileIcon } from "lucide-react";
+import { SmartImage } from "@/components/atoms/images/ImageWithFallback";
 import { Button } from "../buttons/button";
 import { Label } from "./label";
 
@@ -111,7 +112,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
         {fileName ? (
           <div className="flex items-center gap-2 p-3 bg-neutral-800 border border-neutral-700 rounded-md">
             {preview ? (
-              <img
+              <SmartImage
                 src={preview}
                 alt="Preview"
                 className="h-12 w-12 object-cover rounded"

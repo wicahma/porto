@@ -10,7 +10,7 @@ import Socials from "@/components/molecules/Socials";
 import SimpleArticleList from "@/components/molecules/article/SimpleArticleList";
 import SimpleExperienceList from "@/components/molecules/experience/SimpleExperienceList";
 import SimpleProjectList from "@/components/molecules/project/SimpleProjectList";
-import Image from "next/image";
+import { SmartNextImage } from "@/components/atoms/images/ImageWithFallback";
 import React from "react";
 
 export const SimpleModeView: React.FC = () => {
@@ -86,7 +86,7 @@ export const SimpleModeView: React.FC = () => {
         <div className="flex flex-col md:flex-row items-center md:items-start gap-8 lg:gap-12">
           {/* Avatar Box */}
           <div className="w-[260px] sm:w-[280px] md:w-[320px] aspect-square rounded-[36px] bg-[var(--text-ultra-low)] flex items-end justify-center overflow-hidden shrink-0 shadow-lg">
-            <Image
+            <SmartNextImage
               src={mePortrait}
               alt="Teguh Dwi Cahya Kusuma"
               placeholder="blur"

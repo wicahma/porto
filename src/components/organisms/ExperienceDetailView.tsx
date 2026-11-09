@@ -1,6 +1,7 @@
 "use client";
 
 import Sun from "@/assets/svg/sun";
+import { SmartImage } from "@/components/atoms/images/ImageWithFallback";
 import { formatDateRange } from "@/utils/helper/date.utils";
 import { ArrowLeft, ArrowUpRight, ChevronRight } from "lucide-react";
 import Link from "next/link";
@@ -66,7 +67,7 @@ export const ExperienceDetailView: React.FC<{
           <div className="flex min-w-0 items-start gap-4">
             {experience.logo ? (
               <span className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--ink-800)]">
-                <img
+                <SmartImage
                   src={experience.logo}
                   alt=""
                   aria-hidden="true"

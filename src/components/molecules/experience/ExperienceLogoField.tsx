@@ -3,6 +3,7 @@
 import { Button } from "@/components/atoms/buttons/button";
 import { Input } from "@/components/atoms/inputs/input";
 import { Label } from "@/components/atoms/inputs/label";
+import { SmartImage } from "@/components/atoms/images/ImageWithFallback";
 import { isLogoSource } from "@/utils/helper/experience-logo";
 import { ImagePlus, Trash2 } from "lucide-react";
 import { useRef, useState } from "react";
@@ -75,7 +76,7 @@ export const ExperienceLogoField = ({
 
       <div className="flex items-start gap-4">
         {isLogoSource(value) ? (
-          <img
+          <SmartImage
             src={value}
             alt={`${company || "Company"} logo`}
             className="h-16 w-16 shrink-0 rounded-xl object-contain"

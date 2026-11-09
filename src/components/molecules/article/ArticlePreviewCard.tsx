@@ -1,5 +1,6 @@
 "use client";
 
+import { SmartImage } from "@/components/atoms/images/ImageWithFallback";
 import { getStorageFileUrl } from "@/utils/helper/storage";
 import { TArticleRow } from "@/interface/entities/article.interface";
 import { ArrowUpRight } from "lucide-react";
@@ -43,15 +44,12 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
       <div>
         {/* Thumbnail */}
         <div className="relative flex aspect-[466/252] w-full items-center justify-center overflow-hidden rounded-sm border border-[var(--line)] bg-[var(--ink-550)]">
-          {article.image ? (
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-105"
-              style={{
-                backgroundImage: `url("${getStorageFileUrl(article.image)}")`,
-              }}
-            />
-          ) : null}
+          <SmartImage
+            aria-hidden="true"
+            src={getStorageFileUrl(article.image)}
+            alt={article.title ?? "Article image"}
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
 
           <span className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center border border-[var(--line-strong)] bg-[var(--ink-900)]/80 text-[var(--text-mid)] transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:border-[var(--signal)] group-hover:text-[var(--signal)]"><ArrowUpRight className="h-4 w-4" /></span>
         </div>
