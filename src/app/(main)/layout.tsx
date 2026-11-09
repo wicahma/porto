@@ -1,5 +1,6 @@
 "use client";
 import { GlobCursor } from "@/components/atoms/animations/GlobCursor";
+import LegoBackground from "@/components/background/LegoBackground";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 import { ILayoutProps } from "@/interface/app/layout";
 import { cn } from "@/lib/utils";
@@ -16,6 +17,7 @@ const Layout: React.FC<ILayoutProps> = ({ children }) => {
   const params = useParams();
   const pathname = usePathname();
   const disableOnPathname = [`/article/${params.slug}`];
+  const isArticleDetail = pathname.startsWith("/article/");
 
   const scrollRef = useSmoothScroll({
     disableOnPathname,
@@ -23,7 +25,8 @@ const Layout: React.FC<ILayoutProps> = ({ children }) => {
   });
 
   return (
-    <main className="max-w-screen overflow-hidden">
+    <main className="relative isolate max-w-screen overflow-hidden">
+      {!isArticleDetail && <LegoBackground contentRef={scrollRef} />}
       <NextTopLoader height={1} color="var(--ink-500)" />
       <GlobCursor />
       <div
