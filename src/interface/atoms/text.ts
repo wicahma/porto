@@ -1,10 +1,28 @@
-import { JSX } from "react";
+/**
+ * HTML tags the text animations may render. Deliberately a closed union: the
+ * global `keyof JSX.IntrinsicElements` also contains the WebGL elements that
+ * `@react-three/fiber` augments the JSX namespace with, and those demand
+ * three.js constructor `args` the callers never pass.
+ */
+export type TextAnimationTag =
+  | "h1"
+  | "h2"
+  | "h3"
+  | "h4"
+  | "h5"
+  | "h6"
+  | "p"
+  | "span"
+  | "div"
+  | "strong"
+  | "em"
+  | "li";
 
 export interface ILettersUpProps {
     text: string;
     className?: string;
     direction?: direction;
-    tag?: keyof JSX.IntrinsicElements;
+    tag?: TextAnimationTag;
     delay?: number;
 }
 
@@ -14,7 +32,7 @@ export interface IWordsUpProps {
     direction?: direction;
     delay?: number;
     delayWords?: number;
-    tag?: keyof JSX.IntrinsicElements;
+    tag?: TextAnimationTag;
     textClassName?: string;
 }
 
