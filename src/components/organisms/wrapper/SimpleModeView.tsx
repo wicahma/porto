@@ -18,7 +18,7 @@ export const SimpleModeView: React.FC = () => {
     <div className="relative mx-auto w-full py-6">
       <div
         aria-hidden="true"
-        className="grid-plot pointer-events-none absolute inset-0 w-full opacity-40"
+        className="pointer-events-none absolute inset-0 w-full opacity-40"
       />
       <div className="section-stack relative mx-auto w-full">
         <div className="flex flex-col-reverse gap-2 sm:gap-3 w-full">
